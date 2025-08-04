@@ -14,8 +14,13 @@ export default function HomePage() {
   const router = useRouter()
 
   useEffect(() => {
-    if (!isLoading && isAuthenticated) {
-      router.push("/dashboard")
+    // Add safety check to prevent router issues
+    if (!isLoading && isAuthenticated && router) {
+      try {
+        router.push("/dashboard")
+      } catch (error) {
+        console.error('Navigation error:', error)
+      }
     }
   }, [isAuthenticated, isLoading, router])
 

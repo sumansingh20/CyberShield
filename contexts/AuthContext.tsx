@@ -31,23 +31,36 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     // Only access localStorage on the client side
     if (typeof window !== 'undefined') {
-      // Load auth data from localStorage on mount
-      const storedUser = localStorage.getItem("user")
-      const storedAccessToken = localStorage.getItem("accessToken")
-      const storedRefreshToken = localStorage.getItem("refreshToken")
+      try {
+        // Load auth data from localStorage on mount
+        const storedUser = localStorage.getItem("user")
+        const storedAccessToken = localStorage.getItem("accessToken")
+        const storedRefreshToken = localStorage.getItem("refreshToken")
 
-      if (storedUser && storedAccessToken && storedRefreshToken) {
-        try {
-          setUser(JSON.parse(storedUser))
-          setAccessToken(storedAccessToken)
-          setRefreshToken(storedRefreshToken)
-        } catch (error) {
-          console.error('Failed to parse stored user data:', error)
-          // Clear corrupted data
-          localStorage.removeItem("user")
-          localStorage.removeItem("accessToken")
-          localStorage.removeItem("refreshToken")
+        if (storedUser && storedAccessToken && storedRefreshToken) {
+          try {
+            const parsedUser = JSON.parse(storedUser)
+            // Validate the parsed user object
+            if (parsedUser && typeof parsedUser === 'object' && parsedUser.id && parsedUser.email) {
+              setUser(parsedUser)
+              setAccessToken(storedAccessToken)
+              setRefreshToken(storedRefreshToken)
+            } else {
+              console.warn('Invalid user data in localStorage, clearing...')
+              localStorage.removeItem("user")
+              localStorage.removeItem("accessToken")
+              localStorage.removeItem("refreshToken")
+            }
+          } catch (parseError) {
+            console.error('Failed to parse stored user data:', parseError)
+            // Clear corrupted data
+            localStorage.removeItem("user")
+            localStorage.removeItem("accessToken")
+            localStorage.removeItem("refreshToken")
+          }
         }
+      } catch (storageError) {
+        console.error('Error accessing localStorage:', storageError)
       }
     }
 
@@ -96,7 +109,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 export function useAuth() {
   const context = useContext(AuthContext)
   if (context === undefined) {
-    throw new Error("useAuth must be used within an AuthProvider")
+    // Provide more specific error information
+    throw new Error("useAuth must be used within an AuthProvider. Make sure your component is wrapped in <AuthProvider>.")
   }
   return context
 }
