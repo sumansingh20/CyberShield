@@ -1,7 +1,7 @@
 "use client"
 
 import type React from "react"
-import { createContext, useContext, useEffect, useState } from "react"
+import { createContext, useContext, useEffect, useState, useMemo } from "react"
 
 type Theme = "dark" | "light" | "system" | "cyberpunk" | "matrix" | "hacker" | "neon" | "terminal"
 
@@ -20,40 +20,46 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
   >("dark")
 
   useEffect(() => {
-    // Load theme from localStorage
-    const savedTheme = localStorage.getItem("theme") as Theme
-    if (
-      savedTheme &&
-      ["dark", "light", "system", "cyberpunk", "matrix", "hacker", "neon", "terminal"].includes(savedTheme)
-    ) {
-      setTheme(savedTheme)
+    // Only access localStorage on the client side
+    if (typeof window !== 'undefined') {
+      // Load theme from localStorage
+      const savedTheme = localStorage.getItem("theme") as Theme
+      if (
+        savedTheme &&
+        ["dark", "light", "system", "cyberpunk", "matrix", "hacker", "neon", "terminal"].includes(savedTheme)
+      ) {
+        setTheme(savedTheme)
+      }
     }
   }, [])
 
   useEffect(() => {
-    const root = window.document.documentElement
+    // Only access DOM on the client side
+    if (typeof window !== 'undefined') {
+      const root = window.document.documentElement
 
-    // Remove existing theme classes
-    root.classList.remove("light", "dark", "cyberpunk", "matrix", "hacker", "neon", "terminal")
+      // Remove existing theme classes
+      root.classList.remove("light", "dark", "cyberpunk", "matrix", "hacker", "neon", "terminal")
 
-    let effectiveTheme: "dark" | "light" | "cyberpunk" | "matrix" | "hacker" | "neon" | "terminal"
+      let effectiveTheme: "dark" | "light" | "cyberpunk" | "matrix" | "hacker" | "neon" | "terminal"
 
-    if (theme === "system") {
-      effectiveTheme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light"
-    } else {
-      effectiveTheme = theme as any
+      if (theme === "system") {
+        effectiveTheme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light"
+      } else {
+        effectiveTheme = theme as any
+      }
+
+      root.classList.add(effectiveTheme)
+      setResolvedTheme(effectiveTheme)
+
+      // Save to localStorage
+      localStorage.setItem("theme", theme)
     }
-
-    root.classList.add(effectiveTheme)
-    setResolvedTheme(effectiveTheme)
-
-    // Save to localStorage
-    localStorage.setItem("theme", theme)
   }, [theme])
 
   // Listen for system theme changes
   useEffect(() => {
-    if (theme === "system") {
+    if (typeof window !== 'undefined' && theme === "system") {
       const mediaQuery = window.matchMedia("(prefers-color-scheme: dark)")
 
       const handleChange = () => {
@@ -69,11 +75,11 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
     }
   }, [theme])
 
-  const value = {
+  const value = useMemo(() => ({
     theme,
     setTheme,
     resolvedTheme,
-  }
+  }), [theme, resolvedTheme])
 
   return <ThemeContext.Provider value={value}>{children}</ThemeContext.Provider>
 }

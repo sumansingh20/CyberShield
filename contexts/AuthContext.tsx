@@ -1,7 +1,7 @@
 "use client"
 
 import type React from "react"
-import { createContext, useContext, useState, useEffect } from "react"
+import { createContext, useContext, useState, useEffect, useMemo } from "react"
 
 interface User {
   id: string
@@ -29,15 +29,26 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [isLoading, setIsLoading] = useState(true)
 
   useEffect(() => {
-    // Load auth data from localStorage on mount
-    const storedUser = localStorage.getItem("user")
-    const storedAccessToken = localStorage.getItem("accessToken")
-    const storedRefreshToken = localStorage.getItem("refreshToken")
+    // Only access localStorage on the client side
+    if (typeof window !== 'undefined') {
+      // Load auth data from localStorage on mount
+      const storedUser = localStorage.getItem("user")
+      const storedAccessToken = localStorage.getItem("accessToken")
+      const storedRefreshToken = localStorage.getItem("refreshToken")
 
-    if (storedUser && storedAccessToken && storedRefreshToken) {
-      setUser(JSON.parse(storedUser))
-      setAccessToken(storedAccessToken)
-      setRefreshToken(storedRefreshToken)
+      if (storedUser && storedAccessToken && storedRefreshToken) {
+        try {
+          setUser(JSON.parse(storedUser))
+          setAccessToken(storedAccessToken)
+          setRefreshToken(storedRefreshToken)
+        } catch (error) {
+          console.error('Failed to parse stored user data:', error)
+          // Clear corrupted data
+          localStorage.removeItem("user")
+          localStorage.removeItem("accessToken")
+          localStorage.removeItem("refreshToken")
+        }
+      }
     }
 
     setIsLoading(false)
@@ -48,9 +59,12 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     setAccessToken(tokens.accessToken)
     setRefreshToken(tokens.refreshToken)
 
-    localStorage.setItem("user", JSON.stringify(userData))
-    localStorage.setItem("accessToken", tokens.accessToken)
-    localStorage.setItem("refreshToken", tokens.refreshToken)
+    // Only access localStorage on the client side
+    if (typeof window !== 'undefined') {
+      localStorage.setItem("user", JSON.stringify(userData))
+      localStorage.setItem("accessToken", tokens.accessToken)
+      localStorage.setItem("refreshToken", tokens.refreshToken)
+    }
   }
 
   const logout = () => {
@@ -58,12 +72,15 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     setAccessToken(null)
     setRefreshToken(null)
 
-    localStorage.removeItem("user")
-    localStorage.removeItem("accessToken")
-    localStorage.removeItem("refreshToken")
+    // Only access localStorage on the client side
+    if (typeof window !== 'undefined') {
+      localStorage.removeItem("user")
+      localStorage.removeItem("accessToken")
+      localStorage.removeItem("refreshToken")
+    }
   }
 
-  const value = {
+  const value = useMemo(() => ({
     user,
     accessToken,
     refreshToken,
@@ -71,7 +88,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     logout,
     isAuthenticated: !!user && !!accessToken,
     isLoading,
-  }
+  }), [user, accessToken, refreshToken, isLoading])
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>
 }
