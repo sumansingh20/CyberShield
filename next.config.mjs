@@ -9,9 +9,8 @@ const nextConfig = {
   images: {
     unoptimized: true,
   },
-  // Remove static export for Netlify - we need API routes
-  // output: 'export',
-  // trailingSlash: true,
+  // Netlify configuration
+  trailingSlash: false,
   distDir: '.next',
   // Performance optimizations
   swcMinify: true,
