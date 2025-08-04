@@ -141,13 +141,6 @@ This platform bridges the gap between theoretical cybersecurity knowledge and pr
 - **🎯 Real-World Simulation**: Realistic testing environment that mirrors professional penetration testing workflows
 - **🤝 Community Building**: Collaborative features for sharing knowledge and learning from peers
 
-### 🏆 Awards & Recognition
-
-- ⭐ **4.9/5** Average rating from 500+ users
-- 🏅 **Top 10** Cybersecurity Education Tools 2024
-- 🎖️ **Best Open Source** Security Platform Award
-- 📈 **50,000+** Downloads in first quarter
-
 ---
 
 ### High-Level Architecture
