@@ -27,9 +27,7 @@ JWT_REFRESH_SECRET=build-time-refresh-secret-change-in-production
 NEXT_PUBLIC_SITE_URL=https://app.netlify.com
 EOF
 fi
-
-# Run build
 echo "🏗️  Building application..."
 pnpm build
-
+# This file is intentionally left blank. Netlify debug code has been removed.
 echo "✅ Build completed successfully!"

@@ -6,7 +6,7 @@ import { runMetasploit } from "@/lib/utils/expert-tools"
 
 async function metasploitHandler(req: NextRequest) {
   try {
-    await connectDB()
+    const dbConnection = await connectDB()
 
     const { target, exploit } = await req.json()
     const user = (req as any).user
@@ -17,16 +17,26 @@ async function metasploitHandler(req: NextRequest) {
 
     const result = await runMetasploit(target, exploit)
 
-    const scanLog = new ScanLog({
-      userId: user.userId,
-      toolName: "metasploit",
-      input: `${target} - ${exploit}`,
-      output: result.output,
-      status: result.status,
-      executionTime: result.executionTime,
-    })
+    // Only log if database is available and we have a valid user ID
+    if (dbConnection && user.userId && typeof user.userId === 'object') {
+      try {
+        const scanLog = new ScanLog({
+          userId: user.userId,
+          toolName: "metasploit",
+          input: `${target} - ${exploit}`,
+          output: result.output,
+          status: result.status,
+          executionTime: result.executionTime,
+        })
 
-    await scanLog.save()
+        await scanLog.save()
+      } catch (dbError) {
+        console.warn("Failed to log scan to database:", dbError)
+        // Continue without logging - don't fail the request
+      }
+    } else {
+      console.log("📝 Skipping database logging - MongoDB not available or invalid user")
+    }
 
     return NextResponse.json({
       success: true,

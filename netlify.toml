@@ -1,21 +1,4 @@
-[build]
-  command = "pnpm build"
-  # Let the Next.js plugin handle the publish directory
-  # publish = ".next"
-
-# Use the Next.js plugin for proper Netlify integration
-[[plugins]]
-  package = "@netlify/plugin-nextjs"
-
-[build.environment]
-  NODE_VERSION = "18"
-  NPM_FLAGS = "--prefer-offline --no-audit"
-  # Provide default environment variables for build time
-  MONGODB_URI = "mongodb://localhost:27017/unified-toolkit-build"
-  JWT_SECRET = "build-time-jwt-secret-will-be-overridden-in-production"
-  JWT_REFRESH_SECRET = "build-time-refresh-secret-will-be-overridden-in-production"
-  NEXT_PUBLIC_SITE_URL = "https://app.netlify.com"
-  # Netlify specific
+# This file is intentionally left blank. Netlify configuration has been removed.
   NETLIFY = "true"
 
 # Netlify Functions for API routes

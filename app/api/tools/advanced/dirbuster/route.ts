@@ -8,11 +8,17 @@ async function dirBusterHandler(req: NextRequest) {
   try {
     await connectDB()
 
-    const { url } = await req.json()
+    const { url, wordlist } = await req.json()
     const user = (req as any).user
 
     if (!url) {
       return NextResponse.json({ error: "URL is required" }, { status: 400 })
+    }
+
+    // Validate URL format
+    const urlRegex = /^https?:\/\/[a-zA-Z0-9.-]+/
+    if (!urlRegex.test(url)) {
+      return NextResponse.json({ error: "Invalid URL format. Please use http:// or https://" }, { status: 400 })
     }
 
     const result = await runDirBuster(url)
@@ -20,7 +26,7 @@ async function dirBusterHandler(req: NextRequest) {
     const scanLog = new ScanLog({
       userId: user.userId,
       toolName: "gobuster",
-      input: url,
+      input: `${url} ${wordlist ? `(wordlist: ${wordlist})` : ""}`,
       output: result.output,
       status: result.status,
       executionTime: result.executionTime,
@@ -30,7 +36,12 @@ async function dirBusterHandler(req: NextRequest) {
 
     return NextResponse.json({
       success: true,
-      result,
+      result: {
+        output: result.output,
+        error: result.error,
+        executionTime: result.executionTime,
+        status: result.status,
+      },
     })
   } catch (error) {
     console.error("DirBuster error:", error)

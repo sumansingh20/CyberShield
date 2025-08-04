@@ -568,14 +568,18 @@ export default function DashboardPage() {
                     Scan My Network
                   </Button>
                 </Link>
-                <Button variant="outline" className="w-full justify-start glass hover:glow-hover bg-transparent">
-                  <Shield className="mr-2 h-4 w-4" />
-                  Security Assessment
-                </Button>
-                <Button variant="outline" className="w-full justify-start glass hover:glow-hover bg-transparent">
-                  <FileText className="mr-2 h-4 w-4" />
-                  Generate Report
-                </Button>
+                <Link href="/security-assessment">
+                  <Button variant="outline" className="w-full justify-start glass hover:glow-hover bg-transparent">
+                    <Shield className="mr-2 h-4 w-4" />
+                    Security Assessment
+                  </Button>
+                </Link>
+                <Link href="/tools">
+                  <Button variant="outline" className="w-full justify-start glass hover:glow-hover bg-transparent">
+                    <FileText className="mr-2 h-4 w-4" />
+                    Browse All Tools
+                  </Button>
+                </Link>
               </CardContent>
             </Card>
 

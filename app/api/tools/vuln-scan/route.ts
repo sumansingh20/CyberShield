@@ -15,8 +15,8 @@ async function vulnScanHandler(req: NextRequest) {
       return NextResponse.json({ error: "Target is required" }, { status: 400 })
     }
 
-    // Validate target format
-    const targetRegex = /^https?:\/\/[a-zA-Z0-9.-]+/
+    // Validate target format (allow URLs with various formats)
+    const targetRegex = /^https?:\/\/[a-zA-Z0-9.\-_/:]+/
     if (!targetRegex.test(target)) {
       return NextResponse.json({ error: "Invalid target format. Please use http:// or https://" }, { status: 400 })
     }

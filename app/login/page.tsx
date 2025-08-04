@@ -29,7 +29,7 @@ export default function LoginPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
 
-    if (!recaptchaToken) {
+    if (!recaptchaToken && process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY) {
       toast({
         title: "Error",
         description: "Please complete the reCAPTCHA",
@@ -197,11 +197,21 @@ export default function LoginPage() {
               </div>
 
               <div className="flex justify-center py-2">
-                <ReCAPTCHA
-                  sitekey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY!}
-                  onChange={setRecaptchaToken}
-                  theme="dark"
-                />
+                {process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY ? (
+                  <ReCAPTCHA
+                    sitekey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY}
+                    onChange={setRecaptchaToken}
+                    theme="dark"
+                    onError={() => {
+                      console.error('reCAPTCHA error occurred')
+                      setRecaptchaToken(null)
+                    }}
+                  />
+                ) : (
+                  <div className="text-sm text-muted-foreground bg-muted p-3 rounded">
+                    reCAPTCHA not configured - continuing without verification
+                  </div>
+                )}
               </div>
 
               <Button type="submit" className="w-full glow-hover group" disabled={loading} size="lg">

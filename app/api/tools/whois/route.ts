@@ -6,8 +6,8 @@ import { runWhoisLookup } from "@/lib/utils/security-tools"
 
 async function whoisHandler(req: NextRequest) {
   try {
-    await connectDB()
-
+    const dbConnection = await connectDB()
+    
     const { target } = await req.json()
     const user = (req as any).user
 
@@ -17,17 +17,26 @@ async function whoisHandler(req: NextRequest) {
 
     const result = await runWhoisLookup(target)
 
-    // Log the scan
-    const scanLog = new ScanLog({
-      userId: user.userId,
-      toolName: "whois",
-      input: target,
-      output: result.output,
-      status: result.status,
-      executionTime: result.executionTime,
-    })
+    // Only log if database is available and we have a valid user ID
+    if (dbConnection && user.userId && typeof user.userId === 'object') {
+      try {
+        const scanLog = new ScanLog({
+          userId: user.userId,
+          toolName: "whois",
+          input: target,
+          output: result.output || "No output available",
+          status: result.status,
+          executionTime: result.executionTime,
+        })
 
-    await scanLog.save()
+        await scanLog.save()
+      } catch (dbError) {
+        console.warn("Failed to log scan to database:", dbError)
+        // Continue without logging - don't fail the request
+      }
+    } else {
+      console.log("📝 Skipping database logging - MongoDB not available or invalid user")
+    }
 
     return NextResponse.json({
       success: true,

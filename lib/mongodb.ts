@@ -9,7 +9,7 @@ const isNetlifyBuild = process.env.NETLIFY === "true"
 const isBuildTime = process.env.NODE_ENV === "production" && !process.env.VERCEL && !MONGODB_URI
 
 if (!MONGODB_URI) {
-  if (isDevelopment || isNetlifyBuild || isBuildTime) {
+  if (isDevelopment || isBuildTime) {
     console.warn("⚠️  MONGODB_URI not found - MongoDB features will be disabled during build")
   } else {
     // Only throw in runtime production environment
@@ -36,7 +36,7 @@ async function connectDB() {
   // Handle missing MONGODB_URI during build time or development
   if (!MONGODB_URI) {
     if (isDevelopment || isNetlifyBuild || isBuildTime) {
-      console.log("MongoDB not configured - using mock connection for build/development")
+      console.log("📝 MongoDB not configured - running in mock mode for development")
       return null
     }
     throw new Error("MONGODB_URI environment variable is required for production runtime")
@@ -59,10 +59,11 @@ async function connectDB() {
 
   try {
     cached!.conn = await cached!.promise
+    console.log("✅ MongoDB connected successfully")
   } catch (e) {
     cached!.promise = null
     if (isDevelopment) {
-      console.warn("MongoDB connection failed in development mode:", e)
+      console.warn("⚠️  MongoDB connection failed in development mode - continuing without database logging")
       return null
     }
     throw e

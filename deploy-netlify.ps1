@@ -1,6 +1,4 @@
 # Netlify Deployment Script for Unified Toolkit (PowerShell)
-# This script prepares and deploys the project to Netlify
-
 Write-Host "🚀 Starting Netlify deployment preparation..." -ForegroundColor Green
 
 # Check if required tools are installed
@@ -96,7 +94,6 @@ function Show-NetlifyInstructions {
     Write-Host "   - MONGODB_URI: Your MongoDB Atlas connection string" -ForegroundColor Gray
     Write-Host "   - JWT_SECRET: A secure 32+ character string" -ForegroundColor Gray
     Write-Host "   - JWT_REFRESH_SECRET: Another secure 32+ character string" -ForegroundColor Gray
-    Write-Host "   - NEXT_PUBLIC_SITE_URL: https://your-site-name.netlify.app" -ForegroundColor Gray
     Write-Host "6. Deploy your site!" -ForegroundColor White
     Write-Host ""
     Write-Host "🔧 Fixed Issues:" -ForegroundColor Yellow
