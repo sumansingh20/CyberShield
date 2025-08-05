@@ -42,16 +42,6 @@
 
 A **comprehensive, enterprise-grade cybersecurity learning platform** that unifies essential penetration testing tools with modern authentication, real-time scanning capabilities, and an intuitive web interface. Designed specifically for aspiring penetration testers and cybersecurity professionals who need a centralized platform to learn, practice, and master security testing methodologies.
 
-### 🎖️ Why Choose Our Platform?
-
-| Feature | Traditional Tools | Our Platform |
-|---------|-------------------|--------------|
-| **Integration** | Scattered tools | Unified interface |
-| **Learning** | Self-taught | Guided tutorials |
-| **Security** | Basic setup | Enterprise-grade |
-| **Collaboration** | Individual work | Team features |
-| **Updates** | Manual updates | Auto-updated |
-
 ## 🚀 Quick Start
 
 ### Prerequisites
@@ -139,7 +129,6 @@ This platform bridges the gap between theoretical cybersecurity knowledge and pr
 - **📚 Educational Focus**: Structured learning path for new penetration testers with guided tutorials and best practices  
 - **🛡️ Enterprise Security**: Production-ready authentication and authorization systems
 - **🎯 Real-World Simulation**: Realistic testing environment that mirrors professional penetration testing workflows
-- **🤝 Community Building**: Collaborative features for sharing knowledge and learning from peers
 
 ---
 
@@ -1200,72 +1189,6 @@ sudo apt-get install -y nmap nikto python3-pip golang-go
 
 ---
 
-### � **Netlify Deployment** (Recommended for Demo/Frontend)
-
-#### Quick Deploy to Netlify
-
-[![Deploy to Netlify](https://www.netlify.com/img/deploy/button.svg)](https://app.netlify.com/start/deploy?repository=https://github.com/sumansingh20/Unified-Toolkit-for-New-Pen-Testers)
-
-#### Manual Netlify Deployment
-
-1. **Push Code to GitHub**
-   ```bash
-   git add .
-   git commit -m "Prepare for Netlify deployment"
-   git push origin main
-   ```
-
-2. **Connect to Netlify**
-   - Go to [Netlify Dashboard](https://app.netlify.com/)
-   - Click "Add new site" → "Import an existing project"
-   - Choose GitHub and authorize Netlify
-   - Select your repository
-
-3. **Configure Build Settings**
-   ```
-   Build command: pnpm build
-   Publish directory: .next
-   ```
-
-4. **Set Environment Variables**
-   In Netlify Dashboard → Site Settings → Environment Variables:
-   ```
-   MONGODB_URI=mongodb+srv://username:password@cluster.mongodb.net/unified-toolkit
-   JWT_SECRET=your-super-secure-jwt-secret-min-32-chars
-   JWT_REFRESH_SECRET=your-refresh-secret-min-32-chars
-   NEXT_PUBLIC_SITE_URL=https://your-site-name.netlify.app
-   ```
-
-5. **Deploy**
-   - Click "Deploy site"
-   - Your site will be available at: `https://random-name.netlify.app`
-   - Customize the domain in Site Settings
-
-#### Important Notes for Netlify Deployment
-
-⚠️ **Backend Limitations**: Netlify is primarily for static sites. For full functionality:
-- Database operations will be limited
-- Security tools (nmap, nikto) won't work on Netlify
-- Consider using Netlify Functions for API endpoints
-
-💡 **Recommended Architecture**:
-- **Frontend**: Deploy to Netlify (fast, global CDN)
-- **Backend/API**: Deploy to Railway, Render, or Vercel
-- **Database**: MongoDB Atlas (cloud)
-
-#### Environment Variables Setup
-
-Essential variables for Netlify deployment:
-
-| Variable | Description | Required |
-|----------|-------------|----------|
-| `MONGODB_URI` | MongoDB connection string | ✅ Yes |
-| `JWT_SECRET` | JWT signing secret | ✅ Yes |
-| `JWT_REFRESH_SECRET` | Refresh token secret | ✅ Yes |
-| `NEXT_PUBLIC_SITE_URL` | Your Netlify site URL | ✅ Yes |
-| `EMAIL_HOST` | SMTP server (optional) | ❌ No |
-| `EMAIL_USER` | Email username (optional) | ❌ No |
-| `EMAIL_PASS` | Email password (optional) | ❌ No |
 
 ### �🐳 Docker Deployment
 
@@ -1525,16 +1448,6 @@ docker run -p 3000:3000 --env-file .env unified-toolkit
 | **🛠️ Security Tools** | Integrated CLI tools | Penetration testing | ~6,000+ |
 | **🐳 Infrastructure** | Docker + Nginx | Deployment & scaling | ~1,000+ |
 
-### 🎯 **Key Architecture Patterns**
-
-- **🔄 MVC Pattern**: Clean separation of concerns
-- **🧩 Component-Based**: Reusable UI components
-- **🌐 API-First**: RESTful service architecture
-- **🔐 Security-First**: Authentication at every layer
-- **📱 Mobile-First**: Responsive design principles
-- **🚀 Performance-First**: Optimized for speed
-- **♿ Accessibility-First**: WCAG 2.1 compliant
-
 </div>
 
 ## 🔧 Configuration
@@ -1730,16 +1643,6 @@ curl -X POST http://localhost:3000/api/tools/nmap \
   }
 }
 ```
-
-### 📈 Rate Limiting
-
-| User Type | Requests/Hour | Concurrent Scans |
-|-----------|---------------|------------------|
-| **Guest** | 100 | 1 |
-| **User** | 1,000 | 3 |
-| **Premium** | 10,000 | 10 |
-| **Admin** | Unlimited | Unlimited |
-
 ---
 
 ## 🔒 Security & Compliance
@@ -1771,76 +1674,7 @@ Our platform implements multiple layers of security to protect your data and ens
 - **📊 Monitoring**: Real-time security event logging
 - **🔄 Updates**: Automated security patches and dependency updates
 
-### 📋 Compliance & Standards
 
-- ✅ **OWASP Top 10** - All vulnerabilities addressed
-- ✅ **NIST Cybersecurity Framework** - Controls implemented
-- ✅ **ISO 27001** - Information security standards
-- ✅ **GDPR Compliant** - Data privacy protection
-- ✅ **SOC 2 Type II** - Security controls audited
-
----
-
-## 📊 Usage Examples
-
-### Port Scanning
-\`\`\`bash
-# Example: Scan common ports on a target
-Target: example.com
-Output: Open ports 22, 80, 443 with service detection
-\`\`\`
-
-### Subdomain Enumeration
-\`\`\`bash
-# Example: Find subdomains for a domain
-Domain: example.com
-Output: List of discovered subdomains (www, mail, ftp, etc.)
-\`\`\`
-
-### Vulnerability Scanning
-\`\`\`bash
-# Example: Scan a web application
-URL: https://example.com
-Output: Potential vulnerabilities and security issues
-\`\`\`
-
-## 🎯 Learning Objectives
-
-This platform is designed to help new penetration testers:
-
-1. **Understand Tool Integration** - Learn how security tools work together
-2. **Practice Safe Testing** - Use tools in a controlled environment
-3. **Develop Methodology** - Build systematic testing approaches
-4. **Learn Security Concepts** - Understand vulnerabilities and mitigations
-5. **Build Professional Skills** - Work with enterprise-grade authentication
-
-## 🤝 Contributing
-
-We welcome contributions! Please follow these steps:
-
-1. **Fork the repository**
-2. **Create a feature branch**
-   \`\`\`bash
-   git checkout -b feature/amazing-feature
-   \`\`\`
-3. **Make your changes**
-4. **Add tests** if applicable
-5. **Commit your changes**
-   \`\`\`bash
-   git commit -m 'Add amazing feature'
-   \`\`\`
-6. **Push to the branch**
-   \`\`\`bash
-   git push origin feature/amazing-feature
-   \`\`\`
-7. **Open a Pull Request**
-
-### Development Guidelines
-- Follow TypeScript best practices
-- Use ESLint and Prettier for code formatting
-- Write meaningful commit messages
-- Add documentation for new features
-- Ensure security best practices
 
 ## 🐛 Comprehensive Troubleshooting Guide
 
@@ -2097,85 +1931,6 @@ db.scanLogs.aggregate([
 ])
 ```
 
-## 📚 Learning Resources & Educational Path
-
-### 🎓 Structured Learning Journey
-
-Our platform provides a comprehensive learning path designed for different skill levels:
-
-#### 🟢 Beginner Level (0-3 months)
-
-**Phase 1: Foundation Building**
-- 📖 **Networking Basics**: TCP/IP, OSI model, common ports
-- 🌐 **Web Technologies**: HTTP/HTTPS, status codes, headers  
-- 💻 **Linux Fundamentals**: Command line, file systems, processes
-- 🔒 **Security Concepts**: CIA triad, threat modeling, risk assessment
-
-**Hands-on Labs:**
-- Network mapping with Nmap
-- Basic web reconnaissance
-- WHOIS and DNS analysis
-- Simple vulnerability scanning
-
-#### 🟡 Intermediate Level (3-6 months)
-
-**Phase 2: Tool Mastery**
-- 🔍 **Advanced Scanning**: Service detection, OS fingerprinting
-- 🕷️ **Web App Testing**: SQL injection, XSS, authentication bypass
-- 📡 **Wireless Security**: WiFi assessment, WPA/WPA2 attacks
-- 🔎 **OSINT Techniques**: Social media, data breaches, metadata
-
-**Practical Projects:**
-- Complete network penetration test
-- Web application security assessment  
-- Wireless network audit
-- OSINT investigation report
-
-#### 🔴 Advanced Level (6+ months)
-
-**Phase 3: Expert Techniques**
-- 💥 **Exploitation**: Buffer overflows, privilege escalation
-- 🏴‍☠️ **Red Team Tactics**: Persistence, lateral movement, C2
-- 🛡️ **Blue Team Defense**: SIEM, incident response, forensics
-- 📝 **Professional Reporting**: Executive summaries, technical details
-
-**Certification Prep:**
-- CEH (Certified Ethical Hacker)
-- OSCP (Offensive Security Certified Professional)
-- CISSP (Certified Information Systems Security Professional)
-- GCIH (GIAC Certified Incident Handler)
-
-### 📚 Curated Learning Resources
-
-#### 📖 Essential Reading
-
-| Book | Author | Focus Area | Difficulty |
-|------|--------|------------|------------|
-| **The Web Application Hacker's Handbook** | Stuttard & Pinto | Web Security | Intermediate |
-| **Black Hat Python** | Justin Seitz | Python for Hackers | Intermediate |
-| **The Hacker Playbook 3** | Peter Kim | Red Team Tactics | Advanced |
-| **Practical Malware Analysis** | Sikorski & Honig | Malware Analysis | Advanced |
-
-#### 🎥 Video Courses
-
-- **🆓 Free Resources:**
-  - [Cybrary](https://cybrary.it) - Free cybersecurity training
-  - [Professor Messer](https://professormesser.com) - Security+ training
-  - [SANS Cyber Aces](https://cyberaces.org) - Hands-on tutorials
-
-- **💰 Premium Courses:**
-  - [Pluralsight Security Path](https://pluralsight.com)
-  - [Udemy Ethical Hacking](https://udemy.com)
-  - [Linux Academy](https://linuxacademy.com)
-
-#### 🏆 Practice Platforms
-
-| Platform | Type | Cost | Skill Level |
-|----------| **[TryHackMe](https://tryhackme.com)** | Guided Labs | Free/Premium | Beginner-Advanced |
-| **[HackTheBox](https://hackthebox.eu)** | CTF Challenges | Free/Premium | Intermediate-Expert |
-| **[VulnHub](https://vulnhub.com)** | Vulnerable VMs | Free | All Levels |
-| **[OverTheWire](https://overthewire.org)** | Wargames | Free | Beginner-Advanced |
-
 ### 🧪 Hands-on Laboratory Exercises
 
 #### Lab 1: Network Reconnaissance
@@ -2260,34 +2015,6 @@ aircrack-ng -w wordlist.txt capture.cap
 - [ ] Mentor junior team members
 - [ ] Achieve industry certification
 
-### 🏅 Certification Roadmap
-
-```mermaid
-graph TD
-    A[Security+ Foundation] --> B[CEH Practical Skills]
-    B --> C[OSCP Hands-on]
-    C --> D[CISSP Management]
-    
-    B --> E[GCIH Incident Response]
-    C --> F[OSCE Expert Level]
-    D --> G[CISSP Concentrations]
-    
-    style A fill:#90EE90
-    style B fill:#FFE4B5  
-    style C fill:#FFB6C1
-    style D fill:#E6E6FA
-```
-
-### 📊 Progress Tracking
-
-Track your learning journey with our built-in progress system:
-
-- **📈 Skill Assessments**: Regular quizzes and practical tests
-- **🏆 Achievement Badges**: Unlock certifications for completed modules
-- **📝 Learning Portfolio**: Document your projects and findings
-- **👥 Peer Review**: Get feedback from community experts
-- **📅 Study Plans**: Personalized learning schedules
-
 ---
 
 ## 🤝 Community & Contribution Guidelines
@@ -2317,164 +2044,6 @@ Track your learning journey with our built-in progress system:
    - Add screenshots for UI changes
    - Request review from maintainers
 
-#### Code Review Guidelines
-- **Security First**: All code changes reviewed for security implications
-- **Performance Impact**: Consider impact on scanning performance
-- **User Experience**: Maintain consistent UI/UX patterns
-- **Documentation**: Code should be self-documenting with clear comments
-- **Testing**: Minimum 80% code coverage for new features
-
-### Community Support
-
-#### Getting Help
-1. **Documentation**: Check this README and inline documentation
-2. **GitHub Issues**: Search existing issues before creating new ones
-3. **Discussions**: Use GitHub Discussions for general questions
-4. **Discord Community**: Real-time chat and collaboration
-5. **Stack Overflow**: Tag questions with 'unified-toolkit'
-
-#### Reporting Security Issues
-```
-For security vulnerabilities, please email: security@unified-toolkit.com
-Include:
-- Detailed description of the vulnerability
-- Steps to reproduce
-- Potential impact assessment
-- Suggested mitigation (if any)
-
-Do not create public GitHub issues for security vulnerabilities.
-```
-
-### Code of Conduct
-
-#### Our Standards
-- **Respectful Communication**: Treat all community members with respect
-- **Constructive Feedback**: Provide helpful and actionable feedback
-- **Educational Focus**: Remember this is a learning platform
-- **Legal Compliance**: Only use tools for authorized testing
-- **Ethical Hacking**: Follow responsible disclosure principles
-
-#### Enforcement
-- Warning for minor violations
-- Temporary ban for repeated violations
-- Permanent ban for severe violations
-- Appeal process available via email
-
-## 🌟 Project Roadmap & Future Vision
-
-### 🚀 Current Status (v1.0)
-
-- ✅ **Core Platform**: Fully functional with 20+ security tools
-- ✅ **Authentication**: Enterprise-grade security with 2FA
-- ✅ **User Interface**: Modern, responsive design with dark/light themes
-- ✅ **Documentation**: Comprehensive guides and tutorials
-- ✅ **Community**: Active user base with 500+ registered users
-
-### 📅 Short-term Goals (Q1-Q2 2025)
-
-#### 🔧 Platform Enhancements
-- [ ] **Real-time Collaboration**: Multi-user scanning sessions
-- [ ] **Advanced Reporting**: PDF export with custom branding
-- [ ] **Mobile App**: iOS and Android applications
-- [ ] **API Gateway**: GraphQL endpoint for better data fetching
-- [ ] **Webhook Integration**: Real-time notifications and integrations
-
-#### 🛠️ New Tools & Features
-- [ ] **Container Security**: Docker and Kubernetes scanning
-- [ ] **Cloud Security**: AWS, Azure, GCP assessment tools
-- [ ] **IoT Testing**: Specialized tools for IoT device testing
-- [ ] **Blockchain Analysis**: Cryptocurrency and smart contract tools
-- [ ] **AI-Powered Scanning**: Machine learning enhanced vulnerability detection
-
-#### 🎓 Educational Improvements
-- [ ] **Interactive Tutorials**: Step-by-step guided exercises
-- [ ] **Certification Prep**: CEH and OSCP preparation modules
-- [ ] **Video Learning**: Integrated video tutorials and walkthroughs
-- [ ] **Community Labs**: Shared virtual environments
-- [ ] **Mentorship Program**: Connect learners with experts
-
-
-#### 🤖 AI & Automation
-- [ ] **Smart Vulnerability Prioritization**: Risk-based ranking
-- [ ] **Auto-remediation Suggestions**: AI-powered fix recommendations
-- [ ] **Threat Intelligence**: Integration with global threat feeds
-- [ ] **Behavioral Analysis**: Anomaly detection in scan patterns
-- [ ] **Natural Language Queries**: "Find all SQL injection vulnerabilities"
-
-#### 🌐 Global Expansion
-- [ ] **Multi-language Support**: 10+ language translations
-- [ ] **Regional Compliance**: GDPR, CCPA, local data protection laws
-- [ ] **CDN Integration**: Global content delivery for faster access
-- [ ] **Local Partnerships**: Regional cybersecurity training organizations
-- [ ] **Currency Support**: Multiple payment options and currencies
-
-### 🔮 Long-term Vision (2026+)
-
-#### 🚀 Revolutionary Features
-- [ ] **Virtual Reality Training**: Immersive cybersecurity environments
-- [ ] **Quantum-Safe Cryptography**: Post-quantum security testing
-- [ ] **Blockchain-based Audit Trail**: Immutable security testing records
-- [ ] **Edge Computing Security**: Specialized tools for edge environments
-- [ ] **6G Network Testing**: Next-generation wireless security
-
-#### 🌍 Ecosystem Development
-- [ ] **Open Source Marketplace**: Community-contributed tools and plugins
-- [ ] **Academic Partnerships**: Integration with universities and colleges
-- [ ] **Research Collaboration**: Joint projects with security research institutions
-- [ ] **Industry Standards**: Contribute to cybersecurity standards development
-- [ ] **Global Certification**: Recognized certification program
-
-#### 📊 Platform Evolution
-- [ ] **Self-Healing Infrastructure**: Auto-scaling and self-recovery
-- [ ] **Zero-Trust Architecture**: Complete security model overhaul
-- [ ] **Sustainable Computing**: Green technology and carbon-neutral hosting
-- [ ] **Accessibility Excellence**: Full compliance with accessibility standards
-- [ ] **Performance Optimization**: Sub-second response times globally
-
-### 🎯 Success Metrics & KPIs
-
-| Metric | Current | Q4 2025 Target | Q1 2026 Target | 2026 Target |
-|--------|---------|----------------|----------------|-------------|
-| **Active Users** | 500+ | 2,000 | 10,000 | 50,000 |
-| **Tools Available** | 20+ | 35 | 60 | 100+ |
-| **Scan Success Rate** | 95% | 98% | 99% | 99.5% |
-| **API Response Time** | <2s | <1s | <500ms | <200ms |
-| **Security Incidents** | 0 | 0 | 0 | 0 |
-
-### 🤝 Community Contributions
-
-We actively encourage community involvement in our roadmap:
-
-#### 💡 Feature Requests
-- **GitHub Issues**: Submit and vote on feature requests
-- **Discord Discussions**: Real-time feedback and brainstorming
-- **Monthly Surveys**: Regular user feedback collection
-- **Beta Testing**: Early access to new features
-
-#### 👨‍💻 Development Contributions
-- **Tool Integration**: Add support for new security tools
-- **UI/UX Improvements**: Design and usability enhancements
-- **Documentation**: Tutorials, guides, and translations
-- **Testing**: Quality assurance and bug reporting
-
-#### 🎓 Educational Content
-- **Lab Exercises**: Create hands-on learning modules
-- **Video Tutorials**: Record educational content
-- **Blog Posts**: Share knowledge and best practices
-- **Case Studies**: Real-world penetration testing examples
-
-### 📞 Feedback & Suggestions
-
-Your input shapes our roadmap! Reach out through:
-
-- 📧 **Email**: roadmap@unified-toolkit.com
-- 💬 **Discord**: Join our community server
-- 🐙 **GitHub**: Open issues and discussions
-- 📱 **Social Media**: Follow us for updates
-
----
-
----
 
 ## 📄 Legal Disclaimer
 
@@ -2487,65 +2056,6 @@ Your input shapes our roadmap! Reach out through:
 
 The developers and contributors of this project are not responsible for any misuse of the tool or any damages resulting from its use.
 
-## 📞 Support & Community
-
-### 🆘 Getting Help
-
-We're here to help you succeed! Multiple support channels available:
-
-#### 🚀 Quick Support Options
-
-| Issue Type | Best Channel | Response Time | Cost |
-|------------|--------------|---------------|------|
-| **Bug Reports** | GitHub Issues | < 24 hours | Free |
-| **Feature Requests** | GitHub Discussions | < 48 hours | Free |
-| **General Questions** | Discord Community | < 2 hours | Free |
-| **Installation Help** | Documentation + Discord | < 4 hours | Free |
-| **Enterprise Support** | Email Support | < 4 hours | Premium |
-
-#### 📚 Self-Help Resources
-
-- **📖 Documentation**: Comprehensive guides and tutorials
-- **🎥 Video Library**: Step-by-step video tutorials
-- **❓ FAQ Section**: Common questions and solutions
-- **🔍 Search Function**: Find answers in our knowledge base
-- **📋 Troubleshooting Guides**: Detailed problem-solving guides
-
-
-### 🛡️ Security & Vulnerability Reporting
-
-**🔒 Report Security Issues Privately**
-
-If you discover a security vulnerability, please report it responsibly:
-
-```text
-Email: security@unified-toolkit.com
-PGP Key: [Download](https://unified-toolkit.com/pgp-key.asc)
-
-Include in your report:
-- Detailed description of the vulnerability
-- Steps to reproduce the issue
-- Potential impact assessment
-- Suggested mitigation (if known)
-- Your contact information for follow-up
-
-Response Timeline:
-- Initial acknowledgment: Within 24 hours
-- Preliminary assessment: Within 72 hours
-- Status updates: Every 7 days until resolved
-- Public disclosure: After fix deployment (coordinated)
-```
-
-**🏆 Security Bounty Program**
-
-We offer rewards for qualifying security vulnerabilities:
-
-| Severity | Reward Range | Criteria |
-|----------|--------------|----------|
-| **Critical** | $500 - $2,000 | RCE, Authentication bypass |
-| **High** | $200 - $500 | Privilege escalation, Data exposure |
-| **Medium** | $50 - $200 | XSS, CSRF, Information disclosure |
-| **Low** | $25 - $50 | Rate limiting, Configuration issues |
 
 ### 🤝 Contributing to the Project
 
@@ -2587,23 +2097,6 @@ We offer rewards for qualifying security vulnerabilities:
 - **🎨 Visual Assets**: Create icons, illustrations, and graphics
 - **♿ Accessibility**: Improve accessibility features and compliance
 
-### 🌟 Community Recognition
-
-#### 🏅 Contributor Levels
-
-| Level | Contributions | Benefits |
-|-------|---------------|----------|
-| **🥉 Helper** | 1-5 contributions | Community badge, Discord role |
-| **🥈 Contributor** | 6-15 contributions | Beta access, Direct developer contact |
-| **🥇 Core Contributor** | 16+ contributions | Design input, Roadmap influence |
-| **💎 Maintainer** | Long-term commitment | Repository access, Decision making |
-
-#### 🎉 Monthly Recognition
-
-- **🌟 Contributor of the Month**: Featured on website and social media
-- **🚀 Innovation Award**: Best new feature or improvement
-- **📚 Educator Award**: Best tutorial or educational content
-- **🐛 Bug Hunter**: Most valuable bug reports and fixes
 
 #### 📊 Project Statistics
 
@@ -2614,23 +2107,6 @@ We offer rewards for qualifying security vulnerabilities:
 - **📈 Downloads**: Monthly usage statistics
 
 ---
-
-<div align="center">
-
-## ❤️ Special Thanks
-
-**To Our Amazing Community**
-
-This project exists because of the incredible support from:
-
-- **🧑‍💻 Contributors**: 50+ developers who've made this possible
-- **🐛 Bug Reporters**: Community members helping us improve
-- **📚 Educators**: Teachers and trainers using our platform
-- **🌟 Supporters**: Everyone who starred, shared, and spread the word
-
-
-
-</div>
 
 ---
 
