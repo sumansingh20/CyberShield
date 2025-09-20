@@ -10,19 +10,9 @@ const nextConfig = {
     unoptimized: true,
     domains: ['localhost', 'unifiedtoolkit.netlify.app', 'unifiedtoolkit.onrender.com'],
   },
-  // Output configuration
-  output: 'standalone', // Using standalone for SSR support
+  // Output configuration for static deployment
+  output: 'export',
   // API configuration
-  async rewrites() {
-    return process.env.NETLIFY ? [] : [
-      {
-        source: '/api/:path*',
-        destination: process.env.NEXT_PUBLIC_API_URL ? 
-          `${process.env.NEXT_PUBLIC_API_URL}/api/:path*` : 
-          'http://localhost:3000/api/:path*',
-      },
-    ];
-  },
   env: {
     NEXT_PUBLIC_API_URL: process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000',
   },
@@ -32,6 +22,10 @@ const nextConfig = {
   experimental: {
     optimizePackageImports: ['@radix-ui/react-icons', 'lucide-react'],
   },
+  // Exclude API routes from the build
+  pageExtensions: ['tsx', 'ts', 'jsx', 'js'].filter(ext => 
+    !process.env.NETLIFY || ext.startsWith('page.')
+  ),
   // Optimized webpack configuration
   webpack: (config, { dev, isServer }) => {
     // Node.js polyfills for browser compatibility
