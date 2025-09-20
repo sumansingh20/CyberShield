@@ -22,10 +22,8 @@ const nextConfig = {
   experimental: {
     optimizePackageImports: ['@radix-ui/react-icons', 'lucide-react'],
   },
-  // Exclude API routes from the build
-  pageExtensions: ['tsx', 'ts', 'jsx', 'js'].filter(ext => 
-    !process.env.NETLIFY || ext.startsWith('page.')
-  ),
+  // Only include page files in static build
+  pageExtensions: process.env.NETLIFY ? ['page.tsx', 'page.ts', 'page.jsx', 'page.js'] : ['tsx', 'ts', 'jsx', 'js'],
   // Optimized webpack configuration
   webpack: (config, { dev, isServer }) => {
     // Node.js polyfills for browser compatibility
