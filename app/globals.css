@@ -60,6 +60,52 @@ body {
   font-feature-settings: "rlig" 1, "calt" 1;
 }
 
+/* Custom Themes */
+.cyberpunk {
+  --background: 270 100% 10%;
+  --foreground: 60 100% 50%;
+  --primary: 300 100% 50%;
+  --accent: 50 100% 50%;
+  --card: 270 100% 15%;
+  --card-foreground: 60 100% 50%;
+}
+
+.matrix {
+  --background: 120 100% 7%;
+  --foreground: 120 100% 50%;
+  --primary: 120 100% 50%;
+  --accent: 120 100% 30%;
+  --card: 120 100% 10%;
+  --card-foreground: 120 100% 50%;
+}
+
+.hacker {
+  --background: 120 10% 10%;
+  --foreground: 120 100% 40%;
+  --primary: 120 100% 40%;
+  --accent: 120 100% 20%;
+  --card: 120 10% 15%;
+  --card-foreground: 120 100% 40%;
+}
+
+.neon {
+  --background: 200 100% 10%;
+  --foreground: 180 100% 50%;
+  --primary: 180 100% 50%;
+  --accent: 300 100% 50%;
+  --card: 200 100% 15%;
+  --card-foreground: 180 100% 50%;
+}
+
+.terminal {
+  --background: 0 0% 0%;
+  --foreground: 120 100% 50%;
+  --primary: 120 100% 50%;
+  --accent: 60 100% 50%;
+  --card: 0 0% 10%;
+  --card-foreground: 120 100% 50%;
+}
+
 @layer utilities {
   .glass {
     background: rgba(255, 255, 255, 0.1);

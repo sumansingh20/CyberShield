@@ -13,6 +13,18 @@
   package = "@netlify/plugin-nextjs"
 
 [[redirects]]
+  from = "/api/auth/register"
+  to = "/api/auth/register"
+  status = 200
+  force = false
+
+[[redirects]]
+  from = "/api/auth/login"
+  to = "/api/auth/login"
+  status = 200
+  force = false
+
+[[redirects]]
   from = "/api/*"
   to = "https://unifiedtoolkit.onrender.com/api/:splat"
   status = 200
