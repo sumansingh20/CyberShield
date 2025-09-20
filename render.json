@@ -1,13 +1,17 @@
 {
   "name": "cybersec-pro-backend",
   "env": "node",
-  "buildCommand": "pnpm install --frozen-lockfile && pnpm run build",
-  "startCommand": "pnpm start",
+  "buildCommand": "pnpm install --no-frozen-lockfile && pnpm run build",
+  "startCommand": "node server.js",
   "healthCheckPath": "/api/health",
   "envVars": [
     {
       "key": "NODE_ENV",
       "value": "production"
+    },
+    {
+      "key": "PORT",
+      "value": "10000"
     }
   ],
   "autoDeploy": true

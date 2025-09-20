@@ -1,3 +1,4 @@
 {
-    "CodeGPT.apiKey": "Claude Code"
+    "CodeGPT.apiKey": "Claude Code",
+    "codium.codeCompletion.enable": false
 }

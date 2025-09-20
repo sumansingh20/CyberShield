@@ -1,39 +1,13 @@
 [build]
   command = "pnpm install && pnpm run build"
-  publish = "out"
-
 [build.environment]
   NODE_ENV = "production"
   NODE_VERSION = "20"
   PNPM_FLAGS = "--no-frozen-lockfile"
   NEXT_TELEMETRY_DISABLED = "1"
-  NEXT_PUBLIC_API_URL = "https://unifiedtoolkit.onrender.com"
 
 [[plugins]]
   package = "@netlify/plugin-nextjs"
-
-[[redirects]]
-  from = "/api/auth/register"
-  to = "/api/auth/register"
-  status = 200
-  force = false
-
-[[redirects]]
-  from = "/api/auth/login"
-  to = "/api/auth/login"
-  status = 200
-  force = false
-
-[[redirects]]
-  from = "/api/*"
-  to = "https://unifiedtoolkit.onrender.com/api/:splat"
-  status = 200
-  force = true
-
-[[redirects]]
-  from = "/*"
-  to = "/:splat"
-  status = 200
 
 [functions]
   node_bundler = "esbuild"

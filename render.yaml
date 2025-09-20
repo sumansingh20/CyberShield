@@ -2,12 +2,14 @@ services:
   - type: web
     name: cybersec-pro-backend
     env: node
-    buildCommand: pnpm install --frozen-lockfile && pnpm run build
-    startCommand: pnpm start
-    healthCheckPath: /api/health
     plan: starter # Free tier
     autoDeploy: true
     branch: main
+
+    buildCommand: pnpm install --no-frozen-lockfile && pnpm run build
+    startCommand: node server.js
+    healthCheckPath: /api/health
+
     # Configure CORS for the Netlify frontend
     headers:
       - path: /*
@@ -19,10 +21,17 @@ services:
       - path: /*
         name: Access-Control-Allow-Headers
         value: Content-Type,Authorization,X-CSRF-Token
-    # Configure security headers
+
+    # Environment variables
     envVars:
       - key: NODE_ENV
         value: production
+      - key: PORT
+        value: "10000"
+      - key: ALLOWED_ORIGINS
+        value: https://unifiedtoolkit.netlify.app
+
+      # Secrets (set in Render dashboard; sync: false marks as managed there)
       - key: MONGODB_URI
         sync: false
       - key: JWT_SECRET
@@ -53,7 +62,3 @@ services:
         sync: false
       - key: RECAPTCHA_SECRET_KEY
         sync: false
-      - key: ALLOWED_ORIGINS
-        value: https://unifiedtoolkit.netlify.app
-      - key: PORT
-        value: "10000"

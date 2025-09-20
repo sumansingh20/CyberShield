@@ -1,11 +1,7 @@
 import mongoose from "mongoose"
 
 // MongoDB URI is required for all environments
-const MONGODB_URI = process.env.MONGODB_URI
-
-if (!MONGODB_URI) {
-  throw new Error("MONGODB_URI environment variable is required. Please set up your MongoDB connection string.")
-}
+const MONGODB_URI = process.env.MONGODB_URI || ""
 
 interface MongooseCache {
   conn: typeof mongoose | null
@@ -23,6 +19,12 @@ if (!cached) {
 }
 
 async function connectDB() {
+  // If no MongoDB URI, skip connecting and run in degraded mode.
+  if (!MONGODB_URI) {
+    console.warn("MONGODB_URI is not set. Database features are disabled.")
+    return null as any
+  }
+
   if (cached!.conn) {
     return cached!.conn
   }
