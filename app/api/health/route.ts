@@ -1,6 +1,9 @@
 import { type NextRequest, NextResponse } from "next/server"
 import connectDB from "@/lib/mongodb"
 
+export const dynamic = "force-static"
+export const revalidate = 0
+
 export async function GET(req: NextRequest) {
   try {
     // Test database connection

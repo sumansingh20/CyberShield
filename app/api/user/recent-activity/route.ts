@@ -1,5 +1,8 @@
 import { type NextRequest, NextResponse } from "next/server"
 import connectDB from "@/lib/mongodb"
+
+export const dynamic = "force-static"
+export const revalidate = 0
 import ScanLog from "@/lib/models/ScanLog"
 import { withAuth } from "@/lib/middleware/auth"
 

@@ -1,11 +1,13 @@
 [build]
-  command = "pnpm run build"
+  command = "pnpm install && pnpm run build"
   publish = "out"
 
 [build.environment]
+  NODE_ENV = "production"
   NODE_VERSION = "20"
   PNPM_FLAGS = "--no-frozen-lockfile"
   NEXT_TELEMETRY_DISABLED = "1"
+  NEXT_PUBLIC_API_URL = "https://unifiedtoolkit.onrender.com"
 
 [[plugins]]
   package = "@netlify/plugin-nextjs"
@@ -18,7 +20,7 @@
 
 [[redirects]]
   from = "/*"
-  to = "/index.html"
+  to = "/:splat"
   status = 200
 
 [functions]

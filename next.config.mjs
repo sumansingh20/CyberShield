@@ -17,13 +17,13 @@ const nextConfig = {
     NEXT_PUBLIC_API_URL: process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000',
   },
   // Netlify configuration
-  trailingSlash: false,
+  trailingSlash: true,
   distDir: '.next',
   experimental: {
     optimizePackageImports: ['@radix-ui/react-icons', 'lucide-react'],
   },
-  // Only include page files in static build
-  pageExtensions: process.env.NETLIFY ? ['page.tsx', 'page.ts', 'page.jsx', 'page.js'] : ['tsx', 'ts', 'jsx', 'js'],
+  // Include all necessary files in build
+  pageExtensions: ['tsx', 'ts', 'jsx', 'js'],
   // Optimized webpack configuration
   webpack: (config, { dev, isServer }) => {
     // Node.js polyfills for browser compatibility

@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server"
 import connectDB from "@/lib/mongodb"
 import User from "@/lib/models/User"
-import { verifyAccessToken } from "@/lib/utils/jwt"
+import * as jwt from "@/lib/utils/jwt"
 import bcrypt from "bcryptjs"
 
 export async function POST(request: NextRequest) {
@@ -15,7 +15,7 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    const decoded = verifyAccessToken(token)
+    const decoded = jwt.verifyAccessToken(token)
     if (!decoded) {
       return NextResponse.json(
         { error: "Invalid token" },

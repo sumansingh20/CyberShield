@@ -1,5 +1,7 @@
-import dns from 'dns';
 import { NextRequest } from 'next/server';
+
+export const dynamic = "force-static";
+export const revalidate = 0;
 
 export async function GET(request: NextRequest) {
   const searchParams = request.nextUrl.searchParams;
@@ -10,27 +12,16 @@ export async function GET(request: NextRequest) {
   }
 
   try {
-    // Perform DNS lookup for IPv4 addresses
-    const ipv4Addresses = await new Promise<string[]>((resolve, reject) => {
-      dns.resolve(domain, 'A', (err, addresses) => {
-        if (err && err.code !== 'ENODATA' && err.code !== 'ENOTFOUND') {
-          reject(err);
-        } else {
-          resolve(addresses || []);
-        }
-      });
-    });
+    // Fetch A records
+    const ipv4Response = await fetch(`https://dns.google/resolve?name=${domain}&type=A`);
+    const ipv4Data = await ipv4Response.json();
+    
+    // Fetch AAAA records
+    const ipv6Response = await fetch(`https://dns.google/resolve?name=${domain}&type=AAAA`);
+    const ipv6Data = await ipv6Response.json();
 
-    // Perform DNS lookup for IPv6 addresses
-    const ipv6Addresses = await new Promise<string[]>((resolve, reject) => {
-      dns.resolve(domain, 'AAAA', (err, addresses) => {
-        if (err && err.code !== 'ENODATA' && err.code !== 'ENOTFOUND') {
-          reject(err);
-        } else {
-          resolve(addresses || []);
-        }
-      });
-    });
+    const ipv4Addresses = ipv4Data.Answer?.map((record: any) => record.data) || [];
+    const ipv6Addresses = ipv6Data.Answer?.map((record: any) => record.data) || [];
 
     return Response.json({
       domain: domain,

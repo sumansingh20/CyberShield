@@ -1,5 +1,5 @@
 import { type NextRequest, NextResponse } from "next/server"
-import { verifyRefreshToken, generateTokens, blacklistToken } from "@/lib/utils/jwt"
+import * as jwt from "@/lib/utils/jwt"
 import { withCSRF } from "@/lib/middleware/csrf"
 import { rateLimit } from "@/lib/middleware/rate-limit"
 
@@ -12,17 +12,17 @@ async function refreshTokenHandler(req: NextRequest) {
     }
 
     try {
-      const payload = verifyRefreshToken(token)
+      const payload = jwt.verifyRefreshToken(token)
       
       // Generate new tokens
-      const newTokens = generateTokens({
+      const newTokens = jwt.generateTokens({
         userId: payload.userId,
         email: payload.email,
         role: payload.role,
       })
 
       // Blacklist the old refresh token
-      blacklistToken(token, 7 * 24 * 60 * 60 * 1000) // 7 days
+      jwt.blacklistToken(token, 7 * 24 * 60 * 60 * 1000) // 7 days
 
       return NextResponse.json(newTokens)
     } catch (error: any) {

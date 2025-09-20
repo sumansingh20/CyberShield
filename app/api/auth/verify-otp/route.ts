@@ -2,7 +2,7 @@ import { type NextRequest, NextResponse } from "next/server"
 import connectDB from "@/lib/mongodb"
 import User from "@/lib/models/User"
 import OTP from "@/lib/models/OTP"
-import { generateTokens } from "@/lib/utils/jwt"
+import * as jwt from "@/lib/utils/jwt"
 import { isOTPExpired } from "@/lib/utils/otp"
 
 export async function POST(req: NextRequest) {
@@ -95,7 +95,7 @@ export async function POST(req: NextRequest) {
     }
 
     // Generate tokens
-    const tokens = generateTokens({
+    const tokens = jwt.generateTokens({
       userId: user._id.toString(),
       email: user.email,
       role: user.role,

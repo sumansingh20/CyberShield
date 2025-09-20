@@ -306,7 +306,6 @@ export default function RegisterPage() {
           {process.env.NODE_ENV === "development" && (
             <div className="text-center mt-4">
               <div className="text-xs text-green-600 bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 p-2 rounded">
-                 Development Mode Active
               </div>
             </div>
           )}
