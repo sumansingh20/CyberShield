@@ -5,6 +5,21 @@ services:
     buildCommand: pnpm install --frozen-lockfile && pnpm run build
     startCommand: pnpm start
     healthCheckPath: /api/health
+    plan: starter # Free tier
+    autoDeploy: true
+    branch: main
+    # Configure CORS for the Netlify frontend
+    headers:
+      - path: /*
+        name: Access-Control-Allow-Origin
+        value: https://unifiedtoolkit.netlify.app
+      - path: /*
+        name: Access-Control-Allow-Methods
+        value: GET,POST,PUT,DELETE,OPTIONS
+      - path: /*
+        name: Access-Control-Allow-Headers
+        value: Content-Type,Authorization,X-CSRF-Token
+    # Configure security headers
     envVars:
       - key: NODE_ENV
         value: production
@@ -12,6 +27,14 @@ services:
         sync: false
       - key: JWT_SECRET
         sync: false
+      - key: JWT_REFRESH_SECRET
+        sync: false
+      - key: JWT_AUDIENCE
+        value: https://unifiedtoolkit.netlify.app
+      - key: JWT_ISSUER
+        value: unifiedtoolkit
+      - key: NEXTAUTH_URL
+        value: https://unifiedtoolkit.netlify.app
       - key: SMTP_HOST
         sync: false
       - key: SMTP_PORT
@@ -30,3 +53,7 @@ services:
         sync: false
       - key: RECAPTCHA_SECRET_KEY
         sync: false
+      - key: ALLOWED_ORIGINS
+        value: https://unifiedtoolkit.netlify.app
+      - key: PORT
+        value: "10000"
