@@ -6,65 +6,31 @@ import { generateOTP } from "@/lib/utils/otp"
 import { sendOTPEmail } from "@/lib/utils/email"
 import { sendOTPSMS } from "@/lib/utils/sms"
 import { rateLimit } from "@/lib/middleware/rate-limit"
+import { withCSRF } from "@/lib/middleware/csrf"
 
 async function loginHandler(req: NextRequest) {
   try {
-    const db = await connectDB()
+    await connectDB()
 
     const { email, password, recaptchaToken } = await req.json()
 
-    // Validate reCAPTCHA
-    const recaptchaResponse = await fetch(
-      `https://www.google.com/recaptcha/api/siteverify?secret=${process.env.RECAPTCHA_SECRET_KEY}&response=${recaptchaToken}`,
-      { method: "POST" },
-    )
-    const recaptchaData = await recaptchaResponse.json()
+    // Skip reCAPTCHA in development mode
+    if (process.env.NODE_ENV !== 'development' && process.env.RECAPTCHA_SECRET_KEY && recaptchaToken) {
+      const recaptchaResponse = await fetch(
+        `https://www.google.com/recaptcha/api/siteverify?secret=${process.env.RECAPTCHA_SECRET_KEY}&response=${recaptchaToken}`,
+        { method: "POST" },
+      )
+      const recaptchaData = await recaptchaResponse.json()
 
-    if (!recaptchaData.success) {
-      return NextResponse.json({ error: "reCAPTCHA verification failed" }, { status: 400 })
-    }
-
-    // Development mode - mock authentication
-    if (!db) {
-      console.log(`[DEV] Mock login attempt for: ${email}`)
-      
-      // Accept any valid email/password combination in development
-      if (email && password && email.includes('@') && password.length >= 3) {
-        const mockUser = {
-          _id: "mock-user-id",
-          email: email,
-          firstName: email.split('@')[0],
-          lastName: "User",
-          isVerified: true
-        }
-
-        // Generate proper mock JWT tokens
-        const jwt = require('jsonwebtoken')
-        const accessToken = jwt.sign(
-          { userId: mockUser._id, email: mockUser.email },
-          process.env.JWT_SECRET || 'mock-secret',
-          { expiresIn: '1h' }
-        )
-        const refreshToken = jwt.sign(
-          { userId: mockUser._id },
-          process.env.JWT_SECRET || 'mock-secret',
-          { expiresIn: '7d' }
-        )
-
-        return NextResponse.json({
-          message: "Login successful",
-          accessToken,
-          refreshToken,
-          user: mockUser,
-        })
-      } else {
-        return NextResponse.json({ 
-          error: "Invalid credentials. Use any valid email and password (3+ chars) in development mode." 
-        }, { status: 401 })
+      if (!recaptchaData.success) {
+        return NextResponse.json({ error: "reCAPTCHA verification failed" }, { status: 400 })
       }
+    } else {
+      console.log('🔧 Development Mode: Skipping reCAPTCHA verification')
     }
 
     // Find user (only when database is connected)
+    // @ts-ignore - Mongoose type union issue
     const user = await User.findOne({ email })
 
     if (!user || !(await user.comparePassword(password))) {
@@ -80,6 +46,7 @@ async function loginHandler(req: NextRequest) {
     const phoneOTP = generateOTP()
 
     // Delete existing OTPs
+    // @ts-ignore - Mongoose type union issue
     await OTP.deleteMany({ userId: user._id, purpose: "login" })
 
     // Save new OTP
@@ -108,4 +75,4 @@ async function loginHandler(req: NextRequest) {
   }
 }
 
-export const POST = rateLimit()(loginHandler)
+export const POST = rateLimit()(withCSRF(loginHandler))

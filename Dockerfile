@@ -1,52 +1,44 @@
-# Use the official Node.js 18 image
-FROM node:18-alpine
+# Multi-stage Docker build for Next.js + Express backend
 
-# Set working directory
+# 1) Builder stage: install all deps and build
+FROM node:20-alpine AS builder
+
+# Ensure compatibility libs
+RUN apk add --no-cache libc6-compat
+
 WORKDIR /app
 
-# Install system dependencies for security tools
-RUN apk add --no-cache \
-    nmap \
-    curl \
-    bind-tools \
-    whois \
-    git \
-    python3 \
-    py3-pip
+# Enable corepack and pnpm
+RUN corepack enable
 
-# Install Python-based tools
-RUN pip3 install sublist3r
+# Copy lockfiles and install all dependencies
+COPY package.json pnpm-lock.yaml ./
+RUN pnpm install --no-frozen-lockfile
 
-# Install Go-based tools
-RUN wget -O /usr/local/bin/assetfinder https://github.com/tomnomnom/assetfinder/releases/download/v0.1.1/assetfinder-linux-amd64-0.1.1.tgz && \
-    tar -xzf /usr/local/bin/assetfinder && \
-    chmod +x /usr/local/bin/assetfinder
-
-# Copy package files
-COPY package*.json ./
-
-# Install dependencies
-RUN npm ci --only=production
-
-# Copy source code
+# Copy source and build
 COPY . .
+RUN pnpm run build
 
-# Build the application
-RUN npm run build
+# Prune dev dependencies to reduce final image size
+RUN pnpm prune --prod
 
-# Create non-root user
-RUN addgroup -g 1001 -S nodejs
-RUN adduser -S nextjs -u 1001
 
-# Change ownership of the app directory
-RUN chown -R nextjs:nodejs /app
-USER nextjs
+# 2) Runner stage: copy build artifacts and run server
+FROM node:20-alpine AS runner
 
-# Expose port
-EXPOSE 3000
-
-# Set environment to production
+WORKDIR /app
 ENV NODE_ENV=production
 
-# Start the application
-CMD ["npm", "start"]
+# Copy only necessary files
+COPY --from=builder /app/package.json ./
+COPY --from=builder /app/next.config.* ./
+COPY --from=builder /app/.next ./.next
+COPY --from=builder /app/public ./public
+COPY --from=builder /app/node_modules ./node_modules
+COPY --from=builder /app/server.js ./server.js
+
+# Expose default port (Render/other platforms will inject PORT)
+EXPOSE 3000
+
+# Start the Express server which delegates to Next
+CMD ["node", "server.js"]

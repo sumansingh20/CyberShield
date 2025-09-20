@@ -1,70 +1,25 @@
-version: '3.8'
-
 services:
-  # MongoDB Database
   mongodb:
-    image: mongo:7.0
-    container_name: unified-toolkit-db
-    restart: unless-stopped
-    environment:
-      MONGO_INITDB_ROOT_USERNAME: unified_admin
-      MONGO_INITDB_ROOT_PASSWORD: UnifiedPenTest2024!MongoSecure#Database$Production
-      MONGO_INITDB_DATABASE: unified-toolkit
+    image: mongo:latest
     ports:
       - "27017:27017"
     volumes:
       - mongodb_data:/data/db
-      - ./mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js:ro
-    networks:
-      - unified-toolkit-network
 
-  # Next.js Application
-  app:
-    build: .
-    container_name: unified-toolkit-app
-    restart: unless-stopped
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    env_file:
+      - .env
     ports:
       - "3000:3000"
-    environment:
-      - NODE_ENV=production
-      - MONGODB_URI=mongodb://unified_admin:UnifiedPenTest2024!MongoSecure#Database$Production@mongodb:27017/unified-toolkit?authSource=admin
-      - JWT_SECRET=UnifiedPenTest2024!SecureJWTKey#Prod$Version&ForSumanKumar
-      - JWT_REFRESH_SECRET=RefreshToken2024!Ultra#Secure$PenTest&Platform@Unified
-      - EMAIL_HOST=smtp.gmail.com
-      - EMAIL_PORT=587
-      - EMAIL_USER=unified.pentest.platform@gmail.com
-      - EMAIL_PASS=your-gmail-app-password-here
-      - TWILIO_ACCOUNT_SID=your_twilio_account_sid_here
-      - TWILIO_AUTH_TOKEN=your-twilio-auth-token-32-chars
-      - TWILIO_PHONE_NUMBER=+1-555-PENTEST
-      - RECAPTCHA_SITE_KEY=6LcxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxTe
-      - RECAPTCHA_SECRET_KEY=6LcxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxTe
-      - NEXTAUTH_URL=https://pentest.unified-platform.com
-      - NEXTAUTH_SECRET=NextAuth2024!Production#Secret$Unified&Platform
     depends_on:
       - mongodb
-    networks:
-      - unified-toolkit-network
-
-  # Nginx Reverse Proxy (Optional)
-  nginx:
-    image: nginx:alpine
-    container_name: unified-toolkit-nginx
-    restart: unless-stopped
-    ports:
-      - "80:80"
-      - "443:443"
-    volumes:
-      - ./nginx.conf:/etc/nginx/nginx.conf:ro
-      - ./ssl:/etc/nginx/ssl:ro
-    depends_on:
-      - app
-    networks:
-      - unified-toolkit-network
+    restart: always
+    environment:
+      - MONGODB_URI=mongodb://mongodb:27017/cybersec-pro
+      - NODE_ENV=development
 
 volumes:
   mongodb_data:
-
-networks:
-  unified-toolkit-network:
-    driver: bridge

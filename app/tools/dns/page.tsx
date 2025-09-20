@@ -1,7 +1,7 @@
 "use client"
 
 import { useState } from "react"
-import { useAuth } from "@/contexts/AuthContext"
+import { useApi } from "@/hooks/useApi"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
@@ -11,10 +11,9 @@ import Link from "next/link"
 import { TerminalOutput } from "@/components/TerminalOutput"
 
 export default function DNSPage() {
-  const { user } = useAuth()
+  const { apiCall, loading } = useApi()
   const [domain, setDomain] = useState("")
   const [result, setResult] = useState<any>(null)
-  const [loading, setLoading] = useState(false)
 
   const handleLookup = async () => {
     if (!domain.trim()) {
@@ -22,36 +21,25 @@ export default function DNSPage() {
       return
     }
 
-    setLoading(true)
     setResult(null)
 
     try {
-      const response = await fetch("/api/tools/dns", {
+      const data = await apiCall("/api/tools/dns", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
-        body: JSON.stringify({
+        body: {
           domain: domain.trim(),
-        }),
+        },
       })
 
-      const data = await response.json()
-
-      if (!response.ok) {
-        throw new Error(data.error || "DNS lookup failed")
+      if (data) {
+        setResult(data.result)
       }
-
-      setResult(data.result)
     } catch (error: any) {
       setResult({
         output: `Error: ${error.message}`,
         status: "error",
         executionTime: 0,
       })
-    } finally {
-      setLoading(false)
     }
   }
 
@@ -88,7 +76,7 @@ export default function DNSPage() {
                 value={domain}
                 onChange={(e) => setDomain(e.target.value)}
                 disabled={loading}
-                onKeyPress={(e) => e.key === "Enter" && handleLookup()}
+                onKeyDown={(e) => e.key === "Enter" && handleLookup()}
               />
             </div>
 

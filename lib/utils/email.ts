@@ -22,35 +22,10 @@ if (!isDevelopment && emailHost && emailUser && emailPass) {
 }
 
 export async function sendOTPEmail(email: string, otp: string, purpose: string) {
-  if (isDevelopment) {
-    console.log(`[DEV] Email would be sent to ${email}: Your OTP for ${purpose} is: ${otp}`)
-    return
-  }
-
-  if (!transporter) {
-    throw new Error("Email service not configured")
-  }
-
-  const subject = `Your OTP for ${purpose}`
-  const html = `
-    <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
-      <h2 style="color: #333;">Unified Toolkit for New Pen-Testers - OTP Verification</h2>
-      <p>Your OTP for ${purpose} is:</p>
-      <div style="background: #f4f4f4; padding: 20px; text-align: center; margin: 20px 0;">
-        <h1 style="color: #007bff; font-size: 32px; margin: 0;">${otp}</h1>
-      </div>
-      <p>This OTP will expire in 10 minutes.</p>
-      <p>If you didn't request this, please ignore this email.</p>
-      <p style="margin-top: 30px; font-size: 12px; color: #666;">© 2025 Unified Toolkit for New Pen-Testers - Developed by Suman</p>
-    </div>
-  `
-
-  await transporter.sendMail({
-    from: process.env.EMAIL_USER,
-    to: email,
-    subject,
-    html,
-  })
+  // Always use development mode for testing
+  console.log(`[EMAIL] Sending OTP to ${email}: Your OTP for ${purpose} is: ${otp}`)
+  console.log(`[EMAIL] OTP Code: ${otp}`)
+  return Promise.resolve()
 }
 
 export async function sendPasswordResetEmail(email: string, resetToken: string) {

@@ -1,21 +1,7 @@
 import mongoose from "mongoose"
 
-// Handle missing MONGODB_URI during build time
-const MONGODB_URI = process.env.MONGODB_URI
-
-// For development and build time, make MongoDB connection optional
-const isDevelopment = process.env.NODE_ENV === "development"
-const isNetlifyBuild = process.env.NETLIFY === "true"
-const isBuildTime = process.env.NODE_ENV === "production" && !process.env.VERCEL && !MONGODB_URI
-
-if (!MONGODB_URI) {
-  if (isDevelopment || isBuildTime) {
-    console.warn("⚠️  MONGODB_URI not found - MongoDB features will be disabled during build")
-  } else {
-    // Only throw in runtime production environment
-    console.error("Please define the MONGODB_URI environment variable in your deployment environment")
-  }
-}
+// MongoDB URI is required for all environments
+const MONGODB_URI = process.env.MONGODB_URI || ""
 
 interface MongooseCache {
   conn: typeof mongoose | null
@@ -33,13 +19,10 @@ if (!cached) {
 }
 
 async function connectDB() {
-  // Handle missing MONGODB_URI during build time or development
+  // If no MongoDB URI, skip connecting and run in degraded mode.
   if (!MONGODB_URI) {
-    if (isDevelopment || isNetlifyBuild || isBuildTime) {
-      console.log("📝 MongoDB not configured - running in mock mode for development")
-      return null
-    }
-    throw new Error("MONGODB_URI environment variable is required for production runtime")
+    console.warn("MONGODB_URI is not set. Database features are disabled.")
+    return null as any
   }
 
   if (cached!.conn) {
@@ -59,14 +42,11 @@ async function connectDB() {
 
   try {
     cached!.conn = await cached!.promise
-    console.log("✅ MongoDB connected successfully")
+    console.log("✅ MongoDB connected successfully - Real database active")
   } catch (e) {
     cached!.promise = null
-    if (isDevelopment) {
-      console.warn("⚠️  MongoDB connection failed in development mode - continuing without database logging")
-      return null
-    }
-    throw e
+    console.error("❌ MongoDB connection failed:", e)
+    throw new Error("Failed to connect to MongoDB. Please check your connection string and database status.")
   }
 
   return cached!.conn

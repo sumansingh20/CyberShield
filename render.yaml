@@ -1,0 +1,64 @@
+services:
+  - type: web
+    name: cybersec-pro-backend
+    env: node
+    plan: starter # Free tier
+    autoDeploy: true
+    branch: main
+
+    buildCommand: pnpm install --no-frozen-lockfile && pnpm run build
+    startCommand: node server.js
+    healthCheckPath: /api/health
+
+    # Configure CORS for the Netlify frontend
+    headers:
+      - path: /*
+        name: Access-Control-Allow-Origin
+        value: https://unifiedtoolkit.netlify.app
+      - path: /*
+        name: Access-Control-Allow-Methods
+        value: GET,POST,PUT,DELETE,OPTIONS
+      - path: /*
+        name: Access-Control-Allow-Headers
+        value: Content-Type,Authorization,X-CSRF-Token
+
+    # Environment variables
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: "10000"
+      - key: ALLOWED_ORIGINS
+        value: https://unifiedtoolkit.netlify.app
+
+      # Secrets (set in Render dashboard; sync: false marks as managed there)
+      - key: MONGODB_URI
+        sync: false
+      - key: JWT_SECRET
+        sync: false
+      - key: JWT_REFRESH_SECRET
+        sync: false
+      - key: JWT_AUDIENCE
+        value: https://unifiedtoolkit.netlify.app
+      - key: JWT_ISSUER
+        value: unifiedtoolkit
+      - key: NEXTAUTH_URL
+        value: https://unifiedtoolkit.netlify.app
+      - key: SMTP_HOST
+        sync: false
+      - key: SMTP_PORT
+        sync: false
+      - key: SMTP_USER
+        sync: false
+      - key: SMTP_PASS
+        sync: false
+      - key: TWILIO_ACCOUNT_SID
+        sync: false
+      - key: TWILIO_AUTH_TOKEN
+        sync: false
+      - key: TWILIO_FROM_NUMBER
+        sync: false
+      - key: RECAPTCHA_SITE_KEY
+        sync: false
+      - key: RECAPTCHA_SECRET_KEY
+        sync: false

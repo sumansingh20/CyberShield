@@ -3,6 +3,9 @@ import connectDB from "@/lib/mongodb"
 import User from "@/lib/models/User"
 import { verifyAccessToken } from "@/lib/utils/jwt"
 
+export const dynamic = "force-static"
+export const revalidate = 0
+
 export async function GET(request: NextRequest) {
   try {
     const token = request.headers.get("authorization")?.replace("Bearer ", "")

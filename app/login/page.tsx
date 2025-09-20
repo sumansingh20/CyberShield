@@ -1,271 +1,155 @@
 "use client"
 
-import type React from "react"
-
 import { useState } from "react"
 import { useRouter } from "next/navigation"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { ThemeToggle } from "@/components/ThemeToggle"
+import { Card, CardContent, CardHeader } from "@/components/ui/card"
 import { useApi } from "@/hooks/useApi"
 import { useAuth } from "@/contexts/AuthContext"
-import { toast } from "@/hooks/use-toast"
-import { Shield, Mail, Lock, ArrowRight, User, Info } from "lucide-react"
-import ReCAPTCHA from "react-google-recaptcha"
+import { useToast } from "@/hooks/use-toast"
 
 export default function LoginPage() {
   const [formData, setFormData] = useState({
     email: "",
     password: "",
   })
-  const [recaptchaToken, setRecaptchaToken] = useState<string | null>(null)
-  const { apiCall, loading } = useApi()
-  const { login } = useAuth()
+  const [isLoading, setIsLoading] = useState(false)
   const router = useRouter()
+  const { apiCall } = useApi()
+  const { login } = useAuth()
+  const { toast } = useToast()
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-
-    if (!recaptchaToken && process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY) {
-      toast({
-        title: "Error",
-        description: "Please complete the reCAPTCHA",
-        variant: "destructive",
-      })
-      return
-    }
+    setIsLoading(true)
 
     try {
       const response = await apiCall("/api/auth/login", {
         method: "POST",
-        body: { ...formData, recaptchaToken },
-        requiresAuth: false,
+        body: JSON.stringify(formData),
+        requiresAuth: false
       })
 
-      if (response) {
-        if (response.requiresOTP) {
+      if (response && response.success) {
+        if (response.requiresVerification) {
           toast({
-            title: "OTP Sent",
+            title: "Verification Required",
             description: "Please check your email and phone for verification codes.",
           })
           router.push(`/verify-otp?userId=${response.userId}&purpose=login`)
-        } else if (response.accessToken && response.user) {
-          // Direct login success (development mode)
-          login(
-            {
-              accessToken: response.accessToken,
-              refreshToken: response.refreshToken,
-            },
-            {
-              id: response.user._id,
-              username: response.user.firstName || response.user.email.split('@')[0],
-              email: response.user.email,
-              role: "user",
-            }
-          )
-          
+        } else {
+          login(response.user, response.accessToken)
           toast({
-            title: "Login Successful",
-            description: "Welcome back !",
+            title: "Welcome back!",
+            description: `Logged in successfully as ${response.user.email}`,
           })
-          
           router.push("/dashboard")
         }
       }
     } catch (error) {
-      // Error handled by useApi hook
+      console.error("Login failed:", error)
+      // Error is handled by useApi hook and shown via toast
+    } finally {
+      setIsLoading(false)
     }
   }
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setFormData((prev) => ({
+    const { name, value } = e.target
+    setFormData(prev => ({
       ...prev,
-      [e.target.name]: e.target.value,
+      [name]: value
     }))
   }
 
-  const fillDemoCredentials = () => {
-    setFormData({
-      email: "user@unified.com",
-      password: "user123",
-    })
-  }
-
   return (
-    <div className="min-h-screen gradient-bg flex items-center justify-center p-4">
-      {/* Background Effects */}
-      <div className="absolute inset-0 bg-cyber-grid opacity-5"></div>
-
-      {/* Theme Toggle */}
-      <div className="absolute top-4 right-4 z-10">
-        <ThemeToggle />
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 via-white to-purple-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 p-4">
+      {/* Background decoration */}
+      <div className="absolute inset-0 overflow-hidden">
+        <div className="absolute -top-40 -right-40 w-80 h-80 bg-blue-400/20 rounded-full blur-3xl"></div>
+        <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-purple-400/20 rounded-full blur-3xl"></div>
       </div>
 
-      <div className="w-full max-w-md relative z-10">
-        {/* Header */}
-        <div className="text-center mb-8 animate-fade-in">
-          <div className="flex justify-center mb-4">
-            <div className="p-3 rounded-full bg-primary/10 glow animate-pulse-glow">
-              <Shield className="h-8 w-8 text-primary" />
-            </div>
+      <Card className="w-full max-w-md relative z-10 shadow-2xl border-0 bg-white/80 dark:bg-gray-800/80 backdrop-blur-xl">
+        <CardHeader className="space-y-1 pb-6">
+          <div className="text-center">
+            <h1 className="text-3xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+              Welcome Back
+            </h1>
+            <p className="text-gray-600 dark:text-gray-300 mt-2">
+              Sign in to your CyberSec Pro account
+            </p>
           </div>
-          <h1 className="text-2xl font-bold mb-2">Welcome Back</h1>
-          <p className="text-muted-foreground">Sign in to your Unified Toolkit for New Pen-Testers account</p>
-        </div>
+        </CardHeader>
 
-        {/* Demo Account Info */}
-        <Card className="glass-card animate-slide-up mb-6 border-primary/20">
-          <CardHeader className="pb-3">
-            <CardTitle className="flex items-center gap-2 text-primary">
-              <Info className="h-4 w-4" />
-              Demo Account Available
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="space-y-3">
-              <p className="text-sm text-muted-foreground">
-                Try the platform with our demo account - no registration required!
-              </p>
-              <div className="bg-primary/5 border border-primary/20 rounded-lg p-3">
-                <div className="grid grid-cols-2 gap-3 text-sm">
-                  <div>
-                    <p className="text-muted-foreground">Email:</p>
-                    <p className="font-mono text-primary">user@unified.com</p>
-                  </div>
-                  <div>
-                    <p className="text-muted-foreground">Password:</p>
-                    <p className="font-mono text-primary">user123</p>
-                  </div>
-                </div>
-              </div>
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={fillDemoCredentials}
-                className="w-full glass hover:glow-hover bg-transparent"
+        <CardContent>
+          <form onSubmit={handleSubmit} className="space-y-4">
+            <div className="space-y-2">
+              <Label htmlFor="email" className="text-sm font-medium text-gray-700 dark:text-gray-300">
+                Email Address
+              </Label>
+              <Input
+                id="email"
+                name="email"
+                type="email"
+                value={formData.email}
+                onChange={handleChange}
+                required
+                className="h-11 bg-white/50 dark:bg-gray-700/50 border-gray-200 dark:border-gray-600 focus:border-blue-500 transition-colors"
+                placeholder="Enter your email"
+              />
+            </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="password" className="text-sm font-medium text-gray-700 dark:text-gray-300">
+                Password
+              </Label>
+              <Input
+                id="password"
+                name="password"
+                type="password"
+                value={formData.password}
+                onChange={handleChange}
+                required
+                className="h-11 bg-white/50 dark:bg-gray-700/50 border-gray-200 dark:border-gray-600 focus:border-blue-500 transition-colors"
+                placeholder="Enter your password"
+              />
+            </div>
+
+            <div className="flex items-center justify-between text-sm">
+              <Link 
+                href="/forgot-password" 
+                className="text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300 font-medium transition-colors"
               >
-                <User className="mr-2 h-4 w-4" />
-                Use Demo Account
-              </Button>
-            </div>
-          </CardContent>
-        </Card>
-
-        {/* Login Form */}
-        <Card className="glass-card animate-slide-up">
-          <CardHeader className="text-center pb-4">
-            <CardTitle className="text-xl">Sign In</CardTitle>
-            <CardDescription>Enter your credentials to access your account</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <form onSubmit={handleSubmit} className="space-y-4">
-              <div className="space-y-2">
-                <Label htmlFor="email" className="flex items-center gap-2">
-                  <Mail className="h-4 w-4" />
-                  Email
-                </Label>
-                <Input
-                  id="email"
-                  name="email"
-                  type="email"
-                  required
-                  value={formData.email}
-                  onChange={handleChange}
-                  placeholder="Enter your email"
-                  className="glass focus-ring"
-                />
-              </div>
-
-              <div className="space-y-2">
-                <Label htmlFor="password" className="flex items-center gap-2">
-                  <Lock className="h-4 w-4" />
-                  Password
-                </Label>
-                <Input
-                  id="password"
-                  name="password"
-                  type="password"
-                  required
-                  value={formData.password}
-                  onChange={handleChange}
-                  placeholder="Enter your password"
-                  className="glass focus-ring"
-                />
-              </div>
-
-              <div className="flex justify-center py-2">
-                {process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY ? (
-                  <ReCAPTCHA
-                    sitekey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY}
-                    onChange={setRecaptchaToken}
-                    theme="dark"
-                    onError={() => {
-                      console.error('reCAPTCHA error occurred')
-                      setRecaptchaToken(null)
-                    }}
-                  />
-                ) : (
-                  <div className="text-sm text-muted-foreground bg-muted p-3 rounded">
-                    reCAPTCHA not configured - continuing without verification
-                  </div>
-                )}
-              </div>
-
-              <Button type="submit" className="w-full glow-hover group" disabled={loading} size="lg">
-                {loading ? (
-                  <>
-                    <div className="spinner w-4 h-4 mr-2"></div>
-                    Signing In...
-                  </>
-                ) : (
-                  <>
-                    Sign In
-                    <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
-                  </>
-                )}
-              </Button>
-            </form>
-
-            <div className="mt-6 space-y-4 text-center">
-              <Link href="/forgot-password" className="text-sm text-primary hover:underline block transition-colors">
-                Forgot your password?
+                Forgot password?
               </Link>
-              <div className="relative">
-                <div className="absolute inset-0 flex items-center">
-                  <span className="w-full border-t border-border/50" />
-                </div>
-                <div className="relative flex justify-center text-xs uppercase">
-                  <span className="bg-background px-2 text-muted-foreground">Or</span>
-                </div>
-              </div>
-              <p className="text-sm text-muted-foreground">
-                Don't have an account?{" "}
-                <Link href="/register" className="text-primary hover:underline font-medium">
-                  Sign up
-                </Link>
-              </p>
             </div>
-          </CardContent>
-        </Card>
 
-        {/* Footer */}
-        <div className="text-center mt-8 text-xs text-muted-foreground">
-          <p>Secured with enterprise-grade authentication</p>
-        </div>
+            <Button
+              type="submit"
+              disabled={isLoading}
+              className="w-full h-11 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-medium transition-all duration-200 transform hover:scale-[1.02]"
+            >
+              {isLoading ? "Signing in..." : "Sign In"}
+            </Button>
+          </form>
 
-        {/* Footer */}
-        <footer className="mt-12 text-center">
-          <div className="flex items-center justify-center space-x-3">
-            <Shield className="h-4 w-4 text-primary" />
-            <span className="text-xs text-muted-foreground">
-              © 2025 Unified Toolkit for New Pen-Testers. Developed by Suman.
-            </span>
+          <div className="mt-6 pt-6 border-t border-gray-200 dark:border-gray-600">
+            <p className="text-center text-sm text-gray-600 dark:text-gray-400">
+              Don't have an account?{" "}
+              <Link 
+                href="/register" 
+                className="text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300 font-medium transition-colors"
+              >
+                Sign up here
+              </Link>
+            </p>
           </div>
-        </footer>
-      </div>
+        </CardContent>
+      </Card>
     </div>
   )
 }

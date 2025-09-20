@@ -2,81 +2,87 @@ import { type NextRequest, NextResponse } from "next/server"
 import connectDB from "@/lib/mongodb"
 import User from "@/lib/models/User"
 import OTP from "@/lib/models/OTP"
-import { generateTokens } from "@/lib/utils/jwt"
+import * as jwt from "@/lib/utils/jwt"
 import { isOTPExpired } from "@/lib/utils/otp"
 
 export async function POST(req: NextRequest) {
   try {
-    const db = await connectDB()
+    await connectDB()
 
     const { userId, emailOTP, phoneOTP, purpose } = await req.json()
 
-    // Development mode - mock OTP verification
-    if (!db) {
-      console.log(`[DEV] Mock OTP verification for userId: ${userId}`)
-      
-      // Accept any 6-digit OTP in development
-      if (emailOTP && emailOTP.length === 6) {
-        const mockUser = {
-          _id: userId || "mock-user-id",
-          email: "user@unified.com", // Use a default or extract from userId
-          firstName: "Test",
-          lastName: "User",
-          isVerified: true
-        }
-
-        // Generate proper mock JWT tokens
-        const jwt = require('jsonwebtoken')
-        const accessToken = jwt.sign(
-          { userId: mockUser._id, email: mockUser.email },
-          process.env.JWT_SECRET || 'mock-secret',
-          { expiresIn: '1h' }
-        )
-        const refreshToken = jwt.sign(
-          { userId: mockUser._id },
-          process.env.JWT_SECRET || 'mock-secret',
-          { expiresIn: '7d' }
-        )
-
-        return NextResponse.json({
-          message: "OTP verified successfully",
-          accessToken,
-          refreshToken,
-          user: mockUser,
-        })
-      } else {
-        return NextResponse.json({ error: "Invalid OTP format. Use any 6-digit number in development." }, { status: 400 })
-      }
+    // Validate required fields
+    if (!userId || !emailOTP || !phoneOTP || !purpose) {
+      return NextResponse.json({ error: "All fields are required" }, { status: 400 })
     }
 
-    // Find OTP document (only when database is connected)
-    const otpDoc = await OTP.findOne({ userId, purpose })
+    let otpDoc
 
-    if (!otpDoc) {
-      return NextResponse.json({ error: "OTP not found or expired" }, { status: 400 })
+    // Development mode - use mock OTPs
+    if (!await connectDB() && userId.startsWith('mock-user-')) {
+      if (!global.mockOTPs) {
+        return NextResponse.json({ error: "OTP not found or expired" }, { status: 400 })
+      }
+
+      otpDoc = global.mockOTPs.get(userId)
+      if (!otpDoc) {
+        return NextResponse.json({ error: "OTP not found or expired" }, { status: 400 })
+      }
+    } else {
+      // Production mode - find OTP document in database
+      // @ts-ignore - Mongoose type union issue
+      otpDoc = await OTP.findOne({ userId, purpose })
+      if (!otpDoc) {
+        return NextResponse.json({ error: "OTP not found or expired" }, { status: 400 })
+      }
     }
 
     // Check if OTP is expired
     if (isOTPExpired(otpDoc.expiresAt)) {
-      await OTP.deleteOne({ _id: otpDoc._id })
+      if (!userId.startsWith('mock-user-')) {
+        // @ts-ignore - Mongoose type union issue
+        await OTP.deleteOne({ _id: otpDoc._id })
+      } else {
+        global.mockOTPs?.delete(userId)
+      }
       return NextResponse.json({ error: "OTP expired" }, { status: 400 })
     }
 
     // Check attempts
     if (otpDoc.attempts >= otpDoc.maxAttempts) {
-      await OTP.deleteOne({ _id: otpDoc._id })
+      if (!userId.startsWith('mock-user-')) {
+        // @ts-ignore - Mongoose type union issue
+        await OTP.deleteOne({ _id: otpDoc._id })
+      } else {
+        global.mockOTPs?.delete(userId)
+      }
       return NextResponse.json({ error: "Maximum attempts exceeded" }, { status: 400 })
     }
 
     // Verify OTPs
     if (otpDoc.emailOTP !== emailOTP || otpDoc.phoneOTP !== phoneOTP) {
-      otpDoc.attempts += 1
-      await otpDoc.save()
+      // For mock users in development
+      if (userId.startsWith('mock-user-')) {
+        otpDoc.attempts += 1
+        if (otpDoc.attempts >= otpDoc.maxAttempts) {
+          global.mockOTPs?.delete(userId)
+          return NextResponse.json({ error: "Maximum attempts exceeded" }, { status: 400 })
+        }
+        global.mockOTPs?.set(userId, otpDoc)
+      } else {
+        // For real users in database
+        otpDoc.attempts += 1
+        await otpDoc.save()
+      }
 
-      return NextResponse.json({ error: "Invalid OTP" }, { status: 400 })
+      return NextResponse.json({ 
+        error: `Invalid OTP. ${otpDoc.maxAttempts - otpDoc.attempts} attempts remaining.`,
+        attemptsLeft: otpDoc.maxAttempts - otpDoc.attempts
+      }, { status: 400 })
     }
 
     // Find user
+    // @ts-ignore - Mongoose type union issue
     const user = await User.findById(userId)
     if (!user) {
       return NextResponse.json({ error: "User not found" }, { status: 404 })
@@ -89,13 +95,14 @@ export async function POST(req: NextRequest) {
     }
 
     // Generate tokens
-    const tokens = generateTokens({
+    const tokens = jwt.generateTokens({
       userId: user._id.toString(),
       email: user.email,
       role: user.role,
     })
 
     // Delete OTP
+    // @ts-ignore - Mongoose type union issue
     await OTP.deleteOne({ _id: otpDoc._id })
 
     return NextResponse.json({
@@ -105,6 +112,9 @@ export async function POST(req: NextRequest) {
         username: user.username,
         email: user.email,
         role: user.role,
+        firstName: user.firstName,
+        lastName: user.lastName,
+        phone: user.phone,
       },
       ...tokens,
     })

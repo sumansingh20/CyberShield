@@ -41,8 +41,28 @@ export default function CryptographyPage() {
         setCiphertext(plaintext.split('').reverse().join(''));
         break;
         
-      default:
-        setCiphertext('Method not implemented');
+      case 'rot13': {
+        const rot13Encrypted = plaintext.replace(/[A-Za-z]/g, char => {
+          const base = char >= 'a' ? 97 : 65;
+          return String.fromCharCode((char.charCodeAt(0) - base + 13) % 26 + base);
+        });
+        setCiphertext(rot13Encrypted);
+        break;
+      }
+        
+      case 'hex': {
+        setCiphertext(plaintext.split('').map(char => 
+          char.charCodeAt(0).toString(16).padStart(2, '0')
+        ).join(''));
+        break;
+      }
+        
+      case 'binary': {
+        setCiphertext(plaintext.split('').map(char => 
+          char.charCodeAt(0).toString(2).padStart(8, '0')
+        ).join(' '));
+        break;
+      }
     }
   };
 
@@ -75,8 +95,38 @@ export default function CryptographyPage() {
         setPlaintext(ciphertext.split('').reverse().join(''));
         break;
         
-      default:
-        setPlaintext('Method not implemented');
+      case 'rot13': {
+        const rot13Decrypted = ciphertext.replace(/[A-Za-z]/g, char => {
+          const base = char >= 'a' ? 97 : 65;
+          return String.fromCharCode((char.charCodeAt(0) - base + 13) % 26 + base);
+        });
+        setPlaintext(rot13Decrypted);
+        break;
+      }
+        
+      case 'hex': {
+        try {
+          const hexDecrypted = ciphertext.match(/.{1,2}/g)?.map(hex => 
+            String.fromCharCode(parseInt(hex, 16))
+          ).join('') || '';
+          setPlaintext(hexDecrypted);
+        } catch {
+          setPlaintext('Invalid hexadecimal format');
+        }
+        break;
+      }
+        
+      case 'binary': {
+        try {
+          const binaryDecrypted = ciphertext.split(' ').map(bin => 
+            String.fromCharCode(parseInt(bin, 2))
+          ).join('');
+          setPlaintext(binaryDecrypted);
+        } catch {
+          setPlaintext('Invalid binary format');
+        }
+        break;
+      }
     }
   };
 
@@ -107,7 +157,10 @@ export default function CryptographyPage() {
                 </SelectTrigger>
                 <SelectContent>
                   <SelectItem value="caesar">Caesar Cipher</SelectItem>
+                  <SelectItem value="rot13">ROT13</SelectItem>
                   <SelectItem value="base64">Base64 Encoding</SelectItem>
+                  <SelectItem value="hex">Hexadecimal Encoding</SelectItem>
+                  <SelectItem value="binary">Binary Encoding</SelectItem>
                   <SelectItem value="reverse">Reverse Text</SelectItem>
                 </SelectContent>
               </Select>
@@ -185,9 +238,30 @@ export default function CryptographyPage() {
               </div>
               
               <div>
+                <h4 className="font-semibold">ROT13</h4>
+                <p className="text-sm text-muted-foreground">
+                  Simple letter substitution cipher that replaces each letter with the letter 13 positions after it
+                </p>
+              </div>
+              
+              <div>
                 <h4 className="font-semibold">Base64 Encoding</h4>
                 <p className="text-sm text-muted-foreground">
                   Binary-to-text encoding scheme commonly used in web applications
+                </p>
+              </div>
+              
+              <div>
+                <h4 className="font-semibold">Hexadecimal Encoding</h4>
+                <p className="text-sm text-muted-foreground">
+                  Converts text to hexadecimal representation (base-16)
+                </p>
+              </div>
+              
+              <div>
+                <h4 className="font-semibold">Binary Encoding</h4>
+                <p className="text-sm text-muted-foreground">
+                  Converts text to binary representation (base-2)
                 </p>
               </div>
               

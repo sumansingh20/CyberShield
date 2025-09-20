@@ -1,6 +1,5 @@
 import { type NextRequest, NextResponse } from "next/server"
 import { verifyAccessToken } from "@/lib/utils/jwt"
-import mongoose from "mongoose"
 
 export function withAuth(handler: Function) {
   return async (req: NextRequest) => {
@@ -8,15 +7,6 @@ export function withAuth(handler: Function) {
       const token = req.headers.get("authorization")?.replace("Bearer ", "")
 
       if (!token) {
-        // In development mode without MongoDB, provide mock user for testing
-        if (process.env.NODE_ENV === "development" && !process.env.MONGODB_URI) {
-          ;(req as any).user = {
-            userId: new mongoose.Types.ObjectId(), // Generate a valid ObjectId
-            email: "dev@example.com",
-            role: "user"
-          }
-          return handler(req)
-        }
         return NextResponse.json({ error: "Access token required" }, { status: 401 })
       }
 
