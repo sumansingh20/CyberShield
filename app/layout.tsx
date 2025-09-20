@@ -11,10 +11,10 @@ import ErrorBoundary from "@/components/ErrorBoundary"
 const inter = Inter({ subsets: ["latin"] })
 
 export const metadata: Metadata = {
-  title: "Unified Toolkit for New Pen-Testers",
-  description: "Unified Toolkit for New Pen-Testers - Complete penetration testing platform with integrated security tools - Developed by Suman Singh",
+  title: "cybersec-pro-platform",
+  description: "cybersec-pro-platform - Complete penetration testing platform with integrated security tools - Developed by Suman Singh",
   generator: 'Next.js',
-  keywords: ["penetration testing", "cybersecurity", "security tools", "pentest", "nmap", "vulnerability scanner", "unified toolkit"],
+  keywords: ["penetration testing", "cybersecurity", "security tools", "pentest", "nmap", "vulnerability scanner", "cybersec-pro-platform"],
   authors: [{ name: "Suman Singh" }],
   creator: "Suman Singh",
 }

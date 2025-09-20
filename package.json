@@ -2,7 +2,7 @@
   "name": "cybersec-pro-platform",
   "version": "1.0.0",
   "private": true,
-  "description": "CyberSec Pro Platform - Complete penetration testing platform",
+  "description": "cybersec-pro-platform - Complete penetration testing platform",
   "keywords": [
     "penetration-testing",
     "security-tools",

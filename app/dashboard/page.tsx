@@ -311,7 +311,7 @@ export default function DashboardPage() {
                 </div>
                 <div>
                   <h1 className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent">
-                    CyberSec Pro
+                    cybersec-pro-platform
                   </h1>
                   <p className="text-sm text-gray-600 dark:text-gray-400">Professional Security Platform</p>
                 </div>
@@ -812,7 +812,7 @@ export default function DashboardPage() {
                 </div>
                 <div>
                   <h3 className="text-xl font-bold bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent">
-                    CyberSec Pro Platform
+                    cybersec-pro-platform
                   </h3>
                   <p className="text-sm text-gray-600 dark:text-gray-400">Professional Security Testing Suite</p>
                 </div>
@@ -843,7 +843,7 @@ export default function DashboardPage() {
               </div>
               
               <div className="flex items-center justify-center space-x-2 text-sm text-gray-500 dark:text-gray-400">
-                <span>© 2025 CyberSec Pro Platform</span>
+                <span>© 2025 cybersec-pro-platform</span>
                 <span>•</span>
                 <span>Developed by Suman Singh</span>
                 <span>•</span>
