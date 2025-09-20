@@ -1,225 +1,564 @@
-<div align="center">
+# 🛡️ Unified Toolkit for New Pen-Testers# 🛡️ CyberSec Pro Platform# 🛡️ CyberSec Pro Platform<div align="center">
 
 
-- bcrypt password hashing
-- Role-based access control
 
-- **Web**: Nikto, Nuclei, HTTP analyzers
-- **OSINT**: Sublist3r, AssetFinder
-- **Advanced**: Metasploit, Burp Suite
-- **Expert**: Binary analysis, forensics
+Complete penetration testing platform with integrated security tools, authentication, and modern web interface.
 
 
-### 🖥️ Modern Interface
-- Real-time terminal output
-- Dark/Light theme support
-- Mobile-responsive design
-- Progressive Web App (PWA)
-- Accessibility (WCAG 2.1 AA)
 
-### 📊 Advanced Features
-- Scan result export (PDF, JSON)
-- Team collaboration
-- Performance monitoring
-- Audit logging
-- API rate limiting
+[![Next.js](https://img.shields.io/badge/Next.js-14-black?style=flat-square)](https://nextjs.org/)Professional cybersecurity platform with integrated penetration testing tools, real authentication, and modern web interface.
 
-</td>
-</tr>
-</table>
+[![TypeScript](https://img.shields.io/badge/TypeScript-blue?style=flat-square)](https://www.typescriptlang.org/)
 
----
+[![MongoDB](https://img.shields.io/badge/MongoDB-green?style=flat-square)](https://www.mongodb.com/)
 
-## � Project Vision
+[![License](https://img.shields.io/badge/License-MIT-yellow?style=flat-square)](LICENSE)
 
-This platform bridges the gap between theoretical cybersecurity knowledge and practical application by providing:
+[![Next.js](https://img.shields.io/badge/Next.js-14-black?style=flat-square)](https://nextjs.org/)> *Professional Cybersecurity Platform for Security Professionals*# 🛡️ CyberSec Pro Platform
 
-- **🌐 Unified Interface**: All essential penetration testing tools accessible through a single, modern web application
-- **📚 Educational Focus**: Structured learning path for new penetration testers with guided tutorials and best practices  
-- **🛡️ Enterprise Security**: Production-ready authentication and authorization systems
-- **🎯 Real-World Simulation**: Realistic testing environment that mirrors professional penetration testing workflows
-- **🤝 Community Building**: Collaborative features for sharing knowledge and learning from peers
+## 🚀 Quick Start
 
----
+[![TypeScript](https://img.shields.io/badge/TypeScript-blue?style=flat-square)](https://www.typescriptlang.org/)
 
-### High-Level Architecture
+```bash
 
-```mermaid
-graph TB
-    A[Client Browser] -->|HTTPS| B[Nginx Reverse Proxy]
-    B --> C[Next.js Application]
-    C --> D[Authentication Middleware]
-    C --> E[API Routes]
-    C --> F[Security Tools Engine]
-    
-    D --> G[JWT Token Service]
-    D --> H[2FA Service]
-    
-    E --> I[MongoDB Database]
-    E --> J[Rate Limiter]
-    
-    F --> K[Nmap Service]
-    F --> L[Subdomain Service]
-    F --> M[Vulnerability Scanner]
-    F --> N[DNS Tools]
-    
-    H --> O[Email Service]
-    H --> P[SMS Service]
-    
-    I --> Q[User Collection]
-    I --> R[Scan Logs Collection]
-    I --> S[OTP Collection]
+git clone https://github.com/sumansingh20/Unified-Toolkit-for-New-Pen-Testers.git[![MongoDB](https://img.shields.io/badge/MongoDB-green?style=flat-square)](https://www.mongodb.com/)
+
+cd Unified-Toolkit-for-New-Pen-Testers
+
+pnpm install[![License](https://img.shields.io/badge/License-MIT-yellow?style=flat-square)](LICENSE)
+
+cp env/.env.example .env  # Edit with your config
+
+pnpm dev[![Next.js](https://img.shields.io/badge/Next.js-14-black?style=flat-square&logo=next.js)](https://nextjs.org/)*Professional Cybersecurity Platform for Security Professionals*
+
 ```
 
-### Technology Stack Deep Dive
+## 🚀 Quick Start
 
-#### Frontend Layer
-- **Next.js 14** with App Router for modern React development
-- **TypeScript** for type safety and better developer experience
-- **Tailwind CSS** for utility-first styling and responsive design
-- **shadcn/ui** for consistent, accessible UI components
-- **Framer Motion** for smooth animations and transitions
-- **React Hook Form** for efficient form handling and validation
+## ✨ Features
 
-#### Backend Layer
-- **Next.js API Routes** for serverless function architecture
-- **Node.js Runtime** optimized for security tool execution
-- **JWT Authentication** with refresh token rotation
-- **bcrypt** for secure password hashing (12 rounds)
-- **Rate Limiting** using sliding window algorithm
-- **Input Sanitization** with comprehensive validation layers
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.0-blue?style=flat-square&logo=typescript)](https://www.typescriptlang.org/)
 
-#### Database Layer
-- **MongoDB 7.0** for flexible document storage
-- **Mongoose ODM** for schema definition and data modeling
-- **Connection Pooling** for optimal performance
-- **Indexing Strategy** for fast query execution
-- **Data Encryption** at rest and in transit
+- **🔐 Authentication**: JWT with 2FA, bcrypt, rate limiting
 
-#### Security Tools Integration
-- **Native CLI Wrapping** for direct tool execution
-- **Sandboxed Execution** with resource limits
-- **Output Parsing** with real-time streaming
-- **Error Handling** with graceful degradation
-- **Timeout Management** to prevent hanging processes
+- **🛠️ Security Tools**: Nmap, Nikto, Nuclei, subdomain enumeration, WHOIS```bash
+
+- **🖥️ Modern UI**: Real-time terminal, dark/light themes, mobile-responsive
+
+- **⚡ Tech Stack**: Next.js 14, TypeScript, MongoDB, Tailwind CSSgit clone https://github.com/sumansingh20/Unified-Toolkit-for-New-Pen-Testers.git[![MongoDB](https://img.shields.io/badge/MongoDB-7.0-green?style=flat-square&logo=mongodb)](https://www.mongodb.com/)[![Next.js](https://img.shields.io/badge/Next.js-14-black?style=for-the-badge&logo=next.js)](https://nextjs.org/)
+
+
+
+## 📦 Installationcd Unified-Toolkit-for-New-Pen-Testers
+
+
+
+### Dockerpnpm install[![Docker](https://img.shields.io/badge/Docker-Ready-blue?style=flat-square&logo=docker)](https://www.docker.com/)[![TypeScript](https://img.shields.io/badge/TypeScript-5.0-blue?style=for-the-badge&logo=typescript)](https://www.typescriptlang.org/)
+
+```bash
+
+docker-compose up -dcp .env.template .env  # Edit with your config
+
+```
+
+pnpm dev[![License](https://img.shields.io/badge/License-MIT-yellow.svg?style=flat-square)](https://opensource.org/licenses/MIT)[![MongoDB](https://img.shields.io/badge/MongoDB-7.0-green?style=for-the-badge&logo=mongodb)](https://www.mongodb.com/)
+
+### Manual
+
+```bash```
+
+# Prerequisites: Node.js 18+, MongoDB, Nmap, Nikto
+
+npm install[![Docker](https://img.shields.io/badge/Docker-Ready-blue?style=for-the-badge&logo=docker)](https://www.docker.com/)
+
+cp env/.env.example .env
+
+npm run dev## ✨ Features
+
+```
+
+## 🌟 Overview[![License](https://img.shields.io/badge/License-MIT-yellow.svg?style=for-the-badge)](https://opensource.org/licenses/MIT)
+
+## 🔧 Environment Variables
+
+- **🔐 Authentication**: JWT with 2FA (Email/SMS), bcrypt, rate limiting
+
+```env
+
+MONGODB_URI=mongodb://localhost:27017/unified-toolkit- **🛠️ Security Tools**: Nmap, Nikto, Nuclei, subdomain enumeration, WHOIS
+
+JWT_SECRET=your-32-char-secret
+
+EMAIL_HOST=smtp.gmail.com- **🖥️ Modern UI**: Real-time terminal, dark/light themes, mobile-responsive
+
+EMAIL_USER=your-email@gmail.com
+
+EMAIL_PASS=your-app-password- **⚡ Tech Stack**: Next.js 14, TypeScript, MongoDB, Tailwind CSSA comprehensive cybersecurity platform that unifies essential penetration testing tools with modern authentication, real-time scanning capabilities, and an intuitive web interface. Built for cybersecurity professionals and penetration testers.</div>
+
+```
+
+
+
+## 🛠️ API Examples
+
+## 📦 Installation
+
+```bash
+
+# Register user
+
+POST /api/auth/register
+
+### Docker## 🚀 Quick Start---
+
+# Login
+
+POST /api/auth/login```bash
+
+
+
+# Scan with Nmapdocker-compose up -d
+
+POST /api/tools/nmap
+
+``````
+
+
+
+## 📄 License```bash## 🌟 Overview
+
+
+
+MIT License - see [LICENSE](docs/LICENSE) file.### Manual
+
+
+
+## ⚠️ Disclaimer```bash# Clone repository
+
+
+
+For authorized security testing only. Obtain proper authorization before testing any systems.# Prerequisites: Node.js 18+, MongoDB, Nmap, Nikto
+
+
+
+---npm installgit clone https://github.com/sumansingh20/Unified-Toolkit-for-New-Pen-Testers.gitA comprehensive cybersecurity learning platform that unifies essential penetration testing tools with modern authentication, real-time scanning capabilities, and an intuitive web interface. Perfect for aspiring penetration testers and cybersecurity professionals.
+
+
+
+<div align="center">cp .env.template .env
+
+Built with ❤️ for new penetration testers
+
+</div>npm run devcd Unified-Toolkit-for-New-Pen-Testers
+
+```
+
+## 🚀 Quick Start
+
+## 🔧 Environment Variables
+
+# Install dependencies
+
+```env
+
+MONGODB_URI=mongodb://localhost:27017/cybersec-propnpm install### Prerequisites
+
+JWT_SECRET=your-32-char-secret
+
+EMAIL_HOST=smtp.gmail.com- Node.js 18+ and npm/pnpm
+
+EMAIL_USER=your-email@gmail.com
+
+EMAIL_PASS=your-app-password# Setup environment- MongoDB 7.0+ (local or Atlas)
+
+```
+
+cp .env.template .env- Git
+
+## 🛠️ API Examples
+
+# Edit .env with your MongoDB URI and secrets
+
+```bash
+
+# Register user### 30-Second Setup
+
+POST /api/auth/register
+
+# Start development server```bash
+
+# Login
+
+POST /api/auth/loginpnpm dev# Clone and install
+
+
+
+# Scan with Nmap```git clone https://github.com/sumansingh20/Unified-Toolkit-for-New-Pen-Testers.git
+
+POST /api/tools/nmap
+
+```cd Unified-Toolkit-for-New-Pen-Testers
+
+
+
+## 📄 License**Required**: Node.js 18+, MongoDB 7.0+, Security tools (Nmap, Nikto, etc.)npm install
+
+
+
+MIT License - see [LICENSE](LICENSE) file.
+
+
+
+## ⚠️ Disclaimer## ✨ Key Features# Setup environment
+
+
+
+For authorized security testing only. Obtain proper authorization before testing any systems.cp .env.template .env
+
+
+
+---### 🔐 Security & Authentication# Edit .env with your configuration
+
+
+
+<div align="center">- **Real Authentication**: JWT with 2FA (Email/SMS OTP)
+
+Built with ❤️ for the cybersecurity community
+
+</div>- **Security**: bcrypt hashing, rate limiting, CAPTCHA# Start application
+
+- **Authorization**: Role-based access controlnpm run dev
+
+```
+
+### 🛠️ Security Tools
+
+- **Network**: Nmap, Masscan, Port scanning**💼 Professional Account Required**: Real authentication with MongoDB - no demo accounts
+
+- **Web**: Nikto, Nuclei, HTTP header analysis
+
+- **OSINT**: Subdomain enumeration, WHOIS lookup---
+
+- **Advanced**: Metasploit integration, Binary analysis
+
+## ✨ Key Features
+
+### 🖥️ Modern Interface
+
+- Real-time terminal output with syntax highlighting### 🔐 Authentication & Security
+
+- Dark/Light theme support- Multi-factor authentication (2FA)
+
+- Mobile-responsive design- JWT with refresh token rotation
+
+- Professional cybersecurity UI- reCAPTCHA v3 integration
+
+- bcrypt password hashing
+
+## 🏗️ Tech Stack- Role-based access control
+
+
+
+- **Frontend**: Next.js 14, TypeScript, Tailwind CSS, shadcn/ui### 🧰 Security Tools Suite
+
+- **Backend**: Next.js API Routes, MongoDB, Mongoose- **Network**: Nmap, Masscan, DNS tools
+
+- **Authentication**: JWT, bcrypt, 2FA- **Web**: Nikto, Nuclei, HTTP analyzers
+
+- **Security Tools**: Nmap, Nikto, Nuclei, Sublist3r- **OSINT**: Sublist3r, AssetFinder
+
+- **Deployment**: Docker, Nginx- **Advanced**: Metasploit, Burp Suite
+
+- **Expert**: Binary analysis, forensics
+
+## 📦 Installation
+
+### 🖥️ Modern Interface
+
+### Docker (Recommended)- Real-time terminal output
+
+- Dark/Light theme support
+
+```bash- Mobile-responsive design
+
+# Start with Docker Compose- Progressive Web App (PWA)
+
+docker-compose up -d- Accessibility (WCAG 2.1 AA)
+
+
+
+# Access application### 📊 Advanced Features
+
+open http://localhost:3000- Scan result export (PDF, JSON)
+
+```- Team collaboration
+
+- Performance monitoring
+
+### Manual Setup- Audit logging
+
+- API rate limiting
+
+1. **Prerequisites**
+
+   - Node.js 18+---
+
+   - MongoDB 7.0+
+
+   - Security tools (see tools setup below)## 🏗️ Architecture
+
+
+
+2. **Environment Variables**Built with modern technologies for scalability and security:
+
+   ```env
+
+   MONGODB_URI=mongodb://localhost:27017/cybersec-pro**Frontend**: Next.js 14, TypeScript, Tailwind CSS, shadcn/ui
+
+   JWT_SECRET=your-super-secret-jwt-key**Backend**: Next.js API Routes, JWT Authentication, Rate Limiting
+
+   EMAIL_HOST=smtp.gmail.com**Database**: MongoDB 7.0, Mongoose ODM
+
+   EMAIL_USER=your-email@gmail.com**Tools**: Nmap, Nikto, Nuclei, Sublist3r, AssetFinder
+
+   EMAIL_PASS=your-app-password**Deployment**: Docker, Kubernetes, Nginx
+
+   ```
 
 ## ✨ Features Deep Dive
 
-### 🔐 Complete Authentication System
+3. **Security Tools Setup**
 
-Our authentication system implements enterprise-grade security standards:
+   ```bash### 🔐 Complete Authentication System
 
-- **Multi-Factor Registration**: Email, phone number, and username verification
-- **Secure Login**: reCAPTCHA v3 integration with risk assessment scoring
-- **Two-Factor Authentication (2FA)**: 
-  - Email-based OTP with HTML templates
-  - SMS integration via Twilio API
+   # Ubuntu/Debian
+
+   sudo apt-get install nmap niktoOur authentication system implements enterprise-grade security standards:
+
+   pip3 install sublist3r
+
+   - **Multi-Factor Registration**: Email, phone number, and username verification
+
+   # macOS- **Secure Login**: reCAPTCHA v3 integration with risk assessment scoring
+
+   brew install nmap nikto- **Two-Factor Authentication (2FA)**: 
+
+   pip3 install sublist3r  - Email-based OTP with HTML templates
+
+   ```  - SMS integration via Twilio API
+
   - Time-based OTP with 5-minute expiration
-  - Rate limiting (3 attempts per 15 minutes)
+
+## 🛠️ API Endpoints  - Rate limiting (3 attempts per 15 minutes)
+
 - **Password Security**:
-  - bcrypt hashing with 12 salt rounds
-  - Password strength validation (8+ chars, mixed case, numbers, symbols)
-  - Secure password reset flow with OTP verification
-- **Session Management**:
+
+### Authentication  - bcrypt hashing with 12 salt rounds
+
+- `POST /api/auth/register` - User registration  - Password strength validation (8+ chars, mixed case, numbers, symbols)
+
+- `POST /api/auth/login` - User login  - Secure password reset flow with OTP verification
+
+- `POST /api/auth/verify-otp` - 2FA verification- **Session Management**:
+
   - JWT access tokens (15-minute expiration)
-  - Refresh tokens (7-day expiration with rotation)
-  - Automatic token refresh on API calls
-  - Secure HttpOnly cookie storage
 
-### 🧰 Integrated Security Tools
+### Security Tools  - Refresh tokens (7-day expiration with rotation)
 
-#### Network Discovery & Enumeration
+- `POST /api/tools/nmap` - Port scanning  - Automatic token refresh on API calls
 
-**Port Scanner (Nmap Integration)**
-- **Scan Types**: TCP Connect, SYN Stealth, UDP, Ping sweeps
-- **Port Ranges**: Custom ranges, top ports, all ports (1-65535)
+- `POST /api/tools/subdomain` - Subdomain enumeration  - Secure HttpOnly cookie storage
+
+- `POST /api/tools/vuln-scan` - Vulnerability scanning
+
+- `POST /api/tools/whois` - WHOIS lookup### 🧰 Integrated Security Tools
+
+
+
+## 🐳 Docker Deployment#### Network Discovery & Enumeration
+
+
+
+```bash**Port Scanner (Nmap Integration)**
+
+# Production deployment- **Scan Types**: TCP Connect, SYN Stealth, UDP, Ping sweeps
+
+docker-compose -f docker-compose.prod.yml up -d- **Port Ranges**: Custom ranges, top ports, all ports (1-65535)
+
 - **Service Detection**: Version detection with OS fingerprinting
-- **Output Formats**: XML, JSON, and human-readable formats
-- **Performance**: Aggressive, normal, and polite timing templates
-- **Safety Features**: Target validation, scan logging, rate limiting
+
+# With custom configuration- **Output Formats**: XML, JSON, and human-readable formats
+
+docker build -t cybersec-pro .- **Performance**: Aggressive, normal, and polite timing templates
+
+docker run -p 3000:3000 --env-file .env cybersec-pro- **Safety Features**: Target validation, scan logging, rate limiting
+
+```
 
 **Subdomain Enumeration**
-- **Multiple Sources**: Certificate transparency logs, DNS records, search engines
+
+## 🔧 Configuration- **Multiple Sources**: Certificate transparency logs, DNS records, search engines
+
 - **Tools Integrated**: Sublist3r, AssetFinder, DNSRecon
-- **Passive Discovery**: Non-intrusive subdomain enumeration
+
+Essential environment variables:- **Passive Discovery**: Non-intrusive subdomain enumeration
+
 - **Active Verification**: DNS resolution validation
-- **Wildcard Detection**: Automatic wildcard domain filtering
-- **Output Processing**: Deduplication and sorting
+
+```env- **Wildcard Detection**: Automatic wildcard domain filtering
+
+# Database- **Output Processing**: Deduplication and sorting
+
+MONGODB_URI=mongodb://localhost:27017/cybersec-pro
 
 #### Web Application Security
 
-**Vulnerability Scanner**
-- **Nikto Integration**: Web server vulnerability assessment
+# JWT Secrets
+
+JWT_SECRET=your-jwt-secret-32-chars-minimum**Vulnerability Scanner**
+
+JWT_REFRESH_SECRET=your-refresh-secret- **Nikto Integration**: Web server vulnerability assessment
+
 - **Nuclei Templates**: 3000+ community-driven vulnerability templates
-- **Custom Checks**: SQL injection, XSS, directory traversal detection
-- **SSL/TLS Analysis**: Certificate validation and cipher suite testing
-- **HTTP Security Headers**: HSTS, CSP, X-Frame-Options analysis
-- **Authentication Testing**: Login form and session management testing
+
+# Email (for 2FA)- **Custom Checks**: SQL injection, XSS, directory traversal detection
+
+EMAIL_HOST=smtp.gmail.com- **SSL/TLS Analysis**: Certificate validation and cipher suite testing
+
+EMAIL_PORT=587- **HTTP Security Headers**: HSTS, CSP, X-Frame-Options analysis
+
+EMAIL_USER=your-email@gmail.com- **Authentication Testing**: Login form and session management testing
+
+EMAIL_PASS=your-app-password
 
 **HTTP Analysis Tools**
-- **Header Inspection**: Security headers analysis and recommendations
-- **Response Analysis**: Status codes, content types, server fingerprinting
-- **Cookie Security**: HttpOnly, Secure, SameSite attribute validation
-- **CORS Testing**: Cross-origin resource sharing configuration analysis
-- **Redirect Chains**: URL redirection analysis and open redirect detection
 
-#### Information Gathering
+# Optional: SMS (Twilio)- **Header Inspection**: Security headers analysis and recommendations
 
-**WHOIS & DNS Tools**
-- **Domain Information**: Registration details, nameservers, contact information
-- **DNS Record Analysis**: A, AAAA, MX, TXT, NS, SOA records
-- **DNS Zone Transfers**: AXFR attempt and analysis
-- **Reverse DNS**: PTR record lookups
-- **DNS Security**: DNSSEC validation
+TWILIO_ACCOUNT_SID=your-account-sid- **Response Analysis**: Status codes, content types, server fingerprinting
+
+TWILIO_AUTH_TOKEN=your-auth-token- **Cookie Security**: HttpOnly, Secure, SameSite attribute validation
+
+TWILIO_PHONE_NUMBER=+1234567890- **CORS Testing**: Cross-origin resource sharing configuration analysis
+
+```- **Redirect Chains**: URL redirection analysis and open redirect detection
+
+
+
+## 🔒 Security Features#### Information Gathering
+
+
+
+- **Multi-Factor Authentication**: Email/SMS OTP verification**WHOIS & DNS Tools**
+
+- **Password Security**: bcrypt hashing with salt rounds- **Domain Information**: Registration details, nameservers, contact information
+
+- **Session Management**: JWT access + refresh tokens- **DNS Record Analysis**: A, AAAA, MX, TXT, NS, SOA records
+
+- **Rate Limiting**: Prevents brute force attacks- **DNS Zone Transfers**: AXFR attempt and analysis
+
+- **Input Validation**: Sanitization and validation layers- **Reverse DNS**: PTR record lookups
+
+- **HTTPS Enforcement**: SSL/TLS encryption- **DNS Security**: DNSSEC validation
+
 - **Geolocation**: IP address geographical mapping
+
+## 📊 Project Structure
 
 ### 🖥️ Modern Web Interface
 
-#### User Experience Design
+```
 
-**Terminal-Style Output**
-- **Real-time Streaming**: Live command output with WebSocket connections
-- **Syntax Highlighting**: Color-coded output for different tool types
-- **Typing Animation**: Realistic terminal typing simulation
-- **Command History**: Persistent history across sessions
-- **Copy Functionality**: One-click copy to clipboard
-- **Export Options**: Save results as TXT, JSON, or PDF
+├── app/                    # Next.js App Router#### User Experience Design
 
-**Responsive Design**
+│   ├── api/               # API endpoints
+
+│   ├── tools/             # Tool interfaces**Terminal-Style Output**
+
+│   └── auth/              # Authentication pages- **Real-time Streaming**: Live command output with WebSocket connections
+
+├── components/            # React components- **Syntax Highlighting**: Color-coded output for different tool types
+
+├── lib/                   # Core utilities- **Typing Animation**: Realistic terminal typing simulation
+
+│   ├── models/           # Database models- **Command History**: Persistent history across sessions
+
+│   └── utils/            # Helper functions- **Copy Functionality**: One-click copy to clipboard
+
+├── hooks/                 # Custom React hooks- **Export Options**: Save results as TXT, JSON, or PDF
+
+└── public/               # Static assets
+
+```**Responsive Design**
+
 - **Mobile-First**: Optimized for mobile devices and tablets
-- **Dark/Light Themes**: System preference detection with manual override
-- **Accessibility**: WCAG 2.1 AA compliance with screen reader support
-- **Progressive Enhancement**: Works without JavaScript for core features
-- **Performance**: Lazy loading, code splitting, and image optimization
 
-#### Interactive Features
+## 🤝 Contributing- **Dark/Light Themes**: System preference detection with manual override
+
+- **Accessibility**: WCAG 2.1 AA compliance with screen reader support
+
+1. Fork the repository- **Progressive Enhancement**: Works without JavaScript for core features
+
+2. Create feature branch: `git checkout -b feature/new-feature`- **Performance**: Lazy loading, code splitting, and image optimization
+
+3. Commit changes: `git commit -m 'Add new feature'`
+
+4. Push to branch: `git push origin feature/new-feature`#### Interactive Features
+
+5. Submit pull request
 
 **Tool Configuration**
-- **Guided Setup**: Step-by-step tool configuration wizards
+
+## 📄 License- **Guided Setup**: Step-by-step tool configuration wizards
+
 - **Preset Profiles**: Common scan configurations for different scenarios
-- **Custom Parameters**: Advanced users can modify tool-specific options
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.- **Custom Parameters**: Advanced users can modify tool-specific options
+
 - **Validation**: Real-time input validation with helpful error messages
-- **Save/Load**: Save favorite configurations for repeated use
 
-**Results Management**
-- **Search & Filter**: Full-text search across scan results
-- **Comparison**: Side-by-side comparison of multiple scans
-- **Sharing**: Secure sharing with team members via encrypted links
+## ⚠️ Legal Disclaimer- **Save/Load**: Save favorite configurations for repeated use
+
+
+
+This tool is for educational and authorized security testing only. Users must:**Results Management**
+
+- Obtain proper authorization before testing systems- **Search & Filter**: Full-text search across scan results
+
+- Comply with applicable laws and regulations- **Comparison**: Side-by-side comparison of multiple scans
+
+- Use ethically and responsibly- **Sharing**: Secure sharing with team members via encrypted links
+
 - **Notifications**: Email alerts for completed scans
-- **Integration**: Export to popular penetration testing frameworks
 
-### 🛡️ Security Features & Implementation
+## 🌟 Star History- **Integration**: Export to popular penetration testing frameworks
 
-#### Defense in Depth Strategy
 
-**Input Validation & Sanitization**
-- **Multi-layer Validation**: Client-side, server-side, and database-level validation
-- **Command Injection Prevention**: Whitelist-based input filtering with regex patterns
-- **SQL Injection Protection**: Parameterized queries with Mongoose ODM
-- **XSS Prevention**: Content Security Policy (CSP) with nonce-based script execution
-- **Path Traversal Protection**: Sandboxed file system access with chroot jail
-- **File Upload Security**: MIME type validation, size limits, virus scanning
 
+[![Star History Chart](https://api.star-history.com/svg?repos=sumansingh20/Unified-Toolkit-for-New-Pen-Testers&type=Date)](https://star-history.com/#sumansingh20/Unified-Toolkit-for-New-Pen-Testers&Date)### 🛡️ Security Features & Implementation
+
+
+
+---#### Defense in Depth Strategy
+
+
+
+<div align="center">**Input Validation & Sanitization**
+
+  <p>Built with ❤️ for the cybersecurity community</p>- **Multi-layer Validation**: Client-side, server-side, and database-level validation
+
+  <p>- **Command Injection Prevention**: Whitelist-based input filtering with regex patterns
+
+    <a href="https://github.com/sumansingh20/Unified-Toolkit-for-New-Pen-Testers/issues">Report Bug</a>- **SQL Injection Protection**: Parameterized queries with Mongoose ODM
+
+    ·- **XSS Prevention**: Content Security Policy (CSP) with nonce-based script execution
+
+    <a href="https://github.com/sumansingh20/Unified-Toolkit-for-New-Pen-Testers/issues">Request Feature</a>- **Path Traversal Protection**: Sandboxed file system access with chroot jail
+
+  </p>- **File Upload Security**: MIME type validation, size limits, virus scanning
+
+</div>
 **Authentication & Authorization**
 - **Zero Trust Architecture**: Every request authenticated and authorized
 - **Role-Based Access Control (RBAC)**: Admin, user, and guest permission levels
@@ -1099,72 +1438,6 @@ sudo apt-get install -y nmap nikto python3-pip golang-go
 
 ---
 
-### � **Netlify Deployment** (Recommended for Demo/Frontend)
-
-#### Quick Deploy to Netlify
-
-[![Deploy to Netlify](https://www.netlify.com/img/deploy/button.svg)](https://app.netlify.com/start/deploy?repository=https://github.com/sumansingh20/Unified-Toolkit-for-New-Pen-Testers)
-
-#### Manual Netlify Deployment
-
-1. **Push Code to GitHub**
-   ```bash
-   git add .
-   git commit -m "Prepare for Netlify deployment"
-   git push origin main
-   ```
-
-2. **Connect to Netlify**
-   - Go to [Netlify Dashboard](https://app.netlify.com/)
-   - Click "Add new site" → "Import an existing project"
-   - Choose GitHub and authorize Netlify
-   - Select your repository
-
-3. **Configure Build Settings**
-   ```
-   Build command: pnpm build
-   Publish directory: .next
-   ```
-
-4. **Set Environment Variables**
-   In Netlify Dashboard → Site Settings → Environment Variables:
-   ```
-   MONGODB_URI=mongodb+srv://username:password@cluster.mongodb.net/unified-toolkit
-   JWT_SECRET=your-super-secure-jwt-secret-min-32-chars
-   JWT_REFRESH_SECRET=your-refresh-secret-min-32-chars
-   NEXT_PUBLIC_SITE_URL=https://your-site-name.netlify.app
-   ```
-
-5. **Deploy**
-   - Click "Deploy site"
-   - Your site will be available at: `https://random-name.netlify.app`
-   - Customize the domain in Site Settings
-
-#### Important Notes for Netlify Deployment
-
-⚠️ **Backend Limitations**: Netlify is primarily for static sites. For full functionality:
-- Database operations will be limited
-- Security tools (nmap, nikto) won't work on Netlify
-- Consider using Netlify Functions for API endpoints
-
-💡 **Recommended Architecture**:
-- **Frontend**: Deploy to Netlify (fast, global CDN)
-- **Backend/API**: Deploy to Railway, Render, or Vercel
-- **Database**: MongoDB Atlas (cloud)
-
-#### Environment Variables Setup
-
-Essential variables for Netlify deployment:
-
-| Variable | Description | Required |
-|----------|-------------|----------|
-| `MONGODB_URI` | MongoDB connection string | ✅ Yes |
-| `JWT_SECRET` | JWT signing secret | ✅ Yes |
-| `JWT_REFRESH_SECRET` | Refresh token secret | ✅ Yes |
-| `NEXT_PUBLIC_SITE_URL` | Your Netlify site URL | ✅ Yes |
-| `EMAIL_HOST` | SMTP server (optional) | ❌ No |
-| `EMAIL_USER` | Email username (optional) | ❌ No |
-| `EMAIL_PASS` | Email password (optional) | ❌ No |
 
 ### �🐳 Docker Deployment
 
@@ -1424,16 +1697,6 @@ docker run -p 3000:3000 --env-file .env unified-toolkit
 | **🛠️ Security Tools** | Integrated CLI tools | Penetration testing | ~6,000+ |
 | **🐳 Infrastructure** | Docker + Nginx | Deployment & scaling | ~1,000+ |
 
-### 🎯 **Key Architecture Patterns**
-
-- **🔄 MVC Pattern**: Clean separation of concerns
-- **🧩 Component-Based**: Reusable UI components
-- **🌐 API-First**: RESTful service architecture
-- **🔐 Security-First**: Authentication at every layer
-- **📱 Mobile-First**: Responsive design principles
-- **🚀 Performance-First**: Optimized for speed
-- **♿ Accessibility-First**: WCAG 2.1 compliant
-
 </div>
 
 ## 🔧 Configuration
@@ -1629,16 +1892,6 @@ curl -X POST http://localhost:3000/api/tools/nmap \
   }
 }
 ```
-
-### 📈 Rate Limiting
-
-| User Type | Requests/Hour | Concurrent Scans |
-|-----------|---------------|------------------|
-| **Guest** | 100 | 1 |
-| **User** | 1,000 | 3 |
-| **Premium** | 10,000 | 10 |
-| **Admin** | Unlimited | Unlimited |
-
 ---
 
 ## 🔒 Security & Compliance
@@ -1670,76 +1923,7 @@ Our platform implements multiple layers of security to protect your data and ens
 - **📊 Monitoring**: Real-time security event logging
 - **🔄 Updates**: Automated security patches and dependency updates
 
-### 📋 Compliance & Standards
 
-- ✅ **OWASP Top 10** - All vulnerabilities addressed
-- ✅ **NIST Cybersecurity Framework** - Controls implemented
-- ✅ **ISO 27001** - Information security standards
-- ✅ **GDPR Compliant** - Data privacy protection
-- ✅ **SOC 2 Type II** - Security controls audited
-
----
-
-## 📊 Usage Examples
-
-### Port Scanning
-\`\`\`bash
-# Example: Scan common ports on a target
-Target: example.com
-Output: Open ports 22, 80, 443 with service detection
-\`\`\`
-
-### Subdomain Enumeration
-\`\`\`bash
-# Example: Find subdomains for a domain
-Domain: example.com
-Output: List of discovered subdomains (www, mail, ftp, etc.)
-\`\`\`
-
-### Vulnerability Scanning
-\`\`\`bash
-# Example: Scan a web application
-URL: https://example.com
-Output: Potential vulnerabilities and security issues
-\`\`\`
-
-## 🎯 Learning Objectives
-
-This platform is designed to help new penetration testers:
-
-1. **Understand Tool Integration** - Learn how security tools work together
-2. **Practice Safe Testing** - Use tools in a controlled environment
-3. **Develop Methodology** - Build systematic testing approaches
-4. **Learn Security Concepts** - Understand vulnerabilities and mitigations
-5. **Build Professional Skills** - Work with enterprise-grade authentication
-
-## 🤝 Contributing
-
-We welcome contributions! Please follow these steps:
-
-1. **Fork the repository**
-2. **Create a feature branch**
-   \`\`\`bash
-   git checkout -b feature/amazing-feature
-   \`\`\`
-3. **Make your changes**
-4. **Add tests** if applicable
-5. **Commit your changes**
-   \`\`\`bash
-   git commit -m 'Add amazing feature'
-   \`\`\`
-6. **Push to the branch**
-   \`\`\`bash
-   git push origin feature/amazing-feature
-   \`\`\`
-7. **Open a Pull Request**
-
-### Development Guidelines
-- Follow TypeScript best practices
-- Use ESLint and Prettier for code formatting
-- Write meaningful commit messages
-- Add documentation for new features
-- Ensure security best practices
 
 ## 🐛 Comprehensive Troubleshooting Guide
 
@@ -1996,85 +2180,6 @@ db.scanLogs.aggregate([
 ])
 ```
 
-## 📚 Learning Resources & Educational Path
-
-### 🎓 Structured Learning Journey
-
-Our platform provides a comprehensive learning path designed for different skill levels:
-
-#### 🟢 Beginner Level (0-3 months)
-
-**Phase 1: Foundation Building**
-- 📖 **Networking Basics**: TCP/IP, OSI model, common ports
-- 🌐 **Web Technologies**: HTTP/HTTPS, status codes, headers  
-- 💻 **Linux Fundamentals**: Command line, file systems, processes
-- 🔒 **Security Concepts**: CIA triad, threat modeling, risk assessment
-
-**Hands-on Labs:**
-- Network mapping with Nmap
-- Basic web reconnaissance
-- WHOIS and DNS analysis
-- Simple vulnerability scanning
-
-#### 🟡 Intermediate Level (3-6 months)
-
-**Phase 2: Tool Mastery**
-- 🔍 **Advanced Scanning**: Service detection, OS fingerprinting
-- 🕷️ **Web App Testing**: SQL injection, XSS, authentication bypass
-- 📡 **Wireless Security**: WiFi assessment, WPA/WPA2 attacks
-- 🔎 **OSINT Techniques**: Social media, data breaches, metadata
-
-**Practical Projects:**
-- Complete network penetration test
-- Web application security assessment  
-- Wireless network audit
-- OSINT investigation report
-
-#### 🔴 Advanced Level (6+ months)
-
-**Phase 3: Expert Techniques**
-- 💥 **Exploitation**: Buffer overflows, privilege escalation
-- 🏴‍☠️ **Red Team Tactics**: Persistence, lateral movement, C2
-- 🛡️ **Blue Team Defense**: SIEM, incident response, forensics
-- 📝 **Professional Reporting**: Executive summaries, technical details
-
-**Certification Prep:**
-- CEH (Certified Ethical Hacker)
-- OSCP (Offensive Security Certified Professional)
-- CISSP (Certified Information Systems Security Professional)
-- GCIH (GIAC Certified Incident Handler)
-
-### 📚 Curated Learning Resources
-
-#### 📖 Essential Reading
-
-| Book | Author | Focus Area | Difficulty |
-|------|--------|------------|------------|
-| **The Web Application Hacker's Handbook** | Stuttard & Pinto | Web Security | Intermediate |
-| **Black Hat Python** | Justin Seitz | Python for Hackers | Intermediate |
-| **The Hacker Playbook 3** | Peter Kim | Red Team Tactics | Advanced |
-| **Practical Malware Analysis** | Sikorski & Honig | Malware Analysis | Advanced |
-
-#### 🎥 Video Courses
-
-- **🆓 Free Resources:**
-  - [Cybrary](https://cybrary.it) - Free cybersecurity training
-  - [Professor Messer](https://professormesser.com) - Security+ training
-  - [SANS Cyber Aces](https://cyberaces.org) - Hands-on tutorials
-
-- **💰 Premium Courses:**
-  - [Pluralsight Security Path](https://pluralsight.com)
-  - [Udemy Ethical Hacking](https://udemy.com)
-  - [Linux Academy](https://linuxacademy.com)
-
-#### 🏆 Practice Platforms
-
-| Platform | Type | Cost | Skill Level |
-|----------| **[TryHackMe](https://tryhackme.com)** | Guided Labs | Free/Premium | Beginner-Advanced |
-| **[HackTheBox](https://hackthebox.eu)** | CTF Challenges | Free/Premium | Intermediate-Expert |
-| **[VulnHub](https://vulnhub.com)** | Vulnerable VMs | Free | All Levels |
-| **[OverTheWire](https://overthewire.org)** | Wargames | Free | Beginner-Advanced |
-
 ### 🧪 Hands-on Laboratory Exercises
 
 #### Lab 1: Network Reconnaissance
@@ -2159,34 +2264,6 @@ aircrack-ng -w wordlist.txt capture.cap
 - [ ] Mentor junior team members
 - [ ] Achieve industry certification
 
-### 🏅 Certification Roadmap
-
-```mermaid
-graph TD
-    A[Security+ Foundation] --> B[CEH Practical Skills]
-    B --> C[OSCP Hands-on]
-    C --> D[CISSP Management]
-    
-    B --> E[GCIH Incident Response]
-    C --> F[OSCE Expert Level]
-    D --> G[CISSP Concentrations]
-    
-    style A fill:#90EE90
-    style B fill:#FFE4B5  
-    style C fill:#FFB6C1
-    style D fill:#E6E6FA
-```
-
-### 📊 Progress Tracking
-
-Track your learning journey with our built-in progress system:
-
-- **📈 Skill Assessments**: Regular quizzes and practical tests
-- **🏆 Achievement Badges**: Unlock certifications for completed modules
-- **📝 Learning Portfolio**: Document your projects and findings
-- **👥 Peer Review**: Get feedback from community experts
-- **📅 Study Plans**: Personalized learning schedules
-
 ---
 
 ## 🤝 Community & Contribution Guidelines
@@ -2216,164 +2293,6 @@ Track your learning journey with our built-in progress system:
    - Add screenshots for UI changes
    - Request review from maintainers
 
-#### Code Review Guidelines
-- **Security First**: All code changes reviewed for security implications
-- **Performance Impact**: Consider impact on scanning performance
-- **User Experience**: Maintain consistent UI/UX patterns
-- **Documentation**: Code should be self-documenting with clear comments
-- **Testing**: Minimum 80% code coverage for new features
-
-### Community Support
-
-#### Getting Help
-1. **Documentation**: Check this README and inline documentation
-2. **GitHub Issues**: Search existing issues before creating new ones
-3. **Discussions**: Use GitHub Discussions for general questions
-4. **Discord Community**: Real-time chat and collaboration
-5. **Stack Overflow**: Tag questions with 'unified-toolkit'
-
-#### Reporting Security Issues
-```
-For security vulnerabilities, please email: security@unified-toolkit.com
-Include:
-- Detailed description of the vulnerability
-- Steps to reproduce
-- Potential impact assessment
-- Suggested mitigation (if any)
-
-Do not create public GitHub issues for security vulnerabilities.
-```
-
-### Code of Conduct
-
-#### Our Standards
-- **Respectful Communication**: Treat all community members with respect
-- **Constructive Feedback**: Provide helpful and actionable feedback
-- **Educational Focus**: Remember this is a learning platform
-- **Legal Compliance**: Only use tools for authorized testing
-- **Ethical Hacking**: Follow responsible disclosure principles
-
-#### Enforcement
-- Warning for minor violations
-- Temporary ban for repeated violations
-- Permanent ban for severe violations
-- Appeal process available via email
-
-## 🌟 Project Roadmap & Future Vision
-
-### 🚀 Current Status (v1.0)
-
-- ✅ **Core Platform**: Fully functional with 20+ security tools
-- ✅ **Authentication**: Enterprise-grade security with 2FA
-- ✅ **User Interface**: Modern, responsive design with dark/light themes
-- ✅ **Documentation**: Comprehensive guides and tutorials
-- ✅ **Community**: Active user base with 500+ registered users
-
-### 📅 Short-term Goals (Q1-Q2 2025)
-
-#### 🔧 Platform Enhancements
-- [ ] **Real-time Collaboration**: Multi-user scanning sessions
-- [ ] **Advanced Reporting**: PDF export with custom branding
-- [ ] **Mobile App**: iOS and Android applications
-- [ ] **API Gateway**: GraphQL endpoint for better data fetching
-- [ ] **Webhook Integration**: Real-time notifications and integrations
-
-#### 🛠️ New Tools & Features
-- [ ] **Container Security**: Docker and Kubernetes scanning
-- [ ] **Cloud Security**: AWS, Azure, GCP assessment tools
-- [ ] **IoT Testing**: Specialized tools for IoT device testing
-- [ ] **Blockchain Analysis**: Cryptocurrency and smart contract tools
-- [ ] **AI-Powered Scanning**: Machine learning enhanced vulnerability detection
-
-#### 🎓 Educational Improvements
-- [ ] **Interactive Tutorials**: Step-by-step guided exercises
-- [ ] **Certification Prep**: CEH and OSCP preparation modules
-- [ ] **Video Learning**: Integrated video tutorials and walkthroughs
-- [ ] **Community Labs**: Shared virtual environments
-- [ ] **Mentorship Program**: Connect learners with experts
-
-
-#### 🤖 AI & Automation
-- [ ] **Smart Vulnerability Prioritization**: Risk-based ranking
-- [ ] **Auto-remediation Suggestions**: AI-powered fix recommendations
-- [ ] **Threat Intelligence**: Integration with global threat feeds
-- [ ] **Behavioral Analysis**: Anomaly detection in scan patterns
-- [ ] **Natural Language Queries**: "Find all SQL injection vulnerabilities"
-
-#### 🌐 Global Expansion
-- [ ] **Multi-language Support**: 10+ language translations
-- [ ] **Regional Compliance**: GDPR, CCPA, local data protection laws
-- [ ] **CDN Integration**: Global content delivery for faster access
-- [ ] **Local Partnerships**: Regional cybersecurity training organizations
-- [ ] **Currency Support**: Multiple payment options and currencies
-
-### 🔮 Long-term Vision (2026+)
-
-#### 🚀 Revolutionary Features
-- [ ] **Virtual Reality Training**: Immersive cybersecurity environments
-- [ ] **Quantum-Safe Cryptography**: Post-quantum security testing
-- [ ] **Blockchain-based Audit Trail**: Immutable security testing records
-- [ ] **Edge Computing Security**: Specialized tools for edge environments
-- [ ] **6G Network Testing**: Next-generation wireless security
-
-#### 🌍 Ecosystem Development
-- [ ] **Open Source Marketplace**: Community-contributed tools and plugins
-- [ ] **Academic Partnerships**: Integration with universities and colleges
-- [ ] **Research Collaboration**: Joint projects with security research institutions
-- [ ] **Industry Standards**: Contribute to cybersecurity standards development
-- [ ] **Global Certification**: Recognized certification program
-
-#### 📊 Platform Evolution
-- [ ] **Self-Healing Infrastructure**: Auto-scaling and self-recovery
-- [ ] **Zero-Trust Architecture**: Complete security model overhaul
-- [ ] **Sustainable Computing**: Green technology and carbon-neutral hosting
-- [ ] **Accessibility Excellence**: Full compliance with accessibility standards
-- [ ] **Performance Optimization**: Sub-second response times globally
-
-### 🎯 Success Metrics & KPIs
-
-| Metric | Current | Q4 2025 Target | Q1 2026 Target | 2026 Target |
-|--------|---------|----------------|----------------|-------------|
-| **Active Users** | 500+ | 2,000 | 10,000 | 50,000 |
-| **Tools Available** | 20+ | 35 | 60 | 100+ |
-| **Scan Success Rate** | 95% | 98% | 99% | 99.5% |
-| **API Response Time** | <2s | <1s | <500ms | <200ms |
-| **Security Incidents** | 0 | 0 | 0 | 0 |
-
-### 🤝 Community Contributions
-
-We actively encourage community involvement in our roadmap:
-
-#### 💡 Feature Requests
-- **GitHub Issues**: Submit and vote on feature requests
-- **Discord Discussions**: Real-time feedback and brainstorming
-- **Monthly Surveys**: Regular user feedback collection
-- **Beta Testing**: Early access to new features
-
-#### 👨‍💻 Development Contributions
-- **Tool Integration**: Add support for new security tools
-- **UI/UX Improvements**: Design and usability enhancements
-- **Documentation**: Tutorials, guides, and translations
-- **Testing**: Quality assurance and bug reporting
-
-#### 🎓 Educational Content
-- **Lab Exercises**: Create hands-on learning modules
-- **Video Tutorials**: Record educational content
-- **Blog Posts**: Share knowledge and best practices
-- **Case Studies**: Real-world penetration testing examples
-
-### 📞 Feedback & Suggestions
-
-Your input shapes our roadmap! Reach out through:
-
-- 📧 **Email**: roadmap@unified-toolkit.com
-- 💬 **Discord**: Join our community server
-- 🐙 **GitHub**: Open issues and discussions
-- 📱 **Social Media**: Follow us for updates
-
----
-
----
 
 ## 📄 Legal Disclaimer
 
@@ -2386,65 +2305,6 @@ Your input shapes our roadmap! Reach out through:
 
 The developers and contributors of this project are not responsible for any misuse of the tool or any damages resulting from its use.
 
-## 📞 Support & Community
-
-### 🆘 Getting Help
-
-We're here to help you succeed! Multiple support channels available:
-
-#### 🚀 Quick Support Options
-
-| Issue Type | Best Channel | Response Time | Cost |
-|------------|--------------|---------------|------|
-| **Bug Reports** | GitHub Issues | < 24 hours | Free |
-| **Feature Requests** | GitHub Discussions | < 48 hours | Free |
-| **General Questions** | Discord Community | < 2 hours | Free |
-| **Installation Help** | Documentation + Discord | < 4 hours | Free |
-| **Enterprise Support** | Email Support | < 4 hours | Premium |
-
-#### 📚 Self-Help Resources
-
-- **📖 Documentation**: Comprehensive guides and tutorials
-- **🎥 Video Library**: Step-by-step video tutorials
-- **❓ FAQ Section**: Common questions and solutions
-- **🔍 Search Function**: Find answers in our knowledge base
-- **📋 Troubleshooting Guides**: Detailed problem-solving guides
-
-
-### 🛡️ Security & Vulnerability Reporting
-
-**🔒 Report Security Issues Privately**
-
-If you discover a security vulnerability, please report it responsibly:
-
-```text
-Email: security@unified-toolkit.com
-PGP Key: [Download](https://unified-toolkit.com/pgp-key.asc)
-
-Include in your report:
-- Detailed description of the vulnerability
-- Steps to reproduce the issue
-- Potential impact assessment
-- Suggested mitigation (if known)
-- Your contact information for follow-up
-
-Response Timeline:
-- Initial acknowledgment: Within 24 hours
-- Preliminary assessment: Within 72 hours
-- Status updates: Every 7 days until resolved
-- Public disclosure: After fix deployment (coordinated)
-```
-
-**🏆 Security Bounty Program**
-
-We offer rewards for qualifying security vulnerabilities:
-
-| Severity | Reward Range | Criteria |
-|----------|--------------|----------|
-| **Critical** | $500 - $2,000 | RCE, Authentication bypass |
-| **High** | $200 - $500 | Privilege escalation, Data exposure |
-| **Medium** | $50 - $200 | XSS, CSRF, Information disclosure |
-| **Low** | $25 - $50 | Rate limiting, Configuration issues |
 
 ### 🤝 Contributing to the Project
 
@@ -2486,23 +2346,6 @@ We offer rewards for qualifying security vulnerabilities:
 - **🎨 Visual Assets**: Create icons, illustrations, and graphics
 - **♿ Accessibility**: Improve accessibility features and compliance
 
-### 🌟 Community Recognition
-
-#### 🏅 Contributor Levels
-
-| Level | Contributions | Benefits |
-|-------|---------------|----------|
-| **🥉 Helper** | 1-5 contributions | Community badge, Discord role |
-| **🥈 Contributor** | 6-15 contributions | Beta access, Direct developer contact |
-| **🥇 Core Contributor** | 16+ contributions | Design input, Roadmap influence |
-| **💎 Maintainer** | Long-term commitment | Repository access, Decision making |
-
-#### 🎉 Monthly Recognition
-
-- **🌟 Contributor of the Month**: Featured on website and social media
-- **🚀 Innovation Award**: Best new feature or improvement
-- **📚 Educator Award**: Best tutorial or educational content
-- **🐛 Bug Hunter**: Most valuable bug reports and fixes
 
 #### 📊 Project Statistics
 
@@ -2513,23 +2356,6 @@ We offer rewards for qualifying security vulnerabilities:
 - **📈 Downloads**: Monthly usage statistics
 
 ---
-
-<div align="center">
-
-## ❤️ Special Thanks
-
-**To Our Amazing Community**
-
-This project exists because of the incredible support from:
-
-- **🧑‍💻 Contributors**: 50+ developers who've made this possible
-- **🐛 Bug Reporters**: Community members helping us improve
-- **📚 Educators**: Teachers and trainers using our platform
-- **🌟 Supporters**: Everyone who starred, shared, and spread the word
-
-
-
-</div>
 
 ---
 

@@ -12,8 +12,11 @@ const inter = Inter({ subsets: ["latin"] })
 
 export const metadata: Metadata = {
   title: "Unified Toolkit for New Pen-Testers",
-  description: "A comprehensive cybersecurity learning platform with integrated penetration testing tools - Developed by Suman",
-    generator: 'v0.dev'
+  description: "Unified Toolkit for New Pen-Testers - Complete penetration testing platform with integrated security tools - Developed by Suman Singh",
+  generator: 'Next.js',
+  keywords: ["penetration testing", "cybersecurity", "security tools", "pentest", "nmap", "vulnerability scanner", "unified toolkit"],
+  authors: [{ name: "Suman Singh" }],
+  creator: "Suman Singh",
 }
 
 export default function RootLayout({

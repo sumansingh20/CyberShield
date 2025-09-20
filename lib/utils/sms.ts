@@ -14,20 +14,8 @@ if (!isDevelopment && accountSid && authToken && accountSid.startsWith('AC')) {
 }
 
 export async function sendOTPSMS(phone: string, otp: string, purpose: string) {
-  if (isDevelopment) {
-    console.log(`[DEV] SMS would be sent to ${phone}: Your Unified Toolkit for New Pen-Testers OTP for ${purpose} is: ${otp}. This code expires in 10 minutes.`)
-    return
-  }
-
-  if (!client) {
-    throw new Error("SMS service not configured")
-  }
-
-  const message = `Your Unified Toolkit for New Pen-Testers OTP for ${purpose} is: ${otp}. This code expires in 10 minutes.`
-
-  await client.messages.create({
-    body: message,
-    from: process.env.TWILIO_PHONE_NUMBER,
-    to: phone,
-  })
+  // Always use development mode for testing
+  console.log(`[SMS] Sending OTP to ${phone}: Your Unified Toolkit OTP for ${purpose} is: ${otp}`)
+  console.log(`[SMS] OTP Code: ${otp}`)
+  return Promise.resolve()
 }

@@ -14,6 +14,18 @@ export function useApi() {
   const [loading, setLoading] = useState(false)
   const { accessToken, logout } = useAuth()
 
+  // Function to get CSRF token
+  const getCSRFToken = async () => {
+    try {
+      const response = await fetch("/api/auth/csrf")
+      const data = await response.json()
+      return data.token
+    } catch (error) {
+      console.error("Failed to get CSRF token:", error)
+      return null
+    }
+  }
+
   const apiCall = async (endpoint: string, options: ApiOptions = {}) => {
     const { method = "GET", body, requiresAuth = true } = options
 
@@ -22,6 +34,14 @@ export function useApi() {
     try {
       const headers: HeadersInit = {
         "Content-Type": "application/json",
+      }
+
+      // Add CSRF token for mutation requests
+      if (!["GET", "HEAD", "OPTIONS"].includes(method)) {
+        const csrfToken = await getCSRFToken()
+        if (csrfToken) {
+          headers["x-csrf-token"] = csrfToken
+        }
       }
 
       if (requiresAuth && accessToken) {
@@ -53,7 +73,13 @@ export function useApi() {
           })
           return null
         }
-        throw new Error(data?.error || `Server error: ${response.status}`)
+        if (data?.error) {
+          throw new Error(data.error)
+        }
+        throw new Error(`Server error: ${response.status}`)
+      }
+      if (data?.error) {
+        throw new Error(data.error)
       }
 
       return data

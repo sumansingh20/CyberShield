@@ -1,7 +1,7 @@
 "use client"
 
 import { useState } from "react"
-import { useAuth } from "@/contexts/AuthContext"
+import { useApi } from "@/hooks/useApi"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
@@ -12,11 +12,10 @@ import Link from "next/link"
 import { TerminalOutput } from "@/components/TerminalOutput"
 
 export default function NmapPage() {
-  const { user } = useAuth()
+  const { apiCall, loading } = useApi()
   const [target, setTarget] = useState("")
   const [ports, setPorts] = useState("")
   const [result, setResult] = useState<any>(null)
-  const [loading, setLoading] = useState(false)
 
   const handleScan = async () => {
     if (!target.trim()) {
@@ -24,37 +23,26 @@ export default function NmapPage() {
       return
     }
 
-    setLoading(true)
     setResult(null)
 
     try {
-      const response = await fetch("/api/tools/nmap", {
+      const data = await apiCall("/api/tools/nmap", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
-        body: JSON.stringify({
+        body: {
           target: target.trim(),
           ports: ports.trim() || undefined,
-        }),
+        },
       })
 
-      const data = await response.json()
-
-      if (!response.ok) {
-        throw new Error(data.error || "Scan failed")
+      if (data) {
+        setResult(data.result)
       }
-
-      setResult(data.result)
     } catch (error: any) {
       setResult({
         output: `Error: ${error.message}`,
         status: "error",
         executionTime: 0,
       })
-    } finally {
-      setLoading(false)
     }
   }
 

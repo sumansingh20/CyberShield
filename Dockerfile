@@ -1,52 +1,37 @@
-# Use the official Node.js 18 image
-FROM node:18-alpine
+# Use Node.js LTS version
+FROM node:20-alpine
+
+# Install system dependencies
+RUN apk add --no-cache python3 make g++
 
 # Set working directory
 WORKDIR /app
 
-# Install system dependencies for security tools
-RUN apk add --no-cache \
-    nmap \
-    curl \
-    bind-tools \
-    whois \
-    git \
-    python3 \
-    py3-pip
-
-# Install Python-based tools
-RUN pip3 install sublist3r
-
-# Install Go-based tools
-RUN wget -O /usr/local/bin/assetfinder https://github.com/tomnomnom/assetfinder/releases/download/v0.1.1/assetfinder-linux-amd64-0.1.1.tgz && \
-    tar -xzf /usr/local/bin/assetfinder && \
-    chmod +x /usr/local/bin/assetfinder
+# Install pnpm globally
+RUN npm install -g pnpm
 
 # Copy package files
-COPY package*.json ./
+COPY package.json pnpm-lock.yaml ./
 
-# Install dependencies
-RUN npm ci --only=production
+# Development mode setup
+RUN if [ "$NODE_ENV" = "development" ] ; then \
+        pnpm install ; \
+    else \
+        pnpm install --frozen-lockfile --production ; \
+    fi
 
-# Copy source code
+# Copy the rest of the application
 COPY . .
 
 # Build the application
-RUN npm run build
+RUN pnpm run build
 
-# Create non-root user
-RUN addgroup -g 1001 -S nodejs
-RUN adduser -S nextjs -u 1001
-
-# Change ownership of the app directory
-RUN chown -R nextjs:nodejs /app
-USER nextjs
-
-# Expose port
+# Expose the port the app runs on
 EXPOSE 3000
 
-# Set environment to production
-ENV NODE_ENV=production
-
-# Start the application
-CMD ["npm", "start"]
+# Use development command if in development mode, otherwise use production
+CMD if [ "$NODE_ENV" = "development" ] ; then \
+        pnpm run dev ; \
+    else \
+        pnpm start ; \
+    fi

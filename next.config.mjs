@@ -8,54 +8,58 @@ const nextConfig = {
   },
   images: {
     unoptimized: true,
+    domains: ['localhost', 'unifiedtoolkit.netlify.app', 'unifiedtoolkit.onrender.com'],
+  },
+  // Output configuration
+  output: 'standalone', // Using standalone for SSR support
+  // API configuration
+  async rewrites() {
+    return process.env.NETLIFY ? [] : [
+      {
+        source: '/api/:path*',
+        destination: process.env.NEXT_PUBLIC_API_URL ? 
+          `${process.env.NEXT_PUBLIC_API_URL}/api/:path*` : 
+          'http://localhost:3000/api/:path*',
+      },
+    ];
+  },
+  env: {
+    NEXT_PUBLIC_API_URL: process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000',
   },
   // Netlify configuration
   trailingSlash: false,
   distDir: '.next',
-  // Performance optimizations
-  swcMinify: true,
   experimental: {
     optimizePackageImports: ['@radix-ui/react-icons', 'lucide-react'],
   },
   // Optimized webpack configuration
   webpack: (config, { dev, isServer }) => {
-    if (dev) {
-      // Optimize chunk splitting for development
-      config.optimization.splitChunks = {
-        chunks: 'all',
-        minSize: 20000,
-        maxSize: 200000,
-        cacheGroups: {
-          default: false,
-          vendors: false,
-          vendor: {
-            chunks: 'all',
-            test: /[\\/]node_modules[\\/]/,
-            name: 'vendor',
-            priority: 20,
-            enforce: true,
-          },
-          ui: {
-            chunks: 'all',
-            test: /[\\/]components[\\/]ui[\\/]/,
-            name: 'ui',
-            priority: 15,
-            enforce: true,
-          },
-        },
-      }
-      
-      // Reduce bundle analysis time
-      config.optimization.usedExports = false
-      config.optimization.sideEffects = false
-    }
-    
     // Node.js polyfills for browser compatibility
-    config.resolve.fallback = {
-      ...config.resolve.fallback,
-      fs: false,
-      net: false,
-      tls: false,
+    if (!isServer) {
+      config.resolve.fallback = {
+        ...config.resolve.fallback,
+        fs: false,
+        net: false,
+        tls: false,
+        crypto: 'crypto-browserify',
+        path: false,
+        stream: 'stream-browserify',
+        buffer: 'buffer/',
+        util: 'util/',
+        assert: 'assert/',
+        https: 'https-browserify',
+        http: 'stream-http',
+        os: 'os-browserify/browser',
+        url: 'url/',
+        zlib: 'browserify-zlib'
+      }
+    }
+
+    // Typescript module resolution
+    config.resolve = {
+      ...config.resolve,
+      modules: ['node_modules', 'lib'],
+      extensions: ['.ts', '.tsx', '.js', '.jsx', '.json']
     }
     
     return config
