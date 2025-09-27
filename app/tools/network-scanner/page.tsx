@@ -1,43 +1,20 @@
-'use client'
+"use client"
 
-import { useState, useCallback, memo } from 'react'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/src/ui/components/ui/card'
-import { Button } from '@/src/ui/components/ui/button'
-import { Input } from '@/src/ui/components/ui/input'
-import { Label } from '@/src/ui/components/ui/label'
-import { Textarea } from '@/src/ui/components/ui/textarea'
-import { Badge } from '@/src/ui/components/ui/badge'
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/src/ui/components/ui/tabs'
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/src/ui/components/ui/select'
-import { useApi } from '@/src/ui/hooks/useApi'
-import { useToast } from '@/src/ui/hooks/use-toast'
-import { Loader2, Network, Shield, AlertTriangle, CheckCircle, Info, Globe, Wifi, Server } from 'lucide-react'
+import { useState } from "react"
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/src/ui/components/ui/card"
+import { Button } from "@/src/ui/components/ui/button"
+import { Input } from "@/src/ui/components/ui/input"
+import { Label } from "@/src/ui/components/ui/label"
+import { Badge } from "@/src/ui/components/ui/badge"
+import { Shield, Wifi, CheckCircle, AlertCircle, Loader2 } from "lucide-react"
+import { useApi } from "@/src/ui/hooks/useApi"
+import { useToast } from "@/src/ui/hooks/use-toast"
 
-interface NetworkScanResult {
-  target: string
-  scanType: string
-  summary: string
-  hosts: {
-    ip: string
-    hostname?: string
-    status: string
-    openPorts: number[]
-    os?: string
-    mac?: string
-  }[]
-  totalHosts: number
-  totalPorts: number
-  scanTime: number
-  timestamp: string
-}
-
-export default function NetworkScannerPage() {
-  const [target, setTarget] = useState('')
-  const [scanType, setScanType] = useState('discovery')
-  const [portRange, setPortRange] = useState('1-1000')
-  const [results, setResults] = useState<NetworkScanResult | null>(null)
-  const [loading, setLoading] = useState(false)
-  
+export default function PortScannerPage() {
+  const [target, setTarget] = useState("")
+  const [ports, setPorts] = useState("80,443,22,21,25,53,135,139,445")
+  const [results, setResults] = useState<any>(null)
+  const [isLoading, setIsLoading] = useState(false)
   const { apiCall } = useApi()
   const { toast } = useToast()
 
@@ -45,315 +22,244 @@ export default function NetworkScannerPage() {
     if (!target.trim()) {
       toast({
         title: "Error",
-        description: "Please enter a target IP range or hostname",
-        variant: "destructive",
+        description: "Please enter a target to scan",
+        variant: "destructive"
       })
       return
     }
 
-    setLoading(true)
+    setIsLoading(true)
+    setResults(null)
+
     try {
-      const response = await apiCall('/api/tools/network-scanner', {
-        method: 'POST',
-        body: JSON.stringify({
+      const response = await apiCall("/api/tools/port-scanner", {
+        method: "POST",
+        body: { 
           target: target.trim(),
-          scanType,
-          portRange: scanType === 'port-scan' ? portRange : undefined
-        })
+          ports: ports // Send as string, API will parse it
+        },
+        requiresAuth: false
       })
 
-      if (response?.success) {
+      if (response && response.success) {
         setResults(response.data)
         toast({
           title: "Success",
-          description: `Network scan completed. Found ${response.data.totalHosts} hosts.`
+          description: `Scan completed. Found ${response.data.openPorts || 0} open ports`
         })
       } else {
-        toast({
-          title: "Error",
-          description: response?.message || "Network scan failed",
-          variant: "destructive",
-        })
+        throw new Error(response?.message || 'Port scan failed')
       }
     } catch (error) {
-      console.error('Network scan error:', error)
       toast({
-        title: "Error",
-        description: "Failed to perform network scan",
-        variant: "destructive",
+        title: "Error", 
+        description: error instanceof Error ? error.message : "Failed to perform port scan",
+        variant: "destructive"
       })
     } finally {
-      setLoading(false)
+      setIsLoading(false)
     }
   }
 
   const getStatusColor = (status: string) => {
-    switch (status.toLowerCase()) {
-      case 'up': return 'bg-green-100 text-green-800'
-      case 'down': return 'bg-red-100 text-red-800'
-      case 'filtered': return 'bg-yellow-100 text-yellow-800'
-      default: return 'bg-gray-100 text-gray-800'
+    switch (status) {
+      case 'open': return 'text-green-600 bg-green-100 dark:bg-green-900'
+      case 'closed': return 'text-red-600 bg-red-100 dark:bg-red-900'
+      case 'filtered': return 'text-yellow-600 bg-yellow-100 dark:bg-yellow-900'
+      default: return 'text-gray-600 bg-gray-100 dark:bg-gray-900'
     }
   }
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800">
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8 max-w-7xl">
-      {/* Header */}
-      <div className="mb-6 sm:mb-8">
-        <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3 mb-4">
-          <div className="p-2 sm:p-3 bg-blue-100 dark:bg-blue-900/20 rounded-lg">
-            <Network className="w-5 h-5 sm:w-6 sm:h-6 text-blue-600 dark:text-blue-400" />
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8 max-w-6xl">
+        {/* Header */}
+        <div className="text-center mb-6 sm:mb-8">
+          <div className="flex flex-col sm:flex-row items-center justify-center mb-4 gap-2 sm:gap-4">
+            <Shield className="h-8 w-8 sm:h-10 sm:w-10 lg:h-12 lg:w-12 text-blue-500" />
+            <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent text-center">
+              Port Scanner
+            </h1>
           </div>
-          <div className="flex-1">
-            <h1 className="text-2xl sm:text-3xl font-bold">Network Scanner</h1>
-            <p className="text-muted-foreground text-sm sm:text-base">Comprehensive network discovery and port scanning</p>
-          </div>
+          <p className="text-gray-600 dark:text-gray-300 text-sm sm:text-base lg:text-lg px-2 sm:px-4">
+            Scan for open ports and running services
+          </p>
+          <Badge className="mt-2" variant="outline">Intermediate</Badge>
         </div>
-        
-        <div className="flex flex-wrap gap-2">
-          <Badge variant="outline" className="text-blue-600 text-xs">
-            <Globe className="w-3 h-3 mr-1" />
-            Network Discovery
-          </Badge>
-          <Badge variant="outline" className="text-green-600 text-xs">
-            <Server className="w-3 h-3 mr-1" />
-            Port Scanning
-          </Badge>
-          <Badge variant="outline" className="text-purple-600 text-xs">
-            <Wifi className="w-3 h-3 mr-1" />
-            Host Detection
-          </Badge>
-        </div>
-      </div>
 
-      <div className="grid grid-cols-1 xl:grid-cols-3 gap-4 sm:gap-6">
-        {/* Scan Configuration */}
-        <div className="xl:col-span-1">
-          <Card>
-            <CardHeader className="px-4 sm:px-6">
-              <CardTitle className="flex items-center gap-2 text-lg">
-                <Shield className="w-4 h-4 sm:w-5 sm:h-5" />
-                Scan Configuration
-              </CardTitle>
-              <CardDescription className="text-sm">
-                Configure your network scan parameters
-              </CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-4 px-4 sm:px-6">
+        {/* Input Form */}
+        <Card className="mb-6 sm:mb-8 mx-2 sm:mx-0">
+          <CardHeader className="px-4 sm:px-6">
+            <CardTitle className="flex items-center text-lg sm:text-xl">
+              <Wifi className="h-4 w-4 sm:h-5 sm:w-5 mr-2" />
+              Scan Configuration
+            </CardTitle>
+            <CardDescription className="text-sm">
+              Configure your port scan parameters
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="px-4 sm:px-6">
+            <div className="space-y-4">
               <div>
-                <Label htmlFor="target" className="text-sm font-medium">Target Network/IP</Label>
+                <Label htmlFor="target" className="text-sm font-medium">Target (IP or Domain)</Label>
                 <Input
                   id="target"
-                  placeholder="e.g., 192.168.1.0/24 or example.com"
+                  placeholder="192.168.1.1 or example.com"
                   value={target}
                   onChange={(e) => setTarget(e.target.value)}
                   className="mt-1"
                 />
               </div>
-
               <div>
-                <Label htmlFor="scanType">Scan Type</Label>
-                <Select value={scanType} onValueChange={setScanType}>
-                  <SelectTrigger className="mt-1">
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="discovery">Host Discovery</SelectItem>
-                    <SelectItem value="port-scan">Port Scan</SelectItem>
-                    <SelectItem value="comprehensive">Comprehensive Scan</SelectItem>
-                  </SelectContent>
-                </Select>
+                <Label htmlFor="ports" className="text-sm font-medium">Ports (comma separated)</Label>
+                <Input
+                  id="ports"
+                  placeholder="80,443,22,21,25,53"
+                  value={ports}
+                  onChange={(e) => setPorts(e.target.value)}
+                  className="mt-1"
+                />
+                <p className="text-xs sm:text-sm text-gray-500 mt-1">
+                  Common ports: 80 (HTTP), 443 (HTTPS), 22 (SSH), 21 (FTP), 25 (SMTP), 53 (DNS)
+                </p>
               </div>
-
-              {(scanType === 'port-scan' || scanType === 'comprehensive') && (
-                <div>
-                  <Label htmlFor="portRange">Port Range</Label>
-                  <Select value={portRange} onValueChange={setPortRange}>
-                    <SelectTrigger className="mt-1">
-                      <SelectValue />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="1-1000">Common Ports (1-1000)</SelectItem>
-                      <SelectItem value="1-5000">Extended Range (1-5000)</SelectItem>
-                      <SelectItem value="1-65535">All Ports (1-65535)</SelectItem>
-                      <SelectItem value="21,22,23,25,53,80,110,443,993,995">Well-known Ports</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
-              )}
-
               <Button 
-                onClick={handleScan} 
-                disabled={loading} 
+                onClick={handleScan}
+                disabled={isLoading}
                 className="w-full"
               >
-                {loading ? (
+                {isLoading ? (
                   <>
-                    <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                    <Loader2 className="h-4 w-4 mr-2 animate-spin" />
                     Scanning...
                   </>
                 ) : (
                   <>
-                    <Network className="w-4 h-4 mr-2" />
-                    Start Network Scan
+                    <Shield className="h-4 w-4 mr-2" />
+                    Start Port Scan
                   </>
                 )}
               </Button>
-
-              {/* Information */}
-              <div className="p-4 bg-blue-50 dark:bg-blue-900/20 rounded-lg">
-                <div className="flex items-start gap-2">
-                  <Info className="w-4 h-4 text-blue-600 mt-0.5 flex-shrink-0" />
-                  <div className="text-sm text-blue-800 dark:text-blue-200">
-                    <p className="font-medium mb-1">Scan Types:</p>
-                    <ul className="space-y-1 text-xs">
-                      <li>• <strong>Host Discovery:</strong> Find active hosts</li>
-                      <li>• <strong>Port Scan:</strong> Find open ports on hosts</li>
-                      <li>• <strong>Comprehensive:</strong> Complete analysis</li>
-                    </ul>
-                  </div>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-        </div>
+            </div>
+          </CardContent>
+        </Card>
 
         {/* Results */}
-        <div className="lg:col-span-2">
-          <Card>
-            <CardHeader>
-              <CardTitle>Network Scan Results</CardTitle>
-              <CardDescription>
-                {results 
-                  ? `Scan completed in ${results.scanTime}ms` 
-                  : 'Results will appear here after scanning'
-                }
+        {results && (
+          <Card className="mx-2 sm:mx-0">
+            <CardHeader className="px-4 sm:px-6">
+              <CardTitle className="flex items-center text-lg sm:text-xl">
+                <CheckCircle className="h-4 w-4 sm:h-5 sm:w-5 mr-2 text-green-500" />
+                Scan Results
+              </CardTitle>
+              <CardDescription className="text-sm">
+                Port scan results for {results.target}
               </CardDescription>
             </CardHeader>
-            <CardContent>
-              {loading && (
-                <div className="flex items-center justify-center py-12">
-                  <div className="text-center">
-                    <Loader2 className="w-8 h-8 animate-spin mx-auto mb-4 text-blue-600" />
-                    <p className="text-sm text-muted-foreground">Performing network scan...</p>
+            <CardContent className="px-4 sm:px-6">
+              {results.ports?.open && results.ports.open.length > 0 ? (
+                <div className="space-y-3">
+                  {results.ports.open.map((port: any, index: number) => (
+                    <div key={index} className="flex flex-col sm:flex-row sm:items-center justify-between p-3 sm:p-4 bg-gray-50 dark:bg-gray-700 rounded-lg gap-2 sm:gap-4">
+                      <div className="flex items-start sm:items-center">
+                        <div className="font-mono text-base sm:text-lg font-semibold mr-3 sm:mr-4 min-w-0">
+                          {port.port}
+                        </div>
+                        <div className="min-w-0 flex-1">
+                          <div className="font-medium text-sm sm:text-base truncate">{port.service || 'Unknown Service'}</div>
+                          <div className="text-xs sm:text-sm text-gray-500">TCP</div>
+                          {port.banner && (
+                            <div className="text-xs text-gray-400 mt-1 break-all">
+                              {port.banner}
+                            </div>
+                          )}
+                          {port.responseTime && (
+                            <div className="text-xs text-gray-400">
+                              Response: {port.responseTime}ms
+                            </div>
+                          )}
+                        </div>
+                      </div>
+                      <Badge className="text-green-600 bg-green-100 dark:bg-green-900 shrink-0">
+                        Open
+                      </Badge>
+                    </div>
+                  ))}
+                  
+                  {/* Summary Statistics */}
+                  <div className="mt-6 p-4 bg-blue-50 dark:bg-blue-900/20 rounded-lg">
+                    <h4 className="font-semibold text-blue-800 dark:text-blue-200 mb-2 text-sm sm:text-base">Scan Summary</h4>
+                    <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 text-xs sm:text-sm">
+                      <div>
+                        <div className="text-gray-600 dark:text-gray-400">Total Scanned</div>
+                        <div className="font-semibold">{results.totalPorts}</div>
+                      </div>
+                      <div>
+                        <div className="text-gray-600 dark:text-gray-400">Open Ports</div>
+                        <div className="font-semibold text-green-600">{results.openPorts}</div>
+                      </div>
+                      <div>
+                        <div className="text-gray-600 dark:text-gray-400">Closed Ports</div>
+                        <div className="font-semibold text-red-600">{results.closedPorts}</div>
+                      </div>
+                      <div>
+                        <div className="text-gray-600 dark:text-gray-400">Scan Time</div>
+                        <div className="font-semibold">{(results.executionTime / 1000).toFixed(2)}s</div>
+                      </div>
+                    </div>
                   </div>
+
+                  {/* Security Flags */}
+                  {results.securityFlags && results.securityFlags.length > 0 && (
+                    <div className="mt-4 p-4 bg-yellow-50 dark:bg-yellow-900/20 rounded-lg">
+                      <h4 className="font-semibold text-yellow-800 dark:text-yellow-200 mb-2">Security Observations</h4>
+                      <ul className="space-y-1">
+                        {results.securityFlags.map((flag: string, index: number) => (
+                          <li key={index} className="text-sm text-yellow-700 dark:text-yellow-300 flex items-center">
+                            <AlertCircle className="h-3 w-3 mr-2" />
+                            {flag}
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  )}
                 </div>
-              )}
-
-              {results && !loading && (
-                <Tabs defaultValue="summary" className="w-full">
-                  <TabsList className="grid w-full grid-cols-3">
-                    <TabsTrigger value="summary">Summary</TabsTrigger>
-                    <TabsTrigger value="hosts">Hosts ({results.totalHosts})</TabsTrigger>
-                    <TabsTrigger value="raw">Raw Data</TabsTrigger>
-                  </TabsList>
-                  
-                  <TabsContent value="summary" className="mt-4">
-                    <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
-                      <div className="p-4 bg-green-50 dark:bg-green-900/20 rounded-lg">
-                        <div className="flex items-center justify-between">
-                          <div>
-                            <p className="text-sm font-medium text-green-800 dark:text-green-200">Total Hosts</p>
-                            <p className="text-2xl font-bold text-green-600">{results.totalHosts}</p>
-                          </div>
-                          <Server className="w-8 h-8 text-green-600" />
-                        </div>
-                      </div>
-                      <div className="p-4 bg-blue-50 dark:bg-blue-900/20 rounded-lg">
-                        <div className="flex items-center justify-between">
-                          <div>
-                            <p className="text-sm font-medium text-blue-800 dark:text-blue-200">Open Ports</p>
-                            <p className="text-2xl font-bold text-blue-600">{results.totalPorts}</p>
-                          </div>
-                          <Network className="w-8 h-8 text-blue-600" />
-                        </div>
-                      </div>
-                      <div className="p-4 bg-purple-50 dark:bg-purple-900/20 rounded-lg">
-                        <div className="flex items-center justify-between">
-                          <div>
-                            <p className="text-sm font-medium text-purple-800 dark:text-purple-200">Scan Type</p>
-                            <p className="text-lg font-bold text-purple-600 capitalize">{results.scanType}</p>
-                          </div>
-                          <Shield className="w-8 h-8 text-purple-600" />
-                        </div>
-                      </div>
-                      <div className="p-4 bg-orange-50 dark:bg-orange-900/20 rounded-lg">
-                        <div className="flex items-center justify-between">
-                          <div>
-                            <p className="text-sm font-medium text-orange-800 dark:text-orange-200">Scan Time</p>
-                            <p className="text-lg font-bold text-orange-600">{results.scanTime}ms</p>
-                          </div>
-                          <Wifi className="w-8 h-8 text-orange-600" />
-                        </div>
-                      </div>
-                    </div>
-
-                    <div className="p-4 bg-gray-50 dark:bg-gray-900/20 rounded-lg">
-                      <h3 className="font-medium mb-2">Scan Summary</h3>
-                      <p className="text-sm text-muted-foreground">{results.summary}</p>
-                    </div>
-                  </TabsContent>
-                  
-                  <TabsContent value="hosts" className="mt-4">
-                    <div className="space-y-3">
-                      {results.hosts.map((host, index) => (
-                        <div key={index} className="p-4 border rounded-lg">
-                          <div className="flex items-center justify-between mb-2">
-                            <div className="flex items-center gap-2">
-                              <h3 className="font-medium">{host.ip}</h3>
-                              {host.hostname && (
-                                <Badge variant="outline">{host.hostname}</Badge>
-                              )}
-                            </div>
-                            <Badge className={getStatusColor(host.status)}>
-                              {host.status.toUpperCase()}
-                            </Badge>
-                          </div>
-                          
-                          {host.openPorts.length > 0 && (
-                            <div className="mb-2">
-                              <p className="text-sm font-medium mb-1">Open Ports:</p>
-                              <div className="flex flex-wrap gap-1">
-                                {host.openPorts.map((port) => (
-                                  <Badge key={port} variant="secondary" className="text-xs">
-                                    {port}
-                                  </Badge>
-                                ))}
-                              </div>
-                            </div>
-                          )}
-                          
-                          {host.os && (
-                            <p className="text-sm text-muted-foreground">OS: {host.os}</p>
-                          )}
-                          {host.mac && (
-                            <p className="text-sm text-muted-foreground">MAC: {host.mac}</p>
-                          )}
-                        </div>
-                      ))}
-                    </div>
-                  </TabsContent>
-                  
-                  <TabsContent value="raw" className="mt-4">
-                    <Textarea
-                      value={JSON.stringify(results, null, 2)}
-                      readOnly
-                      className="font-mono text-sm h-96"
-                    />
-                  </TabsContent>
-                </Tabs>
-              )}
-
-              {!results && !loading && (
-                <div className="text-center py-12">
-                  <Network className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
-                  <p className="text-muted-foreground">Enter a target and start scanning to view results</p>
+              ) : (
+                <div className="text-center py-8 text-gray-500">
+                  <AlertCircle className="h-8 w-8 mx-auto mb-2" />
+                  <p>No open ports found</p>
                 </div>
               )}
             </CardContent>
           </Card>
-        </div>
+        )}
+
+        {/* Info */}
+        <Card className="mt-6 sm:mt-8 mx-2 sm:mx-0">
+          <CardHeader className="px-4 sm:px-6">
+            <CardTitle className="text-lg sm:text-xl">About Port Scanning</CardTitle>
+          </CardHeader>
+          <CardContent className="px-4 sm:px-6">
+            <div className="prose dark:prose-invert max-w-none text-sm sm:text-base">
+              <p>
+                Port scanning is a reconnaissance technique used to discover open ports and services 
+                running on a target system. This information helps identify potential attack vectors 
+                and security vulnerabilities.
+              </p>
+              <h4>Common port states:</h4>
+              <ul>
+                <li><strong>Open:</strong> Port is accepting connections</li>
+                <li><strong>Closed:</strong> Port is not accepting connections</li>
+                <li><strong>Filtered:</strong> Port is blocked by firewall</li>
+              </ul>
+              <div className="mt-4 p-3 sm:p-4 bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-800 rounded-lg">
+                <p className="text-xs sm:text-sm text-yellow-800 dark:text-yellow-200">
+                  <strong>Note:</strong> Only use this tool on systems you own or have explicit permission to test.
+                </p>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
       </div>
     </div>
   )
