@@ -161,26 +161,26 @@ export default function ToolsPage() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800">
-      <div className="container mx-auto px-4 py-8">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
         {/* Header */}
-        <div className="text-center mb-8">
-          <h1 className="text-4xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent mb-4">
+        <div className="text-center mb-6 sm:mb-8">
+          <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent mb-3 sm:mb-4">
             CyberShield Security Tools
           </h1>
-          <p className="text-gray-600 dark:text-gray-300 text-lg max-w-2xl mx-auto">
+          <p className="text-gray-600 dark:text-gray-300 text-sm sm:text-base lg:text-lg max-w-2xl mx-auto px-4">
             Professional penetration testing and cybersecurity assessment tools
           </p>
         </div>
 
         {/* Search and Filter */}
-        <div className="max-w-4xl mx-auto mb-8 space-y-4">
+        <div className="max-w-4xl mx-auto mb-6 sm:mb-8 space-y-3 sm:space-y-4 px-2 sm:px-0">
           <div className="relative">
             <Search className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
             <Input
               placeholder="Search tools..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="pl-10 h-12 bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700"
+              className="pl-10 h-11 sm:h-12 bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 text-sm sm:text-base"
             />
           </div>
           
@@ -190,7 +190,8 @@ export default function ToolsPage() {
                 key={category.value}
                 variant={selectedCategory === category.value ? "default" : "outline"}
                 onClick={() => setSelectedCategory(category.value)}
-                className="rounded-full"
+                className="rounded-full text-xs sm:text-sm px-3 sm:px-4 py-2"
+                size="sm"
               >
                 {category.name}
               </Button>
@@ -199,44 +200,44 @@ export default function ToolsPage() {
         </div>
 
         {/* Tools Grid */}
-        <div className="max-w-6xl mx-auto">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="max-w-7xl mx-auto px-2 sm:px-0">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6">
             {filteredTools.map((tool) => {
               const Icon = tool.icon
               const isComingSoon = tool.path === '#'
               
               return (
-                <Card key={tool.id} className="group hover:shadow-lg transition-all duration-200 border-0 bg-white dark:bg-gray-800">
-                  <CardHeader className="pb-3">
+                <Card key={tool.id} className="group hover:shadow-lg transition-all duration-200 border-0 bg-white dark:bg-gray-800 h-full">
+                  <CardHeader className="pb-3 px-4 sm:px-6 pt-4 sm:pt-6">
                     <div className="flex items-center justify-between mb-2">
-                      <Icon className="h-8 w-8 text-blue-500" />
+                      <Icon className="h-6 w-6 sm:h-8 sm:w-8 text-blue-500" />
                       <Badge className={difficultyColors[tool.difficulty]}>
                         {tool.difficulty}
                       </Badge>
                     </div>
-                    <CardTitle className="text-xl group-hover:text-blue-600 transition-colors">
+                    <CardTitle className="text-lg sm:text-xl group-hover:text-blue-600 transition-colors leading-tight">
                       {tool.name}
                     </CardTitle>
                   </CardHeader>
                   
-                  <CardContent>
-                    <CardDescription className="text-gray-600 dark:text-gray-300 mb-4 line-clamp-2">
+                  <CardContent className="px-4 sm:px-6 pb-4 sm:pb-6">
+                    <CardDescription className="text-gray-600 dark:text-gray-300 mb-4 line-clamp-2 text-sm sm:text-base">
                       {tool.description}
                     </CardDescription>
                     
-                    <div className="flex items-center justify-between">
-                      <Badge variant="outline" className="capitalize">
+                    <div className="flex items-center justify-between gap-2">
+                      <Badge variant="outline" className="capitalize text-xs">
                         {tool.category}
                       </Badge>
                       
                       {isComingSoon ? (
-                        <Badge variant="secondary">
+                        <Badge variant="secondary" className="text-xs">
                           Coming Soon
                         </Badge>
                       ) : (
                         <Link href={tool.path}>
-                          <Button size="sm" className="group-hover:scale-105 transition-transform">
-                            Launch Tool
+                          <Button size="sm" className="group-hover:scale-105 transition-transform text-xs px-3">
+                            Launch
                           </Button>
                         </Link>
                       )}
@@ -261,22 +262,22 @@ export default function ToolsPage() {
         </div>
 
         {/* Stats */}
-        <div className="max-w-4xl mx-auto mt-12 grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
-          <div className="bg-white dark:bg-gray-800 p-4 rounded-lg">
-            <div className="text-2xl font-bold text-blue-600">{securityTools.length}+</div>
-            <div className="text-sm text-gray-600 dark:text-gray-300">Security Tools</div>
+        <div className="max-w-5xl mx-auto mt-8 sm:mt-12 grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 text-center px-2 sm:px-0">
+          <div className="bg-white dark:bg-gray-800 p-3 sm:p-4 lg:p-6 rounded-lg shadow-sm">
+            <div className="text-xl sm:text-2xl font-bold text-blue-600">{securityTools.length}+</div>
+            <div className="text-xs sm:text-sm text-gray-600 dark:text-gray-300">Security Tools</div>
           </div>
-          <div className="bg-white dark:bg-gray-800 p-4 rounded-lg">
-            <div className="text-2xl font-bold text-green-600">100%</div>
-            <div className="text-sm text-gray-600 dark:text-gray-300">Free & Open</div>
+          <div className="bg-white dark:bg-gray-800 p-3 sm:p-4 lg:p-6 rounded-lg shadow-sm">
+            <div className="text-xl sm:text-2xl font-bold text-green-600">100%</div>
+            <div className="text-xs sm:text-sm text-gray-600 dark:text-gray-300">Free & Open</div>
           </div>
-          <div className="bg-white dark:bg-gray-800 p-4 rounded-lg">
-            <div className="text-2xl font-bold text-purple-600">24/7</div>
-            <div className="text-sm text-gray-600 dark:text-gray-300">Available</div>
+          <div className="bg-white dark:bg-gray-800 p-3 sm:p-4 lg:p-6 rounded-lg shadow-sm">
+            <div className="text-xl sm:text-2xl font-bold text-purple-600">24/7</div>
+            <div className="text-xs sm:text-sm text-gray-600 dark:text-gray-300">Available</div>
           </div>
-          <div className="bg-white dark:bg-gray-800 p-4 rounded-lg">
-            <div className="text-2xl font-bold text-orange-600">Pro</div>
-            <div className="text-sm text-gray-600 dark:text-gray-300">Grade Tools</div>
+          <div className="bg-white dark:bg-gray-800 p-3 sm:p-4 lg:p-6 rounded-lg shadow-sm">
+            <div className="text-xl sm:text-2xl font-bold text-orange-600">Pro</div>
+            <div className="text-xs sm:text-sm text-gray-600 dark:text-gray-300">Grade Tools</div>
           </div>
         </div>
       </div>

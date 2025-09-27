@@ -97,51 +97,51 @@ export default function NetworkScannerPage() {
   }
 
   return (
-    <div className="container mx-auto px-4 py-8 max-w-6xl">
+    <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8 max-w-7xl">
       {/* Header */}
-      <div className="mb-8">
-        <div className="flex items-center gap-3 mb-4">
-          <div className="p-2 bg-blue-100 dark:bg-blue-900/20 rounded-lg">
-            <Network className="w-6 h-6 text-blue-600 dark:text-blue-400" />
+      <div className="mb-6 sm:mb-8">
+        <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3 mb-4">
+          <div className="p-2 sm:p-3 bg-blue-100 dark:bg-blue-900/20 rounded-lg">
+            <Network className="w-5 h-5 sm:w-6 sm:h-6 text-blue-600 dark:text-blue-400" />
           </div>
-          <div>
-            <h1 className="text-3xl font-bold">Network Scanner</h1>
-            <p className="text-muted-foreground">Comprehensive network discovery and port scanning</p>
+          <div className="flex-1">
+            <h1 className="text-2xl sm:text-3xl font-bold">Network Scanner</h1>
+            <p className="text-muted-foreground text-sm sm:text-base">Comprehensive network discovery and port scanning</p>
           </div>
         </div>
         
         <div className="flex flex-wrap gap-2">
-          <Badge variant="outline" className="text-blue-600">
+          <Badge variant="outline" className="text-blue-600 text-xs">
             <Globe className="w-3 h-3 mr-1" />
             Network Discovery
           </Badge>
-          <Badge variant="outline" className="text-green-600">
+          <Badge variant="outline" className="text-green-600 text-xs">
             <Server className="w-3 h-3 mr-1" />
             Port Scanning
           </Badge>
-          <Badge variant="outline" className="text-purple-600">
+          <Badge variant="outline" className="text-purple-600 text-xs">
             <Wifi className="w-3 h-3 mr-1" />
             Host Detection
           </Badge>
         </div>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 xl:grid-cols-3 gap-4 sm:gap-6">
         {/* Scan Configuration */}
-        <div className="lg:col-span-1">
+        <div className="xl:col-span-1">
           <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <Shield className="w-5 h-5" />
+            <CardHeader className="px-4 sm:px-6">
+              <CardTitle className="flex items-center gap-2 text-lg">
+                <Shield className="w-4 h-4 sm:w-5 sm:h-5" />
                 Scan Configuration
               </CardTitle>
-              <CardDescription>
+              <CardDescription className="text-sm">
                 Configure your network scan parameters
               </CardDescription>
             </CardHeader>
-            <CardContent className="space-y-4">
+            <CardContent className="space-y-4 px-4 sm:px-6">
               <div>
-                <Label htmlFor="target">Target Network/IP</Label>
+                <Label htmlFor="target" className="text-sm font-medium">Target Network/IP</Label>
                 <Input
                   id="target"
                   placeholder="e.g., 192.168.1.0/24 or example.com"

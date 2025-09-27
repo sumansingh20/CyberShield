@@ -153,7 +153,7 @@ export default function WirelessNetworkScannerPage() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-900 via-blue-900 to-slate-900 p-4">
-      <div className="max-w-6xl mx-auto">
+      <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8">
         {/* Header */}
         <div className="flex items-center gap-4 mb-8">
           <Link href="/tools" className="p-2 hover:bg-white/10 rounded-lg transition-colors">
