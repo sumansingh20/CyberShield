@@ -112,4 +112,35 @@ body {
     backdrop-filter: blur(12px);
     border: 1px solid rgba(255, 255, 255, 0.2);
   }
+  
+  /* Fix layout cutting issues */
+  .tool-container {
+    @apply container mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8 max-w-7xl;
+  }
+  
+  .tool-card {
+    @apply mx-2 sm:mx-0;
+  }
+  
+  .tool-grid {
+    @apply grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6;
+  }
+  
+  .tool-grid-2 {
+    @apply grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6;
+  }
+  
+  /* Prevent text overflow */
+  .tool-text {
+    @apply break-words overflow-hidden;
+  }
+  
+  .tool-code {
+    @apply font-mono text-xs sm:text-sm break-all overflow-hidden;
+  }
+  
+  /* Better responsive padding */
+  .tool-padding {
+    @apply px-4 sm:px-6;
+  }
 }

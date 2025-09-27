@@ -71,37 +71,37 @@ export default function PortScannerPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800 p-3 sm:p-4">
-      <div className="container mx-auto max-w-5xl">
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8 max-w-6xl">
         {/* Header */}
         <div className="text-center mb-6 sm:mb-8">
           <div className="flex flex-col sm:flex-row items-center justify-center mb-4 gap-2 sm:gap-4">
-            <Shield className="h-8 w-8 sm:h-12 sm:w-12 text-blue-500" />
-            <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+            <Shield className="h-8 w-8 sm:h-10 sm:w-10 lg:h-12 lg:w-12 text-blue-500" />
+            <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent text-center">
               Port Scanner
             </h1>
           </div>
-          <p className="text-gray-600 dark:text-gray-300 text-sm sm:text-base lg:text-lg px-2">
+          <p className="text-gray-600 dark:text-gray-300 text-sm sm:text-base lg:text-lg px-2 sm:px-4">
             Scan for open ports and running services
           </p>
           <Badge className="mt-2" variant="outline">Intermediate</Badge>
         </div>
 
         {/* Input Form */}
-        <Card className="mb-8">
-          <CardHeader>
-            <CardTitle className="flex items-center">
-              <Wifi className="h-5 w-5 mr-2" />
+        <Card className="mb-6 sm:mb-8 mx-2 sm:mx-0">
+          <CardHeader className="px-4 sm:px-6">
+            <CardTitle className="flex items-center text-lg sm:text-xl">
+              <Wifi className="h-4 w-4 sm:h-5 sm:w-5 mr-2" />
               Scan Configuration
             </CardTitle>
-            <CardDescription>
+            <CardDescription className="text-sm">
               Configure your port scan parameters
             </CardDescription>
           </CardHeader>
-          <CardContent>
+          <CardContent className="px-4 sm:px-6">
             <div className="space-y-4">
               <div>
-                <Label htmlFor="target">Target (IP or Domain)</Label>
+                <Label htmlFor="target" className="text-sm font-medium">Target (IP or Domain)</Label>
                 <Input
                   id="target"
                   placeholder="192.168.1.1 or example.com"
@@ -111,7 +111,7 @@ export default function PortScannerPage() {
                 />
               </div>
               <div>
-                <Label htmlFor="ports">Ports (comma separated)</Label>
+                <Label htmlFor="ports" className="text-sm font-medium">Ports (comma separated)</Label>
                 <Input
                   id="ports"
                   placeholder="80,443,22,21,25,53"
@@ -119,7 +119,7 @@ export default function PortScannerPage() {
                   onChange={(e) => setPorts(e.target.value)}
                   className="mt-1"
                 />
-                <p className="text-sm text-gray-500 mt-1">
+                <p className="text-xs sm:text-sm text-gray-500 mt-1">
                   Common ports: 80 (HTTP), 443 (HTTPS), 22 (SSH), 21 (FTP), 25 (SMTP), 53 (DNS)
                 </p>
               </div>
@@ -146,30 +146,30 @@ export default function PortScannerPage() {
 
         {/* Results */}
         {results && (
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center">
-                <CheckCircle className="h-5 w-5 mr-2 text-green-500" />
+          <Card className="mx-2 sm:mx-0">
+            <CardHeader className="px-4 sm:px-6">
+              <CardTitle className="flex items-center text-lg sm:text-xl">
+                <CheckCircle className="h-4 w-4 sm:h-5 sm:w-5 mr-2 text-green-500" />
                 Scan Results
               </CardTitle>
-              <CardDescription>
+              <CardDescription className="text-sm">
                 Port scan results for {results.target}
               </CardDescription>
             </CardHeader>
-            <CardContent>
+            <CardContent className="px-4 sm:px-6">
               {results.ports?.open && results.ports.open.length > 0 ? (
                 <div className="space-y-3">
                   {results.ports.open.map((port: any, index: number) => (
-                    <div key={index} className="flex items-center justify-between p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
-                      <div className="flex items-center">
-                        <div className="font-mono text-lg font-semibold mr-4">
+                    <div key={index} className="flex flex-col sm:flex-row sm:items-center justify-between p-3 sm:p-4 bg-gray-50 dark:bg-gray-700 rounded-lg gap-2 sm:gap-4">
+                      <div className="flex items-start sm:items-center">
+                        <div className="font-mono text-base sm:text-lg font-semibold mr-3 sm:mr-4 min-w-0">
                           {port.port}
                         </div>
-                        <div>
-                          <div className="font-medium">{port.service || 'Unknown Service'}</div>
-                          <div className="text-sm text-gray-500">TCP</div>
+                        <div className="min-w-0 flex-1">
+                          <div className="font-medium text-sm sm:text-base truncate">{port.service || 'Unknown Service'}</div>
+                          <div className="text-xs sm:text-sm text-gray-500">TCP</div>
                           {port.banner && (
-                            <div className="text-xs text-gray-400 mt-1 max-w-md truncate">
+                            <div className="text-xs text-gray-400 mt-1 break-all">
                               {port.banner}
                             </div>
                           )}
@@ -180,7 +180,7 @@ export default function PortScannerPage() {
                           )}
                         </div>
                       </div>
-                      <Badge className="text-green-600 bg-green-100 dark:bg-green-900">
+                      <Badge className="text-green-600 bg-green-100 dark:bg-green-900 shrink-0">
                         Open
                       </Badge>
                     </div>
@@ -188,8 +188,8 @@ export default function PortScannerPage() {
                   
                   {/* Summary Statistics */}
                   <div className="mt-6 p-4 bg-blue-50 dark:bg-blue-900/20 rounded-lg">
-                    <h4 className="font-semibold text-blue-800 dark:text-blue-200 mb-2">Scan Summary</h4>
-                    <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
+                    <h4 className="font-semibold text-blue-800 dark:text-blue-200 mb-2 text-sm sm:text-base">Scan Summary</h4>
+                    <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 text-xs sm:text-sm">
                       <div>
                         <div className="text-gray-600 dark:text-gray-400">Total Scanned</div>
                         <div className="font-semibold">{results.totalPorts}</div>
@@ -235,12 +235,12 @@ export default function PortScannerPage() {
         )}
 
         {/* Info */}
-        <Card className="mt-8">
-          <CardHeader>
-            <CardTitle>About Port Scanning</CardTitle>
+        <Card className="mt-6 sm:mt-8 mx-2 sm:mx-0">
+          <CardHeader className="px-4 sm:px-6">
+            <CardTitle className="text-lg sm:text-xl">About Port Scanning</CardTitle>
           </CardHeader>
-          <CardContent>
-            <div className="prose dark:prose-invert max-w-none">
+          <CardContent className="px-4 sm:px-6">
+            <div className="prose dark:prose-invert max-w-none text-sm sm:text-base">
               <p>
                 Port scanning is a reconnaissance technique used to discover open ports and services 
                 running on a target system. This information helps identify potential attack vectors 
@@ -252,8 +252,8 @@ export default function PortScannerPage() {
                 <li><strong>Closed:</strong> Port is not accepting connections</li>
                 <li><strong>Filtered:</strong> Port is blocked by firewall</li>
               </ul>
-              <div className="mt-4 p-4 bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-800 rounded-lg">
-                <p className="text-sm text-yellow-800 dark:text-yellow-200">
+              <div className="mt-4 p-3 sm:p-4 bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-800 rounded-lg">
+                <p className="text-xs sm:text-sm text-yellow-800 dark:text-yellow-200">
                   <strong>Note:</strong> Only use this tool on systems you own or have explicit permission to test.
                 </p>
               </div>

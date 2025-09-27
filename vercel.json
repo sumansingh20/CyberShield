@@ -9,17 +9,6 @@
     }
   },
   "regions": ["iad1"],
-  "github": {
-    "silent": true
-  },
-  "build": {
-    "env": {
-      "JWT_SECRET": "build-time-placeholder-secret",
-      "JWT_REFRESH_SECRET": "build-time-placeholder-secret",
-      "MONGODB_URI": "mongodb://localhost:27017/build-placeholder",
-      "NODE_ENV": "production"
-    }
-  },
   "headers": [
     {
       "source": "/api/(.*)",

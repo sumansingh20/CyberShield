@@ -35,16 +35,18 @@ async function connectDB(): Promise<typeof mongoose> {
   if (!cached!.promise) {
     const opts = {
       bufferCommands: false,
-      // Production settings for Vercel/Atlas
-      serverSelectionTimeoutMS: 5000, // 5 seconds
-      connectTimeoutMS: 5000, // 5 seconds  
-      socketTimeoutMS: 15000, // 15 seconds
-      maxPoolSize: 10, // Maximum number of connections
-      minPoolSize: 1, // Minimum number of connections for production
+      // Optimized settings for performance
+      serverSelectionTimeoutMS: 2000, // Reduced from 5s to 2s
+      connectTimeoutMS: 2000, // Reduced from 5s to 2s  
+      socketTimeoutMS: 10000, // Reduced from 15s to 10s
+      maxPoolSize: 5, // Reduced pool size for faster connections
+      minPoolSize: 1,
       retryWrites: true,
-      retryReads: true,
-      autoIndex: process.env.NODE_ENV === 'development', // Only build indexes in development
-      maxIdleTimeMS: 30000, // Close connections after 30 seconds of inactivity
+      retryReads: false, // Disabled for faster reads
+      autoIndex: false, // Always disabled for performance
+      maxIdleTimeMS: 15000, // Reduced from 30s to 15s
+      heartbeatFrequencyMS: 10000, // 10s heartbeat
+      readPreference: 'primary' as const, // Always read from primary for consistency
     }
 
     cached!.promise = mongoose.connect(MONGODB_URI, opts)

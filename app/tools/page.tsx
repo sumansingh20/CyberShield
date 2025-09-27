@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useMemo } from "react"
 import Link from "next/link"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/src/ui/components/ui/card"
 import { Badge } from "@/src/ui/components/ui/badge"
@@ -152,12 +152,15 @@ export default function ToolsPage() {
   const [searchTerm, setSearchTerm] = useState('')
   const [selectedCategory, setSelectedCategory] = useState('all')
 
-  const filteredTools = securityTools.filter(tool => {
-    const matchesSearch = tool.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         tool.description.toLowerCase().includes(searchTerm.toLowerCase())
-    const matchesCategory = selectedCategory === 'all' || tool.category === selectedCategory
-    return matchesSearch && matchesCategory
-  })
+  // Memoize filtered tools to prevent unnecessary recalculations
+  const filteredTools = useMemo(() => {
+    return securityTools.filter(tool => {
+      const matchesSearch = tool.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                           tool.description.toLowerCase().includes(searchTerm.toLowerCase())
+      const matchesCategory = selectedCategory === 'all' || tool.category === selectedCategory
+      return matchesSearch && matchesCategory
+    })
+  }, [searchTerm, selectedCategory])
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800">
@@ -200,7 +203,7 @@ export default function ToolsPage() {
         </div>
 
         {/* Tools Grid */}
-        <div className="max-w-7xl mx-auto px-2 sm:px-0">
+        <div className="max-w-7xl mx-auto px-2 sm:px-4 lg:px-0">
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6">
             {filteredTools.map((tool) => {
               const Icon = tool.icon

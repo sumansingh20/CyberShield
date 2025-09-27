@@ -134,7 +134,13 @@ class ThreatIntelligenceEngine {
   }
 
   static async analyzeAttackPatterns(patterns: string[]): Promise<any> {
-    const analysis = {
+    const analysis: {
+      mitreMapping: Array<{ id: string; name: string; detected: boolean }>
+      threatGroups: Array<{ group: string; description: string; confidence: string }>
+      malwareFamilies: Array<{ family: string; description: string; confidence: string }>
+      attackChains: Array<{ phase: string; technique: string; description: string }>
+      riskScore: number
+    } = {
       mitreMapping: [],
       threatGroups: [],
       malwareFamilies: [],
@@ -167,7 +173,7 @@ class ThreatIntelligenceEngine {
       Object.entries(THREAT_INTELLIGENCE_SOURCES.ATTACK_PATTERNS.MALWARE_FAMILIES).forEach(([family, description]) => {
         if (patternLower.includes(family.toLowerCase())) {
           analysis.malwareFamilies = analysis.malwareFamilies || []
-          analysis.malwareFamilies.push({ family, description, detected: true })
+          analysis.malwareFamilies.push({ family, description, confidence: 'High' })
           analysis.riskScore += 20
         }
       })
@@ -177,7 +183,13 @@ class ThreatIntelligenceEngine {
   }
 
   static async gatherVulnerabilityIntelligence(vulnerabilities: string[]): Promise<any> {
-    const intelligence = {
+    const intelligence: {
+      criticalCVEs: Array<{ cve: string; severity: string; exploited: boolean; patchAvailable: boolean }>
+      exploitKits: Array<{ kit: string; active: boolean; targetingVuln: string }>
+      zerodays: Array<{ vuln: string; discovered: string; publicized: boolean }>
+      patchingPriority: Array<{ vuln: string; priority: string; reason: string }>
+      riskScore: number
+    } = {
       criticalCVEs: [],
       exploitKits: [],
       zerodays: [],
@@ -228,12 +240,12 @@ class ThreatIntelligenceEngine {
     return {
       indicator: ip,
       type: 'IP',
-      malicious: isMalicious || aiAnalysis.riskLevel === 'HIGH',
-      reputation: isMalicious ? 'Malicious' : 'Clean',
+      malicious: isMalicious || aiAnalysis.isSuspicious,
+      reputation: isMalicious ? 'Malicious' : aiAnalysis.reputation,
       sources: ['Internal Feed', 'AI Analysis'],
       firstSeen: new Date(Date.now() - Math.random() * 86400000 * 30).toISOString(),
       lastSeen: new Date().toISOString(),
-      geolocation: aiAnalysis.country || 'Unknown',
+      geolocation: 'Unknown', // Static for now since no geolocation in aiAnalysis
       threatTypes: isMalicious ? ['C2', 'Malware', 'Scanning'] : []
     }
   }
@@ -248,8 +260,8 @@ class ThreatIntelligenceEngine {
     return {
       indicator: domain,
       type: 'Domain',
-      malicious: isMalicious || aiAnalysis.riskLevel === 'HIGH',
-      reputation: isMalicious ? 'Malicious' : 'Clean',
+      malicious: isMalicious || aiAnalysis.reputation === 'SUSPICIOUS',
+      reputation: isMalicious ? 'Malicious' : aiAnalysis.reputation,
       sources: ['DNS Intelligence', 'AI Analysis'],
       registrationDate: new Date(Date.now() - Math.random() * 86400000 * 365).toISOString(),
       threatTypes: isMalicious ? ['Phishing', 'Malware Hosting', 'C2'] : [],

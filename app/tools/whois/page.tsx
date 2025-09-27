@@ -120,18 +120,18 @@ export default function WhoisLookupPage() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-green-50 to-emerald-50 dark:from-gray-900 dark:to-gray-800">
-      <div className="container mx-auto px-4 py-8">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8 max-w-6xl">
         {/* Header */}
-        <div className="text-center mb-8">
+        <div className="text-center mb-6 sm:mb-8">
           <Link 
             href="/tools" 
-            className="inline-flex items-center text-green-600 hover:text-green-800 transition-colors mb-4"
+            className="inline-flex items-center text-green-600 hover:text-green-800 transition-colors mb-4 text-sm sm:text-base"
           >
             ← Back to Tools
           </Link>
-          <div className="flex items-center justify-center gap-3 mb-4">
-            <Search className="h-8 w-8 text-green-600" />
-            <h1 className="text-3xl font-bold text-gray-900 dark:text-white">
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-2 sm:gap-3 mb-4">
+            <Search className="h-6 w-6 sm:h-8 sm:w-8 text-green-600" />
+            <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-900 dark:text-white text-center">
               WHOIS Lookup Tool
             </h1>
           </div>

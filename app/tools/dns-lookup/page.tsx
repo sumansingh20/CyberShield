@@ -115,40 +115,40 @@ export default function DNSLookupPage() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-gray-900 dark:to-gray-800">
-      <div className="container mx-auto px-4 py-8">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8 max-w-7xl">
         {/* Header */}
-        <div className="text-center mb-8">
+        <div className="text-center mb-6 sm:mb-8">
           <Link 
             href="/tools" 
-            className="inline-flex items-center text-blue-600 hover:text-blue-800 transition-colors mb-4"
+            className="inline-flex items-center text-blue-600 hover:text-blue-800 transition-colors mb-4 text-sm sm:text-base"
           >
             ← Back to Tools
           </Link>
-          <div className="flex items-center justify-center gap-3 mb-4">
-            <Globe className="h-8 w-8 text-blue-600" />
-            <h1 className="text-3xl font-bold text-gray-900 dark:text-white">
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-2 sm:gap-3 mb-4">
+            <Globe className="h-6 w-6 sm:h-8 sm:w-8 text-blue-600" />
+            <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-900 dark:text-white text-center">
               DNS Lookup Tool
             </h1>
           </div>
-          <p className="text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
+          <p className="text-sm sm:text-base text-gray-600 dark:text-gray-300 max-w-2xl mx-auto px-4">
             Perform comprehensive DNS record lookups to analyze domain configurations, 
             mail servers, and network infrastructure.
           </p>
         </div>
 
         {/* Input Section */}
-        <Card className="max-w-2xl mx-auto mb-8">
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <Search className="h-5 w-5" />
+        <Card className="max-w-2xl mx-auto mb-6 sm:mb-8 mx-2 sm:mx-auto">
+          <CardHeader className="px-4 sm:px-6">
+            <CardTitle className="flex items-center gap-2 text-lg sm:text-xl">
+              <Search className="h-4 w-4 sm:h-5 sm:w-5" />
               Domain Lookup
             </CardTitle>
-            <CardDescription>
+            <CardDescription className="text-sm">
               Enter a domain name to analyze its DNS records
             </CardDescription>
           </CardHeader>
-          <CardContent className="space-y-4">
-            <div className="flex gap-2">
+          <CardContent className="space-y-4 px-4 sm:px-6">
+            <div className="flex flex-col sm:flex-row gap-2">
               <Input
                 placeholder="example.com"
                 value={domain}
@@ -160,7 +160,7 @@ export default function DNSLookupPage() {
               <Button 
                 onClick={performLookup} 
                 disabled={loading || !domain.trim()}
-                className="px-6"
+                className="px-4 sm:px-6 w-full sm:w-auto"
               >
                 {loading ? (
                   <>
@@ -173,7 +173,7 @@ export default function DNSLookupPage() {
               </Button>
             </div>
             
-            <div className="text-sm text-gray-500 dark:text-gray-400">
+            <div className="text-xs sm:text-sm text-gray-500 dark:text-gray-400">
               <strong>Examples:</strong> google.com, github.com, cloudflare.com
             </div>
           </CardContent>
@@ -181,7 +181,7 @@ export default function DNSLookupPage() {
 
         {/* Results Section */}
         {result && (
-          <div className="max-w-6xl mx-auto">
+          <div className="max-w-6xl mx-auto px-2 sm:px-0">
             {result.status === 'error' ? (
               <Alert className="mb-6">
                 <AlertCircle className="h-4 w-4" />
@@ -202,9 +202,9 @@ export default function DNSLookupPage() {
                 </div>
 
                 <Tabs defaultValue="A" className="w-full">
-                  <TabsList className="grid w-full grid-cols-7">
+                  <TabsList className="grid w-full grid-cols-4 sm:grid-cols-7 gap-1">
                     {recordTypes.map(({ type }) => (
-                      <TabsTrigger key={type} value={type} className="text-sm">
+                      <TabsTrigger key={type} value={type} className="text-xs sm:text-sm px-2 sm:px-3">
                         {type}
                       </TabsTrigger>
                     ))}
@@ -274,7 +274,7 @@ export default function DNSLookupPage() {
 
         {/* Info Section */}
         {!result && (
-          <div className="max-w-4xl mx-auto grid md:grid-cols-2 gap-6 mt-8">
+          <div className="max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6 mt-6 sm:mt-8 px-2 sm:px-0">
             <Card>
               <CardHeader>
                 <CardTitle className="text-lg">About DNS Lookup</CardTitle>

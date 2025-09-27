@@ -33,7 +33,19 @@ const nextConfig = {
       '@radix-ui/react-dialog',
       '@radix-ui/react-popover'
     ],
+    serverComponentsExternalPackages: ['mongoose'], // Keep mongoose on server side
   },
+  
+  // Production optimizations
+  compiler: {
+    removeConsole: process.env.NODE_ENV === 'production',
+  },
+  
+  // Enable compression
+  compress: true,
+  
+  // Optimize build
+  swcMinify: true,
   
   // Security headers
   async headers() {
