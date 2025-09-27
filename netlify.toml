@@ -1,0 +1,57 @@
+[build]
+  command = "pnpm run build"
+  functions = ".netlify/functions"
+  publish = ".next"
+
+[build.environment]
+  NODE_VERSION = "18"
+  PNPM_VERSION = "8"
+  NODE_ENV = "production"
+  JWT_SECRET = "build-time-placeholder-secret"
+  JWT_REFRESH_SECRET = "build-time-placeholder-secret"
+  MONGODB_URI = "mongodb://localhost:27017/build-placeholder"
+
+# Next.js plugin for Netlify
+[[plugins]]
+  package = "@netlify/plugin-nextjs"
+
+# Environment variables (set these in Netlify dashboard)
+# MONGODB_URI
+# JWT_SECRET  
+# JWT_REFRESH_SECRET
+# NEXT_PUBLIC_RECAPTCHA_SITE_KEY
+# RECAPTCHA_SECRET_KEY
+# SMTP_HOST, SMTP_PORT, SMTP_USER, SMTP_PASS
+# TWILIO_* variables
+
+# Security headers
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Frame-Options = "DENY"
+    X-XSS-Protection = "1; mode=block"
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+    Permissions-Policy = "camera=(), microphone=(), geolocation=()"
+
+# Cache static assets
+[[headers]]
+  for = "/static/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "/_next/static/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+# Redirects for client-side routing
+[[redirects]]
+  from = "/api/*"
+  to = "/.netlify/functions/:splat"
+  status = 200
+
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200

@@ -1,0 +1,75 @@
+{
+  "compilerOptions": {
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ],
+    "allowJs": true,
+    "skipLibCheck": true,
+    "strict": true,
+    "noEmit": true,
+    "incremental": true,
+    "module": "esnext",
+    "esModuleInterop": true,
+    "moduleResolution": "bundler",
+    "forceConsistentCasingInFileNames": true,
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "jsx": "preserve",
+    "baseUrl": "./",
+    "paths": {
+      "@/*": [
+        "./*"
+      ],
+      "@/src/*": [
+        "./src/*"
+      ],
+      "@/components/ui/*": [
+        "./src/ui/components/ui/*"
+      ],
+      "@/components/*": [
+        "./src/ui/components/*"
+      ],
+      "@/lib/*": [
+        "./src/core/lib/*"
+      ],
+      "@/lib/utils": [
+        "./src/core/lib/utils"
+      ],
+      "@/lib/utils/*": [
+        "./src/core/lib/utils/*"
+      ],
+      "@/lib/models/*": [
+        "./src/core/lib/models/*"
+      ],
+      "@/types/*": [
+        "./src/core/types/*"
+      ],
+      "@/hooks/*": [
+        "./src/ui/hooks/*"
+      ],
+      "@/hooks/use-toast": [
+        "./src/ui/hooks/use-toast"
+      ],
+      "@/contexts/*": [
+        "./src/ui/contexts/*"
+      ]
+    },
+    "plugins": [
+      {
+        "name": "next"
+      }
+    ],
+    "target": "ES2017"
+  },
+  "include": [
+    "next-env.d.ts",
+    ".next/types/**/*.ts",
+    "**/*.ts",
+    "**/*.tsx"
+  ],
+  "exclude": [
+    "node_modules"
+  ]
+}

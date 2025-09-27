@@ -1,0 +1,73 @@
+"use client"
+
+import { useState } from "react"
+import { useAuth } from "@/src/auth/utils/AuthContext"
+import { useApi } from "@/src/ui/hooks/useApi"
+import { ToolForm } from "@/components/ToolForm"
+import { TerminalOutput } from "@/components/TerminalOutput"
+import { Button } from "@/src/ui/components/ui/button"
+import { ArrowLeft } from "lucide-react"
+import Link from "next/link"
+
+interface ScanResult {
+  output: string
+  error?: string
+  executionTime: number
+  status: "success" | "error" | "timeout"
+}
+
+export default function WhoisPage() {
+  const [result, setResult] = useState<ScanResult | null>(null)
+  const { apiCall, loading } = useApi()
+
+  const handleLookup = async (target: string) => {
+    try {
+      const response = await apiCall("/api/tools/whois", {
+        method: "POST",
+        body: { target },
+      })
+
+      if (response && response.success) {
+        setResult(response.result)
+      }
+    } catch (error) {
+      // Error handled by useApi hook
+    }
+  }
+
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-slate-900 to-slate-800 p-4">
+      <div className="container mx-auto max-w-4xl">
+        {/* Header */}
+        <div className="mb-6 flex items-center space-x-4">
+          <Link href="/dashboard">
+            <Button variant="outline" size="sm">
+              <ArrowLeft className="h-4 w-4 mr-2" />
+              Back to Dashboard
+            </Button>
+          </Link>
+          <h1 className="text-3xl font-bold text-white">WHOIS Lookup</h1>
+        </div>
+
+        {/* Tool Form */}
+        <ToolForm
+          title="WHOIS Information"
+          description="Get domain registration information including registrar, creation date, and contact details."
+          inputLabel="Domain or IP"
+          inputPlaceholder="e.g., example.com or 192.168.1.1"
+          onSubmit={handleLookup}
+          isLoading={loading}
+        />
+
+        {/* Terminal Output */}
+        <TerminalOutput
+          output={result?.output || ""}
+          isLoading={loading}
+          title="WHOIS Lookup"
+          executionTime={result?.executionTime}
+          status={result?.status}
+        />
+      </div>
+    </div>
+  )
+}

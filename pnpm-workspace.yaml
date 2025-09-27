@@ -1,0 +1,5 @@
+ignoredBuiltDependencies:
+  - '@parcel/watcher'
+  - esbuild
+  - netlify-cli
+  - unix-dgram
