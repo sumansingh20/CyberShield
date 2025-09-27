@@ -453,7 +453,10 @@ export async function POST(request: NextRequest) {
     
     const results = await analyzeSocialEngineeringVectors(body)
     
-    return NextResponse.json(results)
+    return NextResponse.json({
+      success: true,
+      data: results
+    })
     
   } catch (error) {
     console.error('Social Engineering API Error:', error)

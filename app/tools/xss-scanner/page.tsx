@@ -107,7 +107,12 @@ export default function XSSVulnerabilityScannerPage() {
       }
 
       const data = await response.json()
-      setResults(data)
+      
+      if (data.success && data.data) {
+        setResults(data.data)
+      } else {
+        throw new Error(data.message || 'XSS vulnerability scan failed')
+      }
       setProgress(100)
     } catch (err) {
       setError(err instanceof Error ? err.message : 'An error occurred')

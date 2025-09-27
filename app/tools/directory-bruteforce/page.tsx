@@ -118,7 +118,12 @@ export default function DirectoryBruteForcePage() {
       }
 
       const data = await response.json()
-      setResults(data)
+      
+      if (data.success && data.data) {
+        setResults(data.data)
+      } else {
+        throw new Error(data.message || 'Directory brute force failed')
+      }
       setProgress(100)
     } catch (err) {
       setError(err instanceof Error ? err.message : 'An error occurred')

@@ -77,7 +77,7 @@ export default function NmapPage() {
         })
       })
 
-      if (response.success) {
+      if (response?.success) {
         setResults(response.data)
         const totalHosts = response.data.hosts.length
         const upHosts = response.data.hosts.filter((h: any) => h.status === 'up').length
@@ -88,7 +88,7 @@ export default function NmapPage() {
       } else {
         toast({
           title: "Error",
-          description: response.message || "Advanced scan failed",
+          description: response?.message || "Advanced scan failed",
           variant: "destructive",
         })
       }

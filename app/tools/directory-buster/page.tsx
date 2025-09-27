@@ -79,7 +79,7 @@ export default function DirectoryBusterPage() {
         })
       })
 
-      if (response.success) {
+      if (response?.success) {
         setResults(response.data)
         toast({
           title: "Success",
@@ -88,7 +88,7 @@ export default function DirectoryBusterPage() {
       } else {
         toast({
           title: "Error",
-          description: response.message || "Directory bust failed",
+          description: response?.message || "Directory bust failed",
           variant: "destructive",
         })
       }

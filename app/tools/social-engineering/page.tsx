@@ -140,7 +140,12 @@ export default function SocialEngineeringPage() {
       }
 
       const data = await response.json()
-      setResults(data)
+      
+      if (data.success && data.data) {
+        setResults(data.data)
+      } else {
+        throw new Error(data.message || 'Social engineering analysis failed')
+      }
     } catch (err) {
       setError(err instanceof Error ? err.message : 'An error occurred')
     } finally {

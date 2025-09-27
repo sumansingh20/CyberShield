@@ -108,7 +108,12 @@ export default function PayloadGeneratorPage() {
       }
 
       const data = await response.json()
-      setResults(data)
+      
+      if (data.success && data.data) {
+        setResults(data.data)
+      } else {
+        throw new Error(data.message || 'Failed to generate payloads')
+      }
     } catch (err) {
       setError(err instanceof Error ? err.message : 'An error occurred')
     } finally {

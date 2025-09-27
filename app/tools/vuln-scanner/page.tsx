@@ -69,7 +69,7 @@ export default function VulnScannerPage() {
         })
       })
 
-      if (response.success) {
+      if (response?.success) {
         setResults(response.data)
         toast({
           title: "Success",
@@ -78,7 +78,7 @@ export default function VulnScannerPage() {
       } else {
         toast({
           title: "Error",
-          description: response.message || "Vulnerability scan failed",
+          description: response?.message || "Vulnerability scan failed",
           variant: "destructive",
         })
       }

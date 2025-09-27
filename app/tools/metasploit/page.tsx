@@ -97,7 +97,7 @@ export default function MetasploitPage() {
         })
       })
 
-      if (response.success) {
+      if (response?.success) {
         setResults(response.data)
         toast({
           title: "Exploit Attempt Completed",
@@ -107,7 +107,7 @@ export default function MetasploitPage() {
       } else {
         toast({
           title: "Error",
-          description: response.message || "Metasploit exploit failed",
+          description: response?.message || "Metasploit exploit failed",
           variant: "destructive",
         })
       }

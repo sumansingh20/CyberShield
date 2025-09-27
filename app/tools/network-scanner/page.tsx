@@ -62,7 +62,7 @@ export default function NetworkScannerPage() {
         })
       })
 
-      if (response.success) {
+      if (response?.success) {
         setResults(response.data)
         toast({
           title: "Success",
@@ -71,7 +71,7 @@ export default function NetworkScannerPage() {
       } else {
         toast({
           title: "Error",
-          description: response.message || "Network scan failed",
+          description: response?.message || "Network scan failed",
           variant: "destructive",
         })
       }

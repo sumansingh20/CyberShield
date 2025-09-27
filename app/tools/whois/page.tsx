@@ -49,7 +49,22 @@ export default function WhoisLookupPage() {
       })
 
       const data = await response.json()
-      setResult(data)
+      
+      if (data.success && data.data) {
+        // Convert API response format to expected frontend format
+        setResult({
+          domain: data.data.domain,
+          whoisData: data.data.whoisData,
+          status_code: 'success',
+          ...data.data
+        })
+      } else {
+        setResult({
+          domain,
+          status_code: 'error',
+          message: data.message || 'WHOIS lookup failed'
+        })
+      }
     } catch (error) {
       setResult({
         domain,

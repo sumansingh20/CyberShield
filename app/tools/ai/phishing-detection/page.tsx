@@ -56,7 +56,12 @@ export default function AIPhishingDetection() {
       }
 
       const data = await response.json()
-      setResult(data)
+      
+      if (data.success && data.data) {
+        setResult(data.data)
+      } else {
+        throw new Error(data.message || 'Analysis failed')
+      }
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Analysis failed')
     } finally {

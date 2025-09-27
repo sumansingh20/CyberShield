@@ -80,7 +80,7 @@ export default function MasscanPage() {
         })
       })
 
-      if (response.success) {
+      if (response?.success) {
         setResults(response.data)
         toast({
           title: "Success",
@@ -89,7 +89,7 @@ export default function MasscanPage() {
       } else {
         toast({
           title: "Error",
-          description: response.message || "Masscan failed",
+          description: response?.message || "Masscan failed",
           variant: "destructive",
         })
       }

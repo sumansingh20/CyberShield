@@ -1,0 +1,38 @@
+services:
+  - type: web
+    name: cybershield
+    runtime: node
+    plan: free
+    buildCommand: pnpm install && pnpm run build
+    startCommand: pnpm run start
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: NEXT_PUBLIC_APP_URL
+        value: https://cybershield.onrender.com
+      - key: BASE_URL
+        value: https://cybershield.onrender.com
+      - key: BCRYPT_ROUNDS
+        value: 12
+      - key: SESSION_TIMEOUT
+        value: 30
+      - key: MAX_LOGIN_ATTEMPTS
+        value: 5
+      - key: ACCOUNT_LOCK_TIME
+        value: 7200000
+      - key: RATE_LIMIT_REQUESTS_PER_MINUTE
+        value: 60
+      - key: RATE_LIMIT_REQUESTS_PER_HOUR
+        value: 1000
+      - key: DEFAULT_ADMIN_EMAIL
+        value: admin@cybershield.com
+      - key: MAX_CONCURRENT_SCANS
+        value: 5
+      - key: SCAN_TIMEOUT
+        value: 300000
+      - key: MAX_FILE_SIZE
+        value: 50MB
+      - key: LOG_LEVEL
+        value: info
+      - key: LOG_FILE
+        value: logs/app.log

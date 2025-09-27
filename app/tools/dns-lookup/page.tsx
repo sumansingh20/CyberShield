@@ -64,12 +64,27 @@ export default function DNSLookupPage() {
       })
 
       const data = await response.json()
-      setResult(data)
+      
+      if (data.success && data.data) {
+        // Convert API response format to expected frontend format
+        setResult({
+          domain: data.data.domain,
+          records: data.data.records,
+          status: 'success' as const
+        })
+      } else {
+        setResult({
+          domain,
+          records: {},
+          status: 'error' as const,
+          message: data.message || 'DNS lookup failed'
+        })
+      }
     } catch (error) {
       setResult({
         domain,
         records: {},
-        status: 'error',
+        status: 'error' as const,
         message: 'Failed to perform DNS lookup. Please try again.'
       })
     } finally {

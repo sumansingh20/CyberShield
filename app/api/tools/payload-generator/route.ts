@@ -5,10 +5,10 @@ export async function POST(request: NextRequest) {
     const body = await request.json();
     
     if (!body.payloadType) {
-      return NextResponse.json(
-        { error: 'Payload type is required' },
-        { status: 400 }
-      );
+      return NextResponse.json({
+        success: false,
+        message: 'Payload type is required'
+      }, { status: 400 });
     }
     
     // Simple payload generation
@@ -28,15 +28,17 @@ export async function POST(request: NextRequest) {
       generatedPayloads: payloads,
       summary: `Generated ${payloads.length} payloads`
     };
-    
-    return NextResponse.json(results);
-    
-  } catch (error) {
+
+    return NextResponse.json({
+      success: true,
+      data: results
+    });  } catch (error) {
     console.error('Payload Generator API Error:', error);
     
-    return NextResponse.json(
-      { error: 'Failed to generate payloads' },
-      { status: 500 }
-    );
+    return NextResponse.json({
+      success: false,
+      message: 'Failed to generate payloads',
+      error: error instanceof Error ? error.message : 'Unknown error'
+    }, { status: 500 });
   }
 }

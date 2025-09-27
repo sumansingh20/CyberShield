@@ -267,56 +267,58 @@ export default function PublicDashboard() {
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50 dark:from-slate-950 dark:via-slate-900 dark:to-indigo-950">
       {/* Enhanced Header */}
       <header className="sticky top-0 z-50 backdrop-blur-xl bg-white/80 dark:bg-slate-900/80 border-b border-slate-200/50 dark:border-slate-800/50 shadow-lg">
-        <div className="container mx-auto px-6 py-4">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-3 sm:py-4">
           <div className="flex items-center justify-between">
-            <div className="flex items-center space-x-4">
+            <div className="flex items-center space-x-2 sm:space-x-4">
               <div className="relative">
-                <div className="absolute inset-0 bg-gradient-to-r from-blue-600 to-purple-600 rounded-xl blur opacity-75 animate-pulse"></div>
-                <div className="relative p-3 bg-gradient-to-r from-blue-600 to-purple-600 rounded-xl">
-                  <Shield className="h-7 w-7 text-white" />
+                <div className="absolute inset-0 bg-gradient-to-r from-blue-600 to-purple-600 rounded-lg sm:rounded-xl blur opacity-75 animate-pulse"></div>
+                <div className="relative p-2 sm:p-3 bg-gradient-to-r from-blue-600 to-purple-600 rounded-lg sm:rounded-xl">
+                  <Shield className="h-5 w-5 sm:h-6 sm:w-6 lg:h-7 lg:w-7 text-white" />
                 </div>
               </div>
               <div>
-                <h1 className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+                <h1 className="text-lg sm:text-xl lg:text-2xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
                   CyberShield
                 </h1>
-                <p className="text-sm text-slate-600 dark:text-slate-400">Professional Security Toolkit</p>
+                <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-400 hidden sm:block">Professional Security Toolkit</p>
               </div>
             </div>
             
-            <div className="flex items-center space-x-4">
+            <div className="flex items-center space-x-2 sm:space-x-4">
               <ThemeToggle />
               {isAuthenticated ? (
                 <>
-                  <Link href="/dashboard">
-                    <Button variant="outline" size="sm" className="hidden sm:flex">
-                      <User className="h-4 w-4 mr-2" />
-                      Dashboard
+                  <Link href="/dashboard" className="hidden sm:block">
+                    <Button variant="outline" size="sm" className="text-xs sm:text-sm">
+                      <User className="h-3 w-3 sm:h-4 sm:w-4 mr-1 sm:mr-2" />
+                      <span className="hidden md:inline">Dashboard</span>
+                      <span className="md:hidden">Dash</span>
                     </Button>
                   </Link>
-                  <div className="flex items-center space-x-3 px-4 py-2 rounded-lg bg-slate-100 dark:bg-slate-800">
-                    <div className="p-1.5 rounded-full bg-gradient-to-r from-blue-500 to-purple-500">
-                      <User className="h-3.5 w-3.5 text-white" />
+                  <div className="flex items-center space-x-2 sm:space-x-3 px-2 sm:px-4 py-1.5 sm:py-2 rounded-lg bg-slate-100 dark:bg-slate-800">
+                    <div className="p-1 sm:p-1.5 rounded-full bg-gradient-to-r from-blue-500 to-purple-500">
+                      <User className="h-2.5 w-2.5 sm:h-3.5 sm:w-3.5 text-white" />
                     </div>
-                    <div className="text-sm">
+                    <div className="text-xs sm:text-sm hidden sm:block">
                       <p className="font-medium">{user?.username}</p>
                       <p className="text-xs text-slate-600 dark:text-slate-400 capitalize">{user?.role}</p>
                     </div>
                   </div>
-                  <Button variant="outline" size="sm" onClick={logout}>
-                    <LogOut className="h-4 w-4" />
+                  <Button variant="outline" size="sm" onClick={logout} className="p-2">
+                    <LogOut className="h-3 w-3 sm:h-4 sm:w-4" />
                   </Button>
                 </>
               ) : (
-                <div className="flex items-center space-x-3">
+                <div className="flex items-center space-x-2 sm:space-x-3">
                   <Link href="/login">
-                    <Button variant="ghost" size="sm" className="font-medium">
+                    <Button variant="ghost" size="sm" className="font-medium text-xs sm:text-sm px-2 sm:px-3">
                       Sign In
                     </Button>
                   </Link>
                   <Link href="/register">
-                    <Button size="sm" className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 shadow-lg">
-                      Get Started
+                    <Button size="sm" className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 shadow-lg text-xs sm:text-sm px-3 sm:px-4">
+                      <span className="hidden sm:inline">Get Started</span>
+                      <span className="sm:hidden">Start</span>
                     </Button>
                   </Link>
                 </div>
@@ -329,27 +331,27 @@ export default function PublicDashboard() {
       {/* Hero Section */}
       <section className="relative overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-r from-blue-600/10 via-purple-600/5 to-indigo-600/10"></div>
-        <div className="relative container mx-auto px-6 py-16">
-          <div className="text-center max-w-4xl mx-auto">
-            <div className="inline-flex items-center px-4 py-2 rounded-full bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 text-sm font-medium mb-6">
-              <Shield className="h-4 w-4 mr-2" />
+        <div className="relative container mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 lg:py-16">
+          <div className="text-center max-w-5xl mx-auto">
+            <div className="inline-flex items-center px-3 sm:px-4 py-1.5 sm:py-2 rounded-full bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 text-xs sm:text-sm font-medium mb-4 sm:mb-6">
+              <Shield className="h-3 w-3 sm:h-4 sm:w-4 mr-1 sm:mr-2" />
               Penetration Testing Platform
             </div>
             
-            <h2 className="text-5xl md:text-6xl font-bold mb-6">
+            <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-4 sm:mb-6 px-2">
               <span className="bg-gradient-to-r from-slate-900 to-slate-700 dark:from-white dark:to-slate-300 bg-clip-text text-transparent">
                 {getWelcomeMessage()}
               </span>
             </h2>
             
-            <p className="text-xl text-slate-600 dark:text-slate-400 mb-8 leading-relaxed">
+            <p className="text-base sm:text-lg lg:text-xl text-slate-600 dark:text-slate-400 mb-6 sm:mb-8 leading-relaxed px-4">
               {isAuthenticated 
                 ? 'Professional cybersecurity tools for security assessments and penetration testing.'
                 : 'Real-world security tools for penetration testers and ethical hackers.'
               }
             </p>
 
-            <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
+            <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center items-center">
               <div className="flex items-center space-x-2 text-green-600 dark:text-green-400">
                 <CheckCircle className="h-5 w-5" />
                 <span className="font-medium">All Tools Free</span>
@@ -368,26 +370,26 @@ export default function PublicDashboard() {
       </section>
 
       {/* Enhanced Tools Grid */}
-      <main className="container mx-auto px-6 py-12">
-        <div className="space-y-16">
+      <main className="container mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
+        <div className="space-y-12 sm:space-y-16">
           {/* Essential Security Tools */}
           <div className="relative">
-            <div className="text-center mb-12">
-              <div className="inline-flex items-center justify-center p-3 rounded-2xl bg-gradient-to-r from-green-500 to-emerald-500 shadow-lg mb-4">
-                <CheckCircle className="h-6 w-6 text-white" />
+            <div className="text-center mb-8 sm:mb-12">
+              <div className="inline-flex items-center justify-center p-2 sm:p-3 rounded-xl sm:rounded-2xl bg-gradient-to-r from-green-500 to-emerald-500 shadow-lg mb-3 sm:mb-4">
+                <CheckCircle className="h-5 w-5 sm:h-6 sm:w-6 text-white" />
               </div>
-              <h3 className="text-3xl font-bold mb-3 bg-gradient-to-r from-slate-900 to-slate-700 dark:from-white dark:to-slate-300 bg-clip-text text-transparent">
+              <h3 className="text-2xl sm:text-3xl font-bold mb-2 sm:mb-3 bg-gradient-to-r from-slate-900 to-slate-700 dark:from-white dark:to-slate-300 bg-clip-text text-transparent px-4">
                 Security Tools
               </h3>
-              <p className="text-lg text-slate-600 dark:text-slate-400 max-w-2xl mx-auto">
+              <p className="text-base sm:text-lg text-slate-600 dark:text-slate-400 max-w-2xl mx-auto px-4">
                 Cybersecurity tools for security assessments and penetration testing
               </p>
-              <div className="mt-4 inline-flex items-center px-4 py-2 rounded-full bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300">
-                <span className="font-medium">{beginnerTools.length} Tools • All FREE</span>
+              <div className="mt-3 sm:mt-4 inline-flex items-center px-3 sm:px-4 py-1.5 sm:py-2 rounded-full bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300">
+                <span className="font-medium text-xs sm:text-sm">{beginnerTools.length} Tools • All FREE</span>
               </div>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6">
               {beginnerTools.map((tool) => (
                 <div key={tool.name} className="animate-fade-in">
                   <ToolCard tool={tool} />
@@ -399,22 +401,22 @@ export default function PublicDashboard() {
           {/* Advanced Security Tools */}
           {(intermediateTools.length > 0 || advancedTools.length > 0) && (
             <div className="relative">
-              <div className="text-center mb-12">
-                <div className="inline-flex items-center justify-center p-3 rounded-2xl bg-gradient-to-r from-orange-500 to-red-500 shadow-lg mb-4">
-                  <Target className="h-6 w-6 text-white" />
+              <div className="text-center mb-8 sm:mb-12">
+                <div className="inline-flex items-center justify-center p-2 sm:p-3 rounded-xl sm:rounded-2xl bg-gradient-to-r from-orange-500 to-red-500 shadow-lg mb-3 sm:mb-4">
+                  <Target className="h-5 w-5 sm:h-6 sm:w-6 text-white" />
                 </div>
-                <h3 className="text-3xl font-bold mb-3 bg-gradient-to-r from-slate-900 to-slate-700 dark:from-white dark:to-slate-300 bg-clip-text text-transparent">
+                <h3 className="text-2xl sm:text-3xl font-bold mb-2 sm:mb-3 bg-gradient-to-r from-slate-900 to-slate-700 dark:from-white dark:to-slate-300 bg-clip-text text-transparent px-4">
                   Advanced Tools
                 </h3>
-                <p className="text-lg text-slate-600 dark:text-slate-400 max-w-2xl mx-auto">
+                <p className="text-base sm:text-lg text-slate-600 dark:text-slate-400 max-w-2xl mx-auto px-4">
                   Advanced penetration testing and security analysis tools
                 </p>
-                <div className="mt-4 inline-flex items-center px-4 py-2 rounded-full bg-orange-100 dark:bg-orange-900/30 text-orange-700 dark:text-orange-300">
-                  <span className="font-medium">{intermediateTools.length + advancedTools.length} Tools • All FREE</span>
+                <div className="mt-3 sm:mt-4 inline-flex items-center px-3 sm:px-4 py-1.5 sm:py-2 rounded-full bg-orange-100 dark:bg-orange-900/30 text-orange-700 dark:text-orange-300">
+                  <span className="font-medium text-xs sm:text-sm">{intermediateTools.length + advancedTools.length} Tools • All FREE</span>
                 </div>
               </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
                 {[...intermediateTools, ...advancedTools].map((tool) => (
                   <div key={tool.name} className="animate-fade-in">
                     <ToolCard tool={tool} />
@@ -427,27 +429,26 @@ export default function PublicDashboard() {
           {/* Expert Exploitation Tools */}
           {expertTools.length > 0 && (
             <div className="relative">
-              <div className="text-center mb-12">
-                <div className="inline-flex items-center justify-center p-3 rounded-2xl bg-gradient-to-r from-red-600 to-purple-600 shadow-lg mb-4">
-                  <Zap className="h-6 w-6 text-white" />
+              <div className="text-center mb-8 sm:mb-12">
+                <div className="inline-flex items-center justify-center p-2 sm:p-3 rounded-xl sm:rounded-2xl bg-gradient-to-r from-red-600 to-purple-600 shadow-lg mb-3 sm:mb-4">
+                  <Zap className="h-5 w-5 sm:h-6 sm:w-6 text-white" />
                 </div>
-                <h3 className="text-3xl font-bold mb-3 bg-gradient-to-r from-slate-900 to-slate-700 dark:from-white dark:to-slate-300 bg-clip-text text-transparent">
+                <h3 className="text-2xl sm:text-3xl font-bold mb-2 sm:mb-3 bg-gradient-to-r from-slate-900 to-slate-700 dark:from-white dark:to-slate-300 bg-clip-text text-transparent px-4">
                   Expert Tools
                 </h3>
-                <p className="text-lg text-slate-600 dark:text-slate-400 max-w-2xl mx-auto">
+                <p className="text-base sm:text-lg text-slate-600 dark:text-slate-400 max-w-2xl mx-auto px-4">
                   Exploitation frameworks and advanced security testing tools
                 </p>
-                <div className="mt-4 inline-flex items-center px-4 py-2 rounded-full bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-300">
-                  <span className="font-medium">{expertTools.length} Tools • All FREE</span>
+                <div className="mt-3 sm:mt-4 inline-flex items-center px-3 sm:px-4 py-1.5 sm:py-2 rounded-full bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-300">
+                  <span className="font-medium text-xs sm:text-sm">{expertTools.length} Tools • All FREE</span>
                 </div>
               </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
                 {expertTools.map((tool, index) => (
                   <div
                     key={tool.name}
                     className="animate-fade-in"
-                    style={{ animationDelay: `${index * 100}ms` }}
                   >
                     <ToolCard tool={tool} />
                   </div>
@@ -459,32 +460,32 @@ export default function PublicDashboard() {
 
         {/* Enhanced Call to Action for Non-Authenticated Users */}
         {!isAuthenticated && (
-          <section className="relative mt-20">
-            <div className="absolute inset-0 bg-gradient-to-r from-blue-600/10 via-purple-600/5 to-indigo-600/10 rounded-3xl"></div>
-            <div className="relative p-12 text-center">
+          <section className="relative mt-12 sm:mt-16 lg:mt-20">
+            <div className="absolute inset-0 bg-gradient-to-r from-blue-600/10 via-purple-600/5 to-indigo-600/10 rounded-2xl sm:rounded-3xl"></div>
+            <div className="relative p-6 sm:p-8 lg:p-12 text-center">
               <div className="max-w-4xl mx-auto">
-                <div className="inline-flex items-center justify-center p-4 rounded-3xl bg-gradient-to-r from-blue-600 to-purple-600 shadow-xl mb-6">
-                  <Crown className="h-8 w-8 text-white" />
+                <div className="inline-flex items-center justify-center p-3 sm:p-4 rounded-2xl sm:rounded-3xl bg-gradient-to-r from-blue-600 to-purple-600 shadow-xl mb-4 sm:mb-6">
+                  <Crown className="h-6 w-6 sm:h-8 sm:w-8 text-white" />
                 </div>
                 
-                <h3 className="text-4xl font-bold mb-6 bg-gradient-to-r from-slate-900 to-slate-700 dark:from-white dark:to-slate-300 bg-clip-text text-transparent">
+                <h3 className="text-2xl sm:text-3xl lg:text-4xl font-bold mb-4 sm:mb-6 bg-gradient-to-r from-slate-900 to-slate-700 dark:from-white dark:to-slate-300 bg-clip-text text-transparent px-4">
                   Join the Security Community
                 </h3>
                 
-                <p className="text-xl text-slate-600 dark:text-slate-400 mb-8 max-w-3xl mx-auto leading-relaxed">
+                <p className="text-base sm:text-lg lg:text-xl text-slate-600 dark:text-slate-400 mb-6 sm:mb-8 max-w-3xl mx-auto leading-relaxed px-4">
                   Get access to all penetration testing tools, save your security assessments, 
                   and join security professionals using CyberShield.
                 </p>
 
-                <div className="flex flex-col sm:flex-row gap-4 justify-center mb-8">
+                <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center mb-6 sm:mb-8 px-4">
                   <Link href="/register">
-                    <Button size="lg" className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white shadow-xl hover:shadow-2xl transition-all duration-300 px-8 py-4 text-lg font-semibold">
+                    <Button size="lg" className="w-full sm:w-auto bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white shadow-xl hover:shadow-2xl transition-all duration-300 px-6 sm:px-8 py-3 sm:py-4 text-base sm:text-lg font-semibold">
                       Create Free Account
-                      <ArrowRight className="ml-2 h-5 w-5" />
+                      <ArrowRight className="ml-2 h-4 w-4 sm:h-5 sm:w-5" />
                     </Button>
                   </Link>
                   <Link href="/login">
-                    <Button variant="outline" size="lg" className="border-2 hover:bg-slate-50 dark:hover:bg-slate-800 px-8 py-4 text-lg">
+                    <Button variant="outline" size="lg" className="w-full sm:w-auto border-2 hover:bg-slate-50 dark:hover:bg-slate-800 px-6 sm:px-8 py-3 sm:py-4 text-base sm:text-lg">
                       Sign In
                     </Button>
                   </Link>
@@ -511,39 +512,39 @@ export default function PublicDashboard() {
       </main>
 
       {/* Enhanced Footer */}
-      <footer className="relative mt-20 bg-slate-900 dark:bg-slate-950 text-white">
+      <footer className="relative mt-12 sm:mt-16 lg:mt-20 bg-slate-900 dark:bg-slate-950 text-white">
         <div className="absolute inset-0 bg-gradient-to-r from-blue-900/20 to-purple-900/20"></div>
-        <div className="relative container mx-auto px-6 py-12">
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
-            <div className="col-span-1 md:col-span-2">
-              <div className="flex items-center space-x-3 mb-4">
-                <div className="p-2 bg-gradient-to-r from-blue-600 to-purple-600 rounded-xl">
-                  <Shield className="h-6 w-6 text-white" />
+        <div className="relative container mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8">
+            <div className="col-span-1 sm:col-span-2">
+              <div className="flex items-center space-x-2 sm:space-x-3 mb-3 sm:mb-4">
+                <div className="p-1.5 sm:p-2 bg-gradient-to-r from-blue-600 to-purple-600 rounded-lg sm:rounded-xl">
+                  <Shield className="h-5 w-5 sm:h-6 sm:w-6 text-white" />
                 </div>
                 <div>
-                  <h3 className="text-xl font-bold">CyberShield</h3>
-                  <p className="text-slate-400 text-sm">Professional Security Platform</p>
+                  <h3 className="text-lg sm:text-xl font-bold">CyberShield</h3>
+                  <p className="text-slate-400 text-xs sm:text-sm">Professional Security Platform</p>
                 </div>
               </div>
-              <p className="text-slate-400 mb-4 max-w-md">
+              <p className="text-slate-400 text-sm sm:text-base mb-3 sm:mb-4 max-w-md">
                 Cybersecurity toolkit for security professionals, penetration testers, and ethical hackers. 
                 All tools are free and professionally maintained.
               </p>
-              <div className="flex items-center space-x-4">
-                <Badge className="bg-green-500/20 text-green-400 border-green-500/30">
-                  <CheckCircle className="h-3 w-3 mr-1" />
+              <div className="flex flex-wrap items-center gap-2 sm:gap-3">
+                <Badge className="bg-green-500/20 text-green-400 border-green-500/30 text-xs">
+                  <CheckCircle className="h-2.5 w-2.5 sm:h-3 sm:w-3 mr-1" />
                   All Free
                 </Badge>
-                <Badge className="bg-blue-500/20 text-blue-400 border-blue-500/30">
-                  <Shield className="h-3 w-3 mr-1" />
+                <Badge className="bg-blue-500/20 text-blue-400 border-blue-500/30 text-xs">
+                  <Shield className="h-2.5 w-2.5 sm:h-3 sm:w-3 mr-1" />
                   Professional
                 </Badge>
               </div>
             </div>
 
             <div>
-              <h4 className="font-semibold mb-4">Security Tools</h4>
-              <ul className="space-y-2 text-sm text-slate-400">
+              <h4 className="font-semibold mb-3 sm:mb-4 text-sm sm:text-base">Security Tools</h4>
+              <ul className="space-y-1 sm:space-y-2 text-xs sm:text-sm text-slate-400">
                 <li>Network Scanning</li>
                 <li>Vulnerability Assessment</li>
                 <li>Web Security Testing</li>
@@ -554,8 +555,8 @@ export default function PublicDashboard() {
             </div>
 
             <div>
-              <h4 className="font-semibold mb-4">Platform</h4>
-              <ul className="space-y-2 text-sm text-slate-400">
+              <h4 className="font-semibold mb-3 sm:mb-4 text-sm sm:text-base">Platform</h4>
+              <ul className="space-y-1 sm:space-y-2 text-xs sm:text-sm text-slate-400">
                 <li>Free Forever</li>
                 <li>No Registration Required</li>
                 <li>Professional Grade</li>
