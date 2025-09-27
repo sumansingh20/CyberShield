@@ -148,6 +148,7 @@ class ThreatIntelligenceEngine {
       // Map to MITRE techniques
       Object.entries(THREAT_INTELLIGENCE_SOURCES.ATTACK_PATTERNS.MITRE_TECHNIQUES).forEach(([id, name]) => {
         if (patternLower.includes(name.toLowerCase()) || patternLower.includes(id.toLowerCase())) {
+          analysis.mitreMapping = analysis.mitreMapping || []
           analysis.mitreMapping.push({ id, name, detected: true })
           analysis.riskScore += 15
         }
@@ -156,6 +157,7 @@ class ThreatIntelligenceEngine {
       // Check threat group TTPs
       Object.entries(THREAT_INTELLIGENCE_SOURCES.ATTACK_PATTERNS.THREAT_GROUPS).forEach(([group, description]) => {
         if (patternLower.includes(group.toLowerCase())) {
+          analysis.threatGroups = analysis.threatGroups || []
           analysis.threatGroups.push({ group, description, confidence: 'High' })
           analysis.riskScore += 25
         }
@@ -164,6 +166,7 @@ class ThreatIntelligenceEngine {
       // Check malware family indicators
       Object.entries(THREAT_INTELLIGENCE_SOURCES.ATTACK_PATTERNS.MALWARE_FAMILIES).forEach(([family, description]) => {
         if (patternLower.includes(family.toLowerCase())) {
+          analysis.malwareFamilies = analysis.malwareFamilies || []
           analysis.malwareFamilies.push({ family, description, detected: true })
           analysis.riskScore += 20
         }

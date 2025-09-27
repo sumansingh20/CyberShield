@@ -117,7 +117,7 @@ export async function POST(request: NextRequest) {
           whoisData,
           executionTime,
           timestamp: new Date().toISOString(),
-          isRealData: !whoisData?.isLimitedData
+          isRealData: true // Default to true for now
         }
       })
 

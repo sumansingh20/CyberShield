@@ -1,6 +1,4 @@
-# 🛡️ CyberShield - Professional Cybersecurity Platform
-
-<div align="center">
+# CyberShield - Professional Cybersecurity Platform
 
 ![CyberShield Logo](./public/placeholder-logo.svg)
 
@@ -12,375 +10,293 @@
 
 **A comprehensive cybersecurity platform with real network tools, AI-powered threat detection, and professional-grade penetration testing utilities.**
 
-[🚀 Live Demo](#deployment) | [📖 Documentation](#documentation) | [🛠️ Installation](#installation) | [🔧 Features](#features)
+## Table of Contents
 
-</div>
+- [Overview](#overview)
+- [Key Features](#key-features)
+- [Tech Stack](#tech-stack)
+- [Quick Start](#quick-start)
+- [Deployment](#deployment)
+- [Security Tools](#security-tools)
+- [Environment Variables](#environment-variables)
+- [Contributing](#contributing)
+- [Support](#support)
+- [Team](#team)
 
-## 🌟 Overview
+## Overview
 
 CyberShield is a modern, full-stack cybersecurity platform built with Next.js 15 and TypeScript. It provides security professionals with a comprehensive suite of real network tools, vulnerability scanners, and AI-powered threat detection capabilities - all accessible through a beautiful, responsive web interface.
 
-### ✨ Key Highlights
+## Key Features
 
-- **🔥 Real Network Operations**: All tools use actual network protocols, not mock data
-- **🤖 AI-Powered Security**: Advanced machine learning for threat detection and analysis  
-- **⚡ Professional Grade**: Tools trusted by cybersecurity experts worldwide
-- **🎨 Modern UI/UX**: Beautiful, responsive interface with real-time updates
-- **🔒 Secure by Design**: JWT authentication, MongoDB integration, enterprise security
+### Essential Security Tools
 
-## 🛠️ Features
-
-### 🎯 Essential Security Tools
 - **Network Scanner**: Comprehensive network discovery with ping and TCP socket connections
-- **Port Scanner**: Advanced port scanning with service detection  
+- **Port Scanner**: Advanced port scanning with service detection
 - **DNS Lookup**: Complete DNS record analysis and zone information
 - **WHOIS Lookup**: Domain registration information and ownership details
 - **Subdomain Enumeration**: Discover hidden subdomains using Certificate Transparency logs
 - **Vulnerability Scanner**: Automated security assessment with HTTP analysis
 
-### ⚔️ Advanced Arsenal
+### Advanced Arsenal
+
 - **Advanced Nmap**: Professional network mapping with stealth techniques
 - **HTTP Headers Analyzer**: Security headers and server configuration analysis
 - **Directory Buster**: Discover hidden directories and files on web servers
-- **OSINT Toolkit**: Information gathering with external threat intelligence
-- **Wireless Security**: WiFi network analysis and penetration testing
-- **Mobile Security**: Android APK analysis capabilities
+- **WAF Bypass**: Advanced techniques to bypass Web Application Firewalls
+- **Wireless Scanner**: WiFi network analysis and security assessment
+- **Ping Sweep**: Network range discovery and host enumeration
 
-### 🎖️ Expert Tools
+### Expert Tools
+
 - **Metasploit Integration**: Professional exploitation framework
-- **Burp Suite Interface**: Advanced web application security testing
-- **Digital Forensics**: Memory analysis and forensic investigation
-- **Cryptography Suite**: Hash cracking and cryptographic analysis
+- **Payload Generator**: Custom payload creation for penetration testing
+- **Social Engineering**: Advanced social engineering attack simulation
+- **SQL Injection Scanner**: Automated SQL injection vulnerability detection
 
-### 🤖 AI Security Suite
+### AI Security Suite
+
 - **AI Phishing Detection**: Advanced email and URL threat analysis
-- **AI Fraud Detection**: Machine learning fraud detection for financial systems
-- **AI Intrusion Detection**: Real-time network intrusion detection
-- **AI Threat Intelligence**: Automated threat intelligence gathering
-- **AI Security Assistant**: Intelligent security advisory with recommendations
+- **AI Threat Intelligence**: Real-time threat detection and analysis
+- **AI Security Assistant**: Intelligent security recommendations
+- **AI Fraud Detection**: Financial fraud detection and prevention
 
-## 🚀 Technology Stack
+## Tech Stack
 
 ### Frontend
+
 - **Framework**: Next.js 15.5.3 with App Router
 - **Language**: TypeScript 5.0+
-- **Styling**: Tailwind CSS 3.4+ with custom components
-- **UI Components**: Custom component library with shadcn/ui
-- **Icons**: Lucide React icons
-- **Animations**: Framer Motion for smooth transitions
+- **Styling**: Tailwind CSS 3.4+ with custom themes
+- **UI Components**: Radix UI with shadcn/ui
+- **State Management**: React Hooks with Context API
+- **Authentication**: JWT with refresh tokens
 
 ### Backend
+
 - **API**: Next.js API Routes with Edge Runtime
 - **Database**: MongoDB Atlas with Mongoose ODM
-- **Authentication**: JWT with secure HTTP-only cookies
-- **Validation**: Zod schema validation
-- **Security**: bcrypt password hashing, rate limiting
+- **Authentication**: bcryptjs password hashing
+- **Security**: Rate limiting, CORS, input validation
+- **Email**: Nodemailer with Gmail SMTP
+- **SMS**: Twilio integration for 2FA
 
 ### Infrastructure
-- **Deployment**: Vercel (recommended) or any Node.js hosting
-- **Database**: MongoDB Atlas cloud database
-- **Email**: Gmail SMTP integration
-- **SMS**: Twilio integration for 2FA
-- **External APIs**: Certificate Transparency, WHOIS databases
 
-## 📦 Installation
+- **Deployment**: Vercel (recommended) or any Node.js hosting
+- **Database**: MongoDB Atlas (cloud) or self-hosted MongoDB
+- **File Storage**: Local storage with planned cloud integration
+- **Monitoring**: Built-in logging and error tracking
+
+## Quick Start
 
 ### Prerequisites
-- Node.js 18.0 or higher
-- npm/yarn/pnpm package manager
-- MongoDB Atlas account (or local MongoDB)
-- Git
 
-### Quick Start
+- Node.js 18.0 or higher
+- MongoDB Atlas account or local MongoDB installation
+- Gmail account for email notifications (optional)
+- Twilio account for SMS 2FA (optional)
+
+### Installation
 
 1. **Clone the repository**
-```bash
-git clone https://github.com/sumansingh20/CyberShield.git
-cd CyberShield
-```
+
+   ```bash
+   git clone https://github.com/sumansingh20/CyberShield.git
+   cd CyberShield
+   ```
 
 2. **Install dependencies**
-```bash
-pnpm install
-# or
-npm install
-# or  
-yarn install
-```
+
+   ```bash
+   npm install
+   # or
+   pnpm install
+   # or
+   yarn install
+   ```
 
 3. **Environment Setup**
-Create a `.env.local` file in the root directory:
 
-```env
-# Database Configuration
-MONGODB_URI=mongodb+srv://username:password@cluster.mongodb.net/cybershield?retryWrites=true&w=majority
-MONGO_URI=mongodb+srv://username:password@cluster.mongodb.net/cybershield?retryWrites=true&w=majority
+   Create a `.env.local` file in the root directory:
 
-# JWT Secrets (generate with openssl rand -hex 32)
-JWT_SECRET=your-super-secret-jwt-key-here
-JWT_REFRESH_SECRET=your-refresh-secret-key-here
-
-# Application Configuration
-NODE_ENV=development
-NEXT_PUBLIC_APP_URL=http://localhost:3000
-BASE_URL=http://localhost:3000
-
-# Optional: Email & SMS Configuration
-SMTP_HOST=smtp.gmail.com
-SMTP_PORT=587
-SMTP_USER=your-email@gmail.com
-SMTP_PASS=your-app-password
-TWILIO_ACCOUNT_SID=your-twilio-sid
-TWILIO_AUTH_TOKEN=your-twilio-token
-TWILIO_PHONE_NUMBER=+1234567890
-```
+   ```env
+   # Database Configuration
+   MONGODB_URI=your_mongodb_connection_string
+   
+   # JWT Secrets
+   JWT_SECRET=your_jwt_secret_key
+   JWT_REFRESH_SECRET=your_jwt_refresh_secret
+   
+   # Optional: Email Configuration (Gmail)
+   SMTP_HOST=smtp.gmail.com
+   SMTP_PORT=587
+   SMTP_USER=your_gmail_address
+   SMTP_PASS=your_gmail_app_password
+   
+   # Optional: Twilio SMS (for 2FA)
+   TWILIO_ACCOUNT_SID=your_twilio_sid
+   TWILIO_AUTH_TOKEN=your_twilio_token
+   TWILIO_PHONE_NUMBER=your_twilio_phone
+   ```
 
 4. **Run the development server**
-```bash
-pnpm dev
-# or
-npm run dev
-# or
-yarn dev
-```
+
+   ```bash
+   npm run dev
+   # or
+   pnpm dev
+   # or
+   yarn dev
+   ```
 
 5. **Open your browser**
-Navigate to [http://localhost:3000](http://localhost:3000)
 
-## 🚀 Deployment
+   Navigate to <http://localhost:3000> to see the application.
 
-### Deploy to Vercel (Recommended)
+## Deployment
 
-1. **Push to GitHub** (already done!)
-2. **Connect to Vercel**
-   - Visit [vercel.com](https://vercel.com)
-   - Import your GitHub repository
-   - Add environment variables from your `.env.local`
-   - Deploy!
+### Vercel (Recommended)
 
-### Deploy to Other Platforms
+1. Push your code to GitHub
+2. Connect your repository to Vercel
+3. Configure environment variables in Vercel dashboard
+4. Deploy automatically on push to main branch
 
-#### Netlify
+### Netlify
+
 ```bash
 npm run build
 npm run export
-# Upload dist folder to Netlify
 ```
 
-#### Docker
+Then deploy the `out` folder to Netlify.
+
+### Docker
+
 ```bash
 docker build -t cybershield .
 docker run -p 3000:3000 cybershield
 ```
 
-#### Traditional Hosting
+### Traditional Hosting
+
 ```bash
 npm run build
-npm run start
+npm start
 ```
 
-## 📖 Documentation
+## Security Tools
 
-### Project Structure
-```
-CyberShield/
-├── app/                    # Next.js App Router pages
-│   ├── api/               # API routes
-│   ├── tools/             # Tool pages
-│   └── (auth)/            # Authentication pages
-├── src/
-│   ├── core/              # Core functionality
-│   │   ├── lib/           # Database, models, utilities
-│   │   └── types/         # TypeScript type definitions
-│   ├── ui/                # UI components and hooks
-│   │   ├── components/    # Reusable React components
-│   │   ├── hooks/         # Custom React hooks
-│   │   └── contexts/      # React Context providers
-│   ├── auth/              # Authentication utilities
-│   └── security-tools/    # Security tool implementations
-├── public/                # Static assets
-├── styles/                # Global styles
-└── tests/                 # Test files
-```
+### Network Scanner
 
-### API Documentation
-
-All API endpoints follow RESTful conventions:
-
-- `GET /api/dashboard/activity` - Fetch recent security activities
-- `POST /api/auth/login` - User authentication
-- `POST /api/auth/register` - User registration
-- `POST /api/tools/network-scanner` - Execute network scan
-- `POST /api/tools/vuln-scanner` - Run vulnerability assessment
-- `GET /api/tools/dns-lookup` - DNS record lookup
-- `GET /api/tools/whois` - WHOIS domain information
-
-### Tool Usage Examples
-
-#### Network Scanner
 ```javascript
-const response = await fetch('/api/tools/network-scanner', {
+const scanResult = await fetch('/api/tools/network-scanner', {
   method: 'POST',
   headers: { 'Content-Type': 'application/json' },
   body: JSON.stringify({
     target: '192.168.1.0/24',
-    scanType: 'ping',
-    ports: '22,80,443'
+    ports: '22,80,443,3389',
+    timeout: 5000
   })
 });
 ```
 
-#### Vulnerability Scanner
+### Vulnerability Scanner
+
 ```javascript
-const response = await fetch('/api/tools/vuln-scanner', {
+const vulnScan = await fetch('/api/tools/vuln-scanner', {
   method: 'POST',
   headers: { 'Content-Type': 'application/json' },
   body: JSON.stringify({
     target: 'https://example.com',
-    scanDepth: 'comprehensive'
+    scanType: 'comprehensive'
   })
 });
 ```
 
-## 🔧 Configuration
-
-### Environment Variables
+## Environment Variables
 
 | Variable | Description | Required | Default |
 |----------|-------------|----------|---------|
 | `MONGODB_URI` | MongoDB connection string | ✅ | - |
 | `JWT_SECRET` | JWT signing secret | ✅ | - |
 | `JWT_REFRESH_SECRET` | JWT refresh token secret | ✅ | - |
-| `NODE_ENV` | Environment mode | ❌ | development |
-| `NEXT_PUBLIC_APP_URL` | Public app URL | ❌ | http://localhost:3000 |
-| `SMTP_HOST` | Email server host | ❌ | - |
+| `SMTP_HOST` | Email server hostname | ❌ | smtp.gmail.com |
 | `SMTP_PORT` | Email server port | ❌ | 587 |
+| `SMTP_USER` | Email username | ❌ | - |
+| `SMTP_PASS` | Email password/app password | ❌ | - |
 | `TWILIO_ACCOUNT_SID` | Twilio account SID | ❌ | - |
+| `TWILIO_AUTH_TOKEN` | Twilio auth token | ❌ | - |
+| `TWILIO_PHONE_NUMBER` | Twilio phone number | ❌ | - |
+| `NEXT_PUBLIC_APP_URL` | Public app URL | ❌ | <http://localhost:3000> |
 
-### Database Setup
+## Contributing
 
-1. **Create MongoDB Atlas Cluster**
-   - Sign up at [MongoDB Atlas](https://cloud.mongodb.com)
-   - Create a new cluster
-   - Get connection string
-
-2. **Configure Database Access**
-   - Add database user
-   - Whitelist IP addresses
-   - Update connection string in `.env.local`
-
-## 🧪 Testing
-
-```bash
-# Run unit tests
-pnpm test
-
-# Run integration tests  
-pnpm test:integration
-
-# Run end-to-end tests
-pnpm test:e2e
-
-# Run security tests
-pnpm test:security
-```
-
-## 🤝 Contributing
-
-We welcome contributions! Please see our [Contributing Guidelines](CONTRIBUTING.md).
+We welcome contributions from the community! Please read our contributing guidelines before submitting pull requests.
 
 ### Development Setup
 
 1. Fork the repository
-2. Create a feature branch: `git checkout -b feature-name`
+2. Create a feature branch
 3. Make your changes
-4. Run tests: `pnpm test`
-5. Commit your changes: `git commit -m 'Add feature'`
-6. Push to the branch: `git push origin feature-name`
-7. Submit a pull request
+4. Add tests if applicable
+5. Submit a pull request
 
 ### Code Style
 
 - Use TypeScript for all new code
 - Follow ESLint configuration
-- Use Prettier for formatting
-- Write tests for new features
-- Document public APIs
+- Use Prettier for code formatting
+- Write meaningful commit messages
 
-## 🛡️ Security
+## Security
 
-CyberShield takes security seriously:
+This platform is designed for authorized security testing and educational purposes only. Users must ensure they have proper authorization before testing any systems.
 
-- **Authentication**: JWT tokens with HTTP-only cookies
-- **Authorization**: Role-based access control
-- **Encryption**: bcrypt password hashing
-- **Rate Limiting**: API endpoint protection
-- **Input Validation**: Zod schema validation
-- **CSRF Protection**: Cross-site request forgery prevention
+If you discover a security vulnerability, please email: <security@cybershield.dev>
 
-### Security Reporting
+## Support
 
-If you discover a security vulnerability, please email: security@cybershield.dev
+- **Documentation**: Check our detailed documentation
+- **Issues**: Report bugs on GitHub Issues
+- **Discussions**: Join community discussions
+- **Email**: <support@cybershield.dev>
 
-## 📊 Performance
+## Roadmap
 
-- **Lighthouse Score**: 95+ performance rating
-- **Core Web Vitals**: Optimized for speed and user experience
-- **Bundle Size**: Code splitting and lazy loading
-- **Caching**: Aggressive caching strategies
-- **CDN**: Static asset optimization
+### 2024 Q4
 
-## 🌍 Browser Support
+- [ ] Advanced AI threat detection
+- [ ] Custom payload templates
+- [ ] Team collaboration features
+- [ ] Advanced reporting system
 
-- Chrome 90+
-- Firefox 88+
-- Safari 14+
-- Edge 90+
+### 2025 Q1
 
-## 📜 License
+- [ ] Mobile application
+- [ ] Cloud integration
+- [ ] Enterprise features
+- [ ] Advanced analytics
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
-## 👥 Team
+## Team
 
 - **Dynamic Trio** - Lead Developers & Security Architects
 - **Contributors** - See [Contributors](https://github.com/sumansingh20/CyberShield/contributors)
 
-## 🙏 Acknowledgments
+## License
 
-- [Next.js](https://nextjs.org/) - The React framework
-- [Tailwind CSS](https://tailwindcss.com/) - Utility-first CSS framework
-- [MongoDB](https://www.mongodb.com/) - Database platform
-- [Vercel](https://vercel.com/) - Deployment platform
-- [Lucide](https://lucide.dev/) - Beautiful icons
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
-## 📞 Support
+## Acknowledgments
 
-- **Documentation**: [docs.cybershield.dev](https://docs.cybershield.dev)
-- **Issues**: [GitHub Issues](https://github.com/sumansingh20/CyberShield/issues)
-- **Discussions**: [GitHub Discussions](https://github.com/sumansingh20/CyberShield/discussions)
-- **Email**: support@cybershield.dev
-
-## 🗺️ Roadmap
-
-### 2024 Q4
-- [ ] Advanced AI threat detection
-- [ ] Real-time collaboration features
-- [ ] Mobile app (React Native)
-- [ ] Enterprise SSO integration
-
-### 2025 Q1
-- [ ] Kubernetes security scanning
-- [ ] Cloud security posture management
-- [ ] Advanced reporting and analytics
-- [ ] Multi-language support
+- Next.js team for the amazing framework
+- MongoDB team for the robust database
+- Tailwind CSS for the utility-first styling
+- Radix UI for accessible components
+- Open source security community
 
 ---
 
-<div align="center">
-
-**⭐ Star this repo if you find it useful!**
-
-Made with ❤️ by Dynamic Trio
-
-</div>
+Made with ❤️ by Dynamic Trio 
+ 
