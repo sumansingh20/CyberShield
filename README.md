@@ -343,7 +343,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## 👥 Team
 
-- **Suman Singh** - Lead Developer & Security Architect
+- **Dynamic Trio** - Lead Developers & Security Architects
 - **Contributors** - See [Contributors](https://github.com/sumansingh20/CyberShield/contributors)
 
 ## 🙏 Acknowledgments
@@ -381,6 +381,6 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 **⭐ Star this repo if you find it useful!**
 
-Made with ❤️ by the CyberShield team
+Made with ❤️ by Dynamic Trio
 
 </div>

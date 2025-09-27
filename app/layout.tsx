@@ -11,7 +11,7 @@ const inter = Inter({ subsets: ["latin"] })
 
 export const metadata: Metadata = {
   title: "CyberShield - Advanced Cybersecurity Testing Platform",
-  description: "CyberShield - Professional penetration testing and cybersecurity assessment platform with integrated security tools. Developed by Suman Singh.",
+  description: "CyberShield - Professional penetration testing and cybersecurity assessment platform with integrated security tools. Developed by Dynamic Trio.",
   generator: 'Next.js',
   keywords: [
     "cybershield", 
@@ -26,8 +26,8 @@ export const metadata: Metadata = {
     "network security",
     "web security"
   ],
-  authors: [{ name: "Suman Singh" }],
-  creator: "Suman Singh",
+  authors: [{ name: "Dynamic Trio" }],
+  creator: "Dynamic Trio",
   metadataBase: new URL('https://cybershield-platform.netlify.app'),
   openGraph: {
     title: 'CyberShield - Advanced Cybersecurity Testing Platform',

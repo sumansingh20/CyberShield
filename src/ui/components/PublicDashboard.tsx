@@ -568,7 +568,7 @@ export default function PublicDashboard() {
           </div>
 
           <div className="border-t border-slate-800 mt-8 pt-6 text-center text-sm text-slate-400">
-            <p>© 2025 CyberShield. Built for ethical security professionals. Use responsibly.</p>
+            <p>© 2025 CyberShield. Built by Dynamic Trio for ethical security professionals. Use responsibly.</p>
           </div>
         </div>
       </footer>

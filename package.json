@@ -13,7 +13,7 @@
     "security-audit",
     "pentest-tools"
   ],
-  "author": "Suman Singh",
+  "author": "Dynamic Trio",
   "scripts": {
     "build": "next build",
     "dev": "next dev",

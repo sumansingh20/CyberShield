@@ -611,7 +611,7 @@ export default function SettingsPage() {
             <div className="flex items-center justify-center space-x-3 mb-2">
               <Shield className="h-4 w-4 text-primary" />
               <span className="text-sm text-muted-foreground">
-                © 2025 CyberShield. Developed by Suman.
+                © 2025 CyberShield. Developed by Dynamic Trio.
               </span>
             </div>
           </div>

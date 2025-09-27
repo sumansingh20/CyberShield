@@ -1055,6 +1055,8 @@ export default function DashboardPage() {
                 <div className="flex items-center space-x-6 text-gray-400">
                   <span className="text-sm sm:text-base font-semibold">© 2025 CyberShield</span>
                   <span className="hidden md:block">•</span>
+                  <span className="text-xs sm:text-sm font-medium">Built by Dynamic Trio</span>
+                  <span className="hidden md:block">•</span>
                   <span className="text-xs sm:text-sm font-medium">Professional Cybersecurity Platform</span>
                   <span className="hidden md:block">•</span>
                   <div className="flex items-center space-x-2">

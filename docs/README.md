@@ -211,7 +211,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 <div align="center">
 
-**Built with ❤️ by [Suman Singh](https://github.com/sumansingh20)**
+**Built with ❤️ by [Dynamic Trio](https://github.com/sumansingh20)**
 
 [⭐ Star this repository](https://github.com/sumansingh20/CyberShield) • [🐛 Report Bug](https://github.com/sumansingh20/CyberShield/issues) • [💡 Request Feature](https://github.com/sumansingh20/CyberShield/issues)
 
