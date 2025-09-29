@@ -7,6 +7,251 @@ const execAsync = promisify(exec)
 
 export const dynamic = "force-dynamic"
 
+// Serverless-compatible vulnerability scanning
+async function handleServerlessVulnScan(target: string, scanType: string, ports?: string) {
+  const startTime = Date.now()
+  const cleanTarget = target.replace(/^https?:\/\//, '').replace(/^www\./, '').split('/')[0].trim()
+  
+  const results = {
+    target: cleanTarget,
+    scanType: 'serverless-web-vuln-scan',
+    vulnerabilities: [] as VulnerabilityFinding[],
+    executionTime: 0,
+    timestamp: new Date().toISOString(),
+    serverlessMode: true,
+    limitations: [
+      'Serverless environment restricts network scanning capabilities',
+      'Using HTTP-based vulnerability detection only',
+      'Cannot perform deep system-level security checks',
+      'Limited to web application vulnerabilities'
+    ]
+  }
+
+  try {
+    // Web-based vulnerability checks
+    const webVulns = await performWebVulnerabilityChecks(cleanTarget)
+    results.vulnerabilities.push(...webVulns)
+
+    // SSL/TLS security checks
+    const sslVulns = await performSSLSecurityChecks(cleanTarget)
+    results.vulnerabilities.push(...sslVulns)
+
+    // HTTP header security checks  
+    const headerVulns = await performHeaderSecurityChecks(cleanTarget)
+    results.vulnerabilities.push(...headerVulns)
+
+    results.executionTime = Date.now() - startTime
+
+    // Generate security assessment
+    const assessment = generateServerlessSecurityAssessment(results.vulnerabilities)
+
+    return NextResponse.json({
+      success: true,
+      data: {
+        ...results,
+        securityAssessment: assessment,
+        summary: `Serverless vulnerability scan found ${results.vulnerabilities.length} potential issues`,
+        recommendations: [
+          'Use dedicated security scanners for comprehensive analysis',
+          'Consider running full vulnerability assessment tools locally',
+          'Implement security headers and HTTPS for web applications'
+        ]
+      }
+    })
+
+  } catch (error) {
+    return NextResponse.json({
+      success: false,
+      message: 'Vulnerability scan failed',
+      error: error instanceof Error ? error.message : 'Unknown error',
+      serverlessNote: 'Full vulnerability scans require system access not available in serverless environments'
+    }, { status: 500 })
+  }
+}
+
+async function performWebVulnerabilityChecks(target: string): Promise<VulnerabilityFinding[]> {
+  const vulnerabilities: VulnerabilityFinding[] = []
+
+  try {
+    // Check HTTP vs HTTPS
+    let httpWorks = false
+    let httpsWorks = false
+
+    try {
+      await fetch(`http://${target}`, { method: 'HEAD', signal: AbortSignal.timeout(5000) })
+      httpWorks = true
+    } catch {}
+
+    try {
+      await fetch(`https://${target}`, { method: 'HEAD', signal: AbortSignal.timeout(5000) })
+      httpsWorks = true
+    } catch {}
+
+    if (httpWorks && !httpsWorks) {
+      vulnerabilities.push({
+        id: 'http-only',
+        type: 'Protocol Security',
+        severity: 'Medium',
+        title: 'HTTP Only - No HTTPS',
+        description: 'Website only accessible over insecure HTTP protocol',
+        recommendation: 'Implement HTTPS with valid SSL/TLS certificate',
+        discoveryMethod: 'http-check'
+      })
+    }
+
+    if (httpWorks && httpsWorks) {
+      // Check if HTTP redirects to HTTPS
+      try {
+        const httpResponse = await fetch(`http://${target}`, { 
+          method: 'HEAD', 
+          redirect: 'manual',
+          signal: AbortSignal.timeout(5000) 
+        })
+        
+        if (httpResponse.status < 300 || httpResponse.status >= 400) {
+          vulnerabilities.push({
+            id: 'no-https-redirect',
+            type: 'Protocol Security',
+            severity: 'Medium',
+            title: 'Missing HTTPS Redirect',
+            description: 'HTTP requests are not automatically redirected to HTTPS',
+            recommendation: 'Configure server to redirect all HTTP traffic to HTTPS',
+            discoveryMethod: 'redirect-check'
+          })
+        }
+      } catch {}
+    }
+
+  } catch (error) {
+    // Continue with other checks even if some fail
+  }
+
+  return vulnerabilities
+}
+
+async function performSSLSecurityChecks(target: string): Promise<VulnerabilityFinding[]> {
+  const vulnerabilities: VulnerabilityFinding[] = []
+
+  try {
+    const response = await fetch(`https://${target}`, { 
+      method: 'HEAD', 
+      signal: AbortSignal.timeout(5000) 
+    })
+
+    // Basic SSL connectivity check passed, but we can't deeply inspect certificates in serverless
+    // This is a limitation we acknowledge
+    
+  } catch (error) {
+    if (error instanceof Error && error.message.includes('certificate')) {
+      vulnerabilities.push({
+        id: 'ssl-error',
+        type: 'SSL/TLS Security',
+        severity: 'High',
+        title: 'SSL/TLS Certificate Error',
+        description: 'SSL/TLS certificate validation failed',
+        recommendation: 'Check and fix SSL certificate configuration',
+        discoveryMethod: 'ssl-connection-test'
+      })
+    }
+  }
+
+  return vulnerabilities
+}
+
+async function performHeaderSecurityChecks(target: string): Promise<VulnerabilityFinding[]> {
+  const vulnerabilities: VulnerabilityFinding[] = []
+
+  try {
+    const response = await fetch(`https://${target}`, { 
+      method: 'HEAD', 
+      signal: AbortSignal.timeout(5000) 
+    })
+
+    // Check for important security headers
+    const securityHeaders = [
+      'strict-transport-security',
+      'x-frame-options', 
+      'x-content-type-options',
+      'x-xss-protection',
+      'content-security-policy'
+    ]
+
+    for (const header of securityHeaders) {
+      if (!response.headers.has(header)) {
+        vulnerabilities.push({
+          id: `missing-${header}`,
+          type: 'HTTP Security Headers',
+          severity: 'Medium',
+          title: `Missing ${header.toUpperCase()} Header`,
+          description: `Security header ${header} is not present`,
+          recommendation: `Implement ${header} header for enhanced security`,
+          discoveryMethod: 'header-analysis'
+        })
+      }
+    }
+
+  } catch (error) {
+    // If HTTPS fails, try HTTP
+    try {
+      const response = await fetch(`http://${target}`, { 
+        method: 'HEAD', 
+        signal: AbortSignal.timeout(5000) 
+      })
+      
+      vulnerabilities.push({
+        id: 'insecure-headers',
+        type: 'HTTP Security Headers',
+        severity: 'High',
+        title: 'Insecure HTTP Protocol',
+        description: 'Website accessible over insecure HTTP without security headers',
+        recommendation: 'Migrate to HTTPS and implement security headers',
+        discoveryMethod: 'protocol-check'
+      })
+      
+    } catch {}
+  }
+
+  return vulnerabilities
+}
+
+function generateServerlessSecurityAssessment(vulnerabilities: VulnerabilityFinding[]): SecurityAssessment {
+  const criticalCount = vulnerabilities.filter(v => v.severity === 'Critical').length
+  const highCount = vulnerabilities.filter(v => v.severity === 'High').length
+  const mediumCount = vulnerabilities.filter(v => v.severity === 'Medium').length
+  const lowCount = vulnerabilities.filter(v => v.severity === 'Low').length
+
+  let riskLevel: SecurityAssessment['riskLevel'] = 'LOW'
+  let overallScore = 100
+
+  if (criticalCount > 0) {
+    riskLevel = 'CRITICAL'
+    overallScore = Math.max(0, overallScore - (criticalCount * 30))
+  } else if (highCount > 0) {
+    riskLevel = 'HIGH'  
+    overallScore = Math.max(0, overallScore - (highCount * 20))
+  } else if (mediumCount > 0) {
+    riskLevel = 'MEDIUM'
+    overallScore = Math.max(0, overallScore - (mediumCount * 10))
+  }
+
+  overallScore = Math.max(0, overallScore - (lowCount * 5))
+
+  return {
+    riskLevel,
+    overallScore,
+    compliance: {
+      owasp: Math.max(0, 100 - (criticalCount * 25) - (highCount * 15) - (mediumCount * 10)),
+      nist: Math.max(0, 100 - (criticalCount * 20) - (highCount * 12) - (mediumCount * 8)),
+      pci: Math.max(0, 100 - (criticalCount * 30) - (highCount * 18) - (mediumCount * 12))
+    },
+    attackSurface: {
+      webServices: vulnerabilities.filter(v => v.type.includes('HTTP') || v.type.includes('SSL')).length,
+      openPorts: 0, // Cannot determine in serverless
+      exposedServices: ['web-service'] // Minimal detection in serverless
+    }
+  }
+}
+
 interface VulnerabilityFinding {
   id: string
   cveId?: string
@@ -434,6 +679,14 @@ export async function POST(req: NextRequest) {
         success: false,
         message: "Target URL or hostname is required"
       }, { status: 400 })
+    }
+
+    // Check if running in serverless environment
+    const isServerless = process.env.VERCEL || process.env.AWS_LAMBDA_FUNCTION_NAME || process.env.NETLIFY
+    
+    if (isServerless) {
+      // Use serverless-compatible vulnerability scanning
+      return await handleServerlessVulnScan(target, scanType, options?.ports)
     }
 
     const startTime = Date.now()

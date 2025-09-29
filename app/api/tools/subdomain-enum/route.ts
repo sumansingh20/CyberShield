@@ -2,6 +2,136 @@ import { NextRequest, NextResponse } from 'next/server'
 
 export const dynamic = "force-dynamic"
 
+// Serverless-compatible subdomain enumeration
+async function handleServerlessSubdomainEnum(domain: string, scanType: string) {
+  const startTime = Date.now()
+  const cleanDomain = domain.replace(/^https?:\/\//, '').replace(/^www\./, '').split('/')[0].trim()
+  
+  // Common subdomains list for serverless enumeration
+  const commonSubdomains = [
+    'www', 'api', 'admin', 'dev', 'staging', 'test', 'mail', 'ftp', 'blog', 'shop',
+    'app', 'portal', 'dashboard', 'login', 'secure', 'vpn', 'remote', 'support',
+    'help', 'docs', 'cdn', 'static', 'assets', 'media', 'images', 'files',
+    'mobile', 'm', 'beta', 'alpha', 'demo', 'sandbox', 'old', 'new', 'v1', 'v2'
+  ]
+
+  const foundSubdomains: SubdomainDetail[] = []
+  const scanPromises = commonSubdomains.map(async (sub) => {
+    const fullSubdomain = `${sub}.${cleanDomain}`
+    
+    try {
+      // Try DNS resolution using DoH (DNS over HTTPS)
+      const dnsResponse = await fetch(`https://dns.google/resolve?name=${fullSubdomain}&type=A`, {
+        signal: AbortSignal.timeout(5000)
+      })
+      
+      if (dnsResponse.ok) {
+        const dnsData = await dnsResponse.json()
+        if (dnsData.Answer && dnsData.Answer.length > 0) {
+          const ips = dnsData.Answer.map((answer: any) => answer.data)
+          
+          // Check if subdomain is accessible via HTTP/HTTPS
+          let httpStatus: number | null = null
+          let isHttps = false
+          let title: string | undefined
+          
+          try {
+            // Try HTTPS first
+            const httpsResponse = await fetch(`https://${fullSubdomain}`, {
+              method: 'HEAD',
+              signal: AbortSignal.timeout(5000)
+            })
+            httpStatus = httpsResponse.status
+            isHttps = true
+            
+            // Get page title if accessible
+            if (httpsResponse.ok) {
+              try {
+                const pageResponse = await fetch(`https://${fullSubdomain}`, {
+                  signal: AbortSignal.timeout(3000)
+                })
+                const html = await pageResponse.text()
+                const titleMatch = html.match(/<title[^>]*>([^<]+)<\/title>/i)
+                if (titleMatch) {
+                  title = titleMatch[1].trim().substring(0, 100) // Limit title length
+                }
+              } catch {
+                // Page content fetch failed, continue
+              }
+            }
+          } catch {
+            // Try HTTP if HTTPS fails
+            try {
+              const httpResponse = await fetch(`http://${fullSubdomain}`, {
+                method: 'HEAD',
+                signal: AbortSignal.timeout(5000)
+              })
+              httpStatus = httpResponse.status
+              isHttps = false
+            } catch {
+              // HTTP also failed, but subdomain exists in DNS
+              httpStatus = null
+            }
+          }
+
+          const subdomainDetail: SubdomainDetail = {
+            subdomain: fullSubdomain,
+            ips,
+            cnames: [], // CNAME lookup would require additional DNS queries
+            httpStatus,
+            isHttps,
+            title,
+            discoveryMethod: 'dns-web-check',
+            lastSeen: new Date().toISOString()
+          }
+
+          // Add security analysis
+          subdomainDetail.securityAnalysis = analyzeSubdomainSecurity(fullSubdomain, subdomainDetail)
+          
+          return subdomainDetail
+        }
+      }
+    } catch (error) {
+      // DNS resolution or HTTP check failed
+      return null
+    }
+    
+    return null
+  })
+
+  // Wait for all subdomain checks to complete
+  const results = await Promise.all(scanPromises)
+  const validSubdomains = results.filter((result): result is SubdomainDetail => result !== null)
+
+  const totalTime = Date.now() - startTime
+
+  return NextResponse.json({
+    success: true,
+    data: {
+      domain: cleanDomain,
+      scanType: 'serverless-dns-web',
+      totalSubdomains: validSubdomains.length,
+      subdomains: validSubdomains,
+      executionTime: totalTime,
+      timestamp: new Date().toISOString(),
+      serverlessMode: true,
+      limitations: [
+        'Serverless environment limits to DNS-based discovery',
+        'Cannot perform advanced techniques like certificate transparency logs',
+        'Limited to common subdomain wordlist (no bruteforce)',
+        'CNAME resolution limited in serverless environment'
+      ],
+      summary: `Found ${validSubdomains.length} active subdomains using serverless DNS enumeration`,
+      metadata: {
+        method: 'dns-over-https + http-check',
+        wordlistSize: commonSubdomains.length,
+        activeSubdomains: validSubdomains.filter(s => s.httpStatus && s.httpStatus < 400).length,
+        httpsEnabled: validSubdomains.filter(s => s.isHttps).length
+      }
+    }
+  })
+}
+
 interface SubdomainSecurity {
   riskLevel: 'LOW' | 'MEDIUM' | 'HIGH' | 'CRITICAL'
   securityScore: number
@@ -143,6 +273,14 @@ export async function POST(request: NextRequest) {
         success: false,
         message: 'Domain is required'
       }, { status: 400 })
+    }
+
+    // Check if running in serverless environment
+    const isServerless = process.env.VERCEL || process.env.AWS_LAMBDA_FUNCTION_NAME || process.env.NETLIFY
+    
+    if (isServerless) {
+      // Use serverless-compatible subdomain enumeration
+      return await handleServerlessSubdomainEnum(domain, scanType)
     }
 
     // Clean the domain name

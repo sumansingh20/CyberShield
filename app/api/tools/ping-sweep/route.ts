@@ -2,6 +2,119 @@ import { NextRequest, NextResponse } from 'next/server'
 import { spawn } from 'child_process'
 import { promisify } from 'util'
 
+export const dynamic = 'force-dynamic'
+
+// Serverless-compatible ping sweep using HTTP-based detection
+async function handleServerlessPingSweep(range: string) {
+  const startTime = Date.now()
+  
+  try {
+    const targetIPs = parseIPRange(range)
+    if (targetIPs.length > 20) {
+      return NextResponse.json({
+        success: false,
+        message: 'IP range too large for serverless environment (max 20 hosts)',
+        serverlessLimitation: true
+      }, { status: 400 })
+    }
+
+    const results = {
+      range,
+      method: 'serverless-http-check',
+      totalHosts: targetIPs.length,
+      activeHosts: 0,
+      hosts: [] as any[],
+      executionTime: 0,
+      timestamp: new Date().toISOString(),
+      limitations: [
+        'Serverless environment cannot perform traditional ICMP ping',
+        'Using HTTP-based availability checks only',
+        'Limited to web-accessible hosts',
+        'May not detect hosts that don\'t run web services'
+      ]
+    }
+
+    // Check each IP for HTTP/HTTPS availability
+    const hostPromises = targetIPs.map(async (ip) => {
+      const hostInfo = {
+        ip,
+        status: 'down',
+        responseTime: 0,
+        services: [] as any[],
+        method: 'http-check'
+      }
+
+      const ipStartTime = Date.now()
+
+      try {
+        // Try HTTP first (more likely to work)
+        try {
+          const response = await fetch(`http://${ip}`, {
+            method: 'HEAD',
+            signal: AbortSignal.timeout(3000)
+          })
+          
+          hostInfo.status = 'up'
+          hostInfo.responseTime = Date.now() - ipStartTime
+          hostInfo.services.push({
+            port: 80,
+            protocol: 'HTTP',
+            status: response.status
+          })
+          
+          return hostInfo
+        } catch {
+          // Try HTTPS if HTTP fails
+          try {
+            const response = await fetch(`https://${ip}`, {
+              method: 'HEAD',
+              signal: AbortSignal.timeout(3000)
+            })
+            
+            hostInfo.status = 'up'
+            hostInfo.responseTime = Date.now() - ipStartTime
+            hostInfo.services.push({
+              port: 443,
+              protocol: 'HTTPS',
+              status: response.status
+            })
+            
+            return hostInfo
+          } catch {
+            // Both HTTP and HTTPS failed
+            hostInfo.status = 'down'
+            hostInfo.responseTime = Date.now() - ipStartTime
+            return hostInfo
+          }
+        }
+      } catch (error) {
+        hostInfo.status = 'error'
+        hostInfo.responseTime = Date.now() - ipStartTime
+        return hostInfo
+      }
+    })
+
+    const hostResults = await Promise.all(hostPromises)
+    results.hosts = hostResults
+    results.activeHosts = hostResults.filter(h => h.status === 'up').length
+    results.executionTime = Date.now() - startTime
+
+    return NextResponse.json({
+      success: true,
+      data: results,
+      message: `Serverless ping sweep completed. ${results.activeHosts}/${results.totalHosts} hosts responding to HTTP/HTTPS`
+    })
+
+  } catch (error) {
+    return NextResponse.json({
+      success: false,
+      message: 'Ping sweep failed',
+      error: error instanceof Error ? error.message : 'Unknown error',
+      serverlessNote: 'Traditional ping sweeps require ICMP access not available in serverless environments'
+    }, { status: 500 })
+  }
+}
+
 // Helper function to validate IP range
 function parseIPRange(range: string): string[] {
   const ips: string[] = []
@@ -130,6 +243,14 @@ export async function POST(request: NextRequest) {
         success: false,
         message: 'Target IP range is required'
       }, { status: 400 })
+    }
+
+    // Check if running in serverless environment
+    const isServerless = process.env.VERCEL || process.env.AWS_LAMBDA_FUNCTION_NAME || process.env.NETLIFY
+    
+    if (isServerless) {
+      // Use serverless-compatible ping sweep
+      return await handleServerlessPingSweep(target.trim())
     }
 
     const pingTimeout = timeout || 3000
