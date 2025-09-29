@@ -97,11 +97,10 @@ export default function SQLInjectionTestingPage() {
         },
         body: JSON.stringify({
           targetUrl: targetUrl.trim(),
-          testMethod,
+          testMethod: 'GET',
           parameters: parameters.trim(),
-          customHeaders: customHeaders.trim(),
           payloadType,
-          testDepth,
+          testDepth: 'basic',
         }),
       })
 

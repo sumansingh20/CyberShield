@@ -93,12 +93,10 @@ export default function XSSVulnerabilityScannerPage() {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          targetUrl: targetUrl.trim(),
-          scanType,
-          payloadSet,
-          customPayloads: customPayloads.trim(),
-          scanDepth,
-          includeHeaders,
+          url: targetUrl.trim(),
+          testType: scanType,
+          inputFields: '',
+          customPayload: customPayloads.trim() || undefined,
         }),
       })
 

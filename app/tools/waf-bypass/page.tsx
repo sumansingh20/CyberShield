@@ -101,9 +101,7 @@ export default function WAFBypassToolPage() {
           targetUrl: targetUrl.trim(),
           payload: payload.trim(),
           bypassType,
-          encodingTypes,
-          customHeaders: customHeaders.trim(),
-          testMethod,
+          wafType: 'auto-detect',
         }),
       })
 
