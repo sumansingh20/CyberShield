@@ -8,6 +8,171 @@ const execAsync = promisify(exec)
 
 export const dynamic = "force-dynamic"
 
+// Serverless-compatible network scanning
+async function handleServerlessNetworkScan(target: string, scanType: string, portRange: string) {
+  const startTime = Date.now()
+  const cleanTarget = target.trim().replace(/[;&|`$(){}[\]\\]/g, '')
+  
+  const results = {
+    target: cleanTarget,
+    scanType: scanType || 'discovery',
+    hosts: [] as any[],
+    totalHosts: 0,
+    scanTime: 0,
+    timestamp: new Date().toISOString(),
+    serverlessMode: true,
+    limitations: [
+      'Serverless environment restricts network operations',
+      'Cannot perform ping sweeps or direct socket connections',
+      'Using web-based service detection only',
+      'Limited to HTTP/HTTPS availability checks'
+    ],
+    summary: ''
+  }
+
+  try {
+    // For single host scanning
+    if (!cleanTarget.includes('/') && !cleanTarget.includes('-')) {
+      const hostInfo = await checkHostAvailability(cleanTarget, scanType === 'comprehensive')
+      results.hosts.push(hostInfo)
+      results.totalHosts = hostInfo.status === 'up' ? 1 : 0
+    } else {
+      // Network ranges not supported in serverless
+      results.hosts.push({
+        ip: cleanTarget,
+        status: 'info',
+        message: 'Network range scanning not supported in serverless environment',
+        alternative: 'Use individual host scanning or dedicated network tools',
+        supportedFormats: ['Single IP: 192.168.1.1', 'Hostname: example.com']
+      })
+    }
+
+    results.scanTime = Date.now() - startTime
+    results.summary = `Serverless network scan completed for ${cleanTarget}. ${results.totalHosts} host(s) responding.`
+
+    return NextResponse.json({
+      success: true,
+      data: results
+    })
+
+  } catch (error) {
+    return NextResponse.json({
+      success: false,
+      message: 'Serverless network scan failed',
+      error: error instanceof Error ? error.message : 'Unknown error',
+      troubleshooting: {
+        note: 'Serverless platforms limit network operations',
+        alternatives: [
+          'Use local network scanning tools',
+          'Deploy on VPS with network access',
+          'Use cloud-based network monitoring services'
+        ]
+      }
+    }, { status: 500 })
+  }
+}
+
+async function checkHostAvailability(hostname: string, comprehensive = false) {
+  const hostInfo: any = {
+    ip: hostname,
+    hostname: hostname,
+    status: 'down',
+    openPorts: [],
+    services: [],
+    responseTime: 0
+  }
+
+  const startTime = Date.now()
+
+  try {
+    // Try HTTPS first
+    try {
+      const httpsResponse = await fetch(`https://${hostname}`, {
+        method: 'HEAD',
+        signal: AbortSignal.timeout(5000)
+      })
+      
+      hostInfo.status = 'up'
+      hostInfo.openPorts.push(443)
+      hostInfo.services.push({
+        port: 443,
+        service: 'HTTPS',
+        version: 'HTTPS Web Server',
+        banner: `HTTPS ${httpsResponse.status} ${httpsResponse.statusText}`
+      })
+
+      if (comprehensive) {
+        // Add basic security analysis for HTTPS
+        hostInfo.securityAnalysis = {
+          riskLevel: 'LOW',
+          securityScore: 85,
+          vulnerabilities: [],
+          recommendations: ['✅ HTTPS enabled - good security practice']
+        }
+      }
+    } catch {
+      // Try HTTP if HTTPS fails
+      try {
+        const httpResponse = await fetch(`http://${hostname}`, {
+          method: 'HEAD',
+          signal: AbortSignal.timeout(5000)
+        })
+        
+        hostInfo.status = 'up'
+        hostInfo.openPorts.push(80)
+        hostInfo.services.push({
+          port: 80,
+          service: 'HTTP',
+          version: 'HTTP Web Server',
+          banner: `HTTP ${httpResponse.status} ${httpResponse.statusText}`
+        })
+
+        if (comprehensive) {
+          hostInfo.securityAnalysis = {
+            riskLevel: 'MEDIUM',
+            securityScore: 60,
+            vulnerabilities: [{
+              type: 'Insecure Protocol',
+              severity: 'MEDIUM',
+              description: 'HTTP traffic not encrypted',
+              port: 80,
+              service: 'HTTP'
+            }],
+            recommendations: ['🔒 Consider implementing HTTPS for secure communications']
+          }
+        }
+      } catch {
+        hostInfo.status = 'down'
+        hostInfo.error = 'No HTTP/HTTPS response - host may be unreachable or not running web services'
+      }
+    }
+
+    // Try DNS resolution
+    try {
+      const dnsResponse = await fetch(`https://dns.google/resolve?name=${hostname}&type=A`, {
+        signal: AbortSignal.timeout(3000)
+      })
+      if (dnsResponse.ok) {
+        const dnsData = await dnsResponse.json()
+        if (dnsData.Answer && dnsData.Answer.length > 0) {
+          hostInfo.ip = dnsData.Answer[0].data
+          hostInfo.dnsResolved = true
+        }
+      }
+    } catch {
+      // DNS lookup failed, continue
+    }
+
+    hostInfo.responseTime = Date.now() - startTime
+
+  } catch (error) {
+    hostInfo.status = 'error'
+    hostInfo.error = error instanceof Error ? error.message : 'Scan failed'
+  }
+
+  return hostInfo
+}
+
 interface SecurityAnalysis {
   riskLevel: 'LOW' | 'MEDIUM' | 'HIGH' | 'CRITICAL'
   securityScore: number
@@ -382,6 +547,14 @@ export async function POST(req: NextRequest) {
         success: false,
         message: "Target is required and must be a valid string"
       }, { status: 400 })
+    }
+
+    // Check if running in serverless environment
+    const isServerless = process.env.VERCEL || process.env.AWS_LAMBDA_FUNCTION_NAME || process.env.NETLIFY
+    
+    if (isServerless) {
+      // Use serverless-compatible network scanning
+      return await handleServerlessNetworkScan(target, scanType, portRange)
     }
 
     // Validate scan type
