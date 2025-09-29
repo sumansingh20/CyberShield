@@ -1,7 +1,6 @@
 import { type NextRequest, NextResponse } from "next/server"
 import { exec } from "child_process"
 import { promisify } from "util"
-import { readFile } from "fs/promises"
 import { createConnection } from "net"
 
 const execAsync = promisify(exec)

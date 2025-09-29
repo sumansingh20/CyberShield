@@ -39,6 +39,39 @@ interface WirelessScanResult {
   timestamp: string
   platform: string
   realData: boolean
+  serverlessMode?: boolean
+}
+
+// Serverless-compatible wireless scanner alternative
+async function handleServerlessWirelessScan(networkInterface: string, scanType: string): Promise<NextResponse> {
+  const startTime = Date.now()
+  
+  return NextResponse.json({
+    success: false,
+    message: 'Wireless scanning not available in serverless environment',
+    serverlessLimitation: true,
+    reason: 'Wireless scanning requires direct system access to network interfaces',
+    limitations: [
+      'Serverless platforms cannot access system network interfaces',
+      'No access to wireless commands (iwlist, netsh, airport)',
+      'Cannot perform real-time wireless network discovery',
+      'Physical hardware access required for wireless scanning'
+    ],
+    alternatives: [
+      'Use on local machine with proper network interface access',
+      'Deploy on VPS with wireless capabilities',
+      'Use dedicated wireless scanning hardware/tools',
+      'Consider network-based discovery tools instead'
+    ],
+    recommendation: 'For wireless security assessment, use this tool on a local machine with wireless capabilities',
+    scanAttempted: {
+      networkInterface,
+      scanType,
+      serverlessMode: true,
+      timestamp: new Date().toISOString(),
+      executionTime: Date.now() - startTime
+    }
+  }, { status: 501 }) // 501 Not Implemented
 }
 
 // OUI (Organizationally Unique Identifier) database for vendor lookup
@@ -290,6 +323,13 @@ export async function POST(request: NextRequest) {
         success: false,
         message: 'Network interface is required'
       }, { status: 400 })
+    }
+    
+    // Check if we're in a serverless environment
+    const isServerless = process.env.VERCEL || process.env.AWS_LAMBDA_FUNCTION_NAME || process.env.NETLIFY || process.env.NODE_ENV === 'production'
+
+    if (isServerless) {
+      return handleServerlessWirelessScan(networkInterface, scanType || 'discovery')
     }
     
     const startTime = Date.now()

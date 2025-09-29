@@ -6,6 +6,123 @@ const execAsync = promisify(exec)
 
 export const dynamic = "force-dynamic"
 
+// Serverless-compatible NMAP alternative
+async function handleServerlessNmapScan(target: string, scanType: string, options: any) {
+  const startTime = Date.now()
+  const cleanTarget = target.trim()
+  
+  const results = {
+    target: cleanTarget,
+    scanType: 'serverless-web-scan',
+    timestamp: new Date().toISOString(),
+    serverlessMode: true,
+    limitations: [
+      'Serverless environment cannot run actual NMAP',
+      'Using HTTP-based port detection and service identification',
+      'Limited to web-accessible services',
+      'No OS fingerprinting or advanced NMAP features available'
+    ],
+    hosts: [] as any[],
+    executionTime: 0
+  }
+
+  try {
+    // Basic host discovery using HTTP/HTTPS
+    const hostInfo = await performServerlessHostScan(cleanTarget, options)
+    results.hosts.push(hostInfo)
+    results.executionTime = Date.now() - startTime
+
+    return NextResponse.json({
+      success: true,
+      data: results,
+      message: `Serverless network scan completed. Use dedicated NMAP tools for advanced scanning.`
+    })
+
+  } catch (error) {
+    return NextResponse.json({
+      success: false,
+      message: 'NMAP scan failed',
+      error: error instanceof Error ? error.message : 'Unknown error',
+      serverlessNote: 'NMAP requires system-level access not available in serverless environments',
+      alternatives: [
+        'Use local NMAP installation',
+        'Deploy on VPS with NMAP installed',
+        'Use specialized network scanning services'
+      ]
+    }, { status: 500 })
+  }
+}
+
+async function performServerlessHostScan(target: string, options: any) {
+  const hostInfo = {
+    ip: target,
+    status: 'unknown',
+    ports: [] as any[],
+    services: [] as any[],
+    os: 'Unknown (serverless limitation)'
+  }
+
+  // Test common ports using HTTP-based detection
+  const commonPorts = options?.portRange ? parsePortRange(options.portRange) : [80, 443, 22, 21, 25, 53]
+  const limitedPorts = commonPorts.slice(0, 10) // Limit for performance
+
+  for (const port of limitedPorts) {
+    try {
+      if (port === 80) {
+        const response = await fetch(`http://${target}`, {
+          method: 'HEAD',
+          signal: AbortSignal.timeout(5000)
+        })
+        
+        hostInfo.ports.push({
+          port: 80,
+          state: 'open',
+          service: 'http',
+          version: `HTTP ${response.status}`
+        })
+        hostInfo.status = 'up'
+      } else if (port === 443) {
+        const response = await fetch(`https://${target}`, {
+          method: 'HEAD',
+          signal: AbortSignal.timeout(5000)
+        })
+        
+        hostInfo.ports.push({
+          port: 443,
+          state: 'open',
+          service: 'https',
+          version: `HTTPS ${response.status}`
+        })
+        hostInfo.status = 'up'
+      } else {
+        // For other ports, use inference based on common services
+        const inference = inferPortService(port)
+        hostInfo.ports.push({
+          port,
+          state: 'unknown',
+          service: inference.service,
+          version: inference.note
+        })
+      }
+    } catch (error) {
+      // Port likely closed or filtered
+    }
+  }
+
+  return hostInfo
+}
+
+function inferPortService(port: number) {
+  const services: { [key: number]: { service: string, note: string } } = {
+    22: { service: 'ssh', note: 'Cannot verify SSH in serverless' },
+    21: { service: 'ftp', note: 'Cannot verify FTP in serverless' },
+    25: { service: 'smtp', note: 'Cannot verify SMTP in serverless' },
+    53: { service: 'dns', note: 'Cannot verify DNS in serverless' }
+  }
+  
+  return services[port] || { service: 'unknown', note: 'Cannot scan non-HTTP ports in serverless' }
+}
+
 // Helper function to validate IP address or hostname
 function isValidTarget(target: string): boolean {
   // Basic validation for IP addresses and hostnames
@@ -338,7 +455,14 @@ export async function POST(req: NextRequest) {
       }, { status: 400 })
     }
 
-    // Perform the advanced scan
+    // Check if we're in a serverless environment
+    const isServerless = process.env.VERCEL || process.env.AWS_LAMBDA_FUNCTION_NAME || process.env.NETLIFY || process.env.NODE_ENV === 'production'
+
+    if (isServerless) {
+      return handleServerlessNmapScan(target, scanType || 'tcp', options || {})
+    }
+
+    // Perform the advanced scan for local development
     const results = await performAdvancedScan(target, scanType, options || {})
 
     return NextResponse.json({
