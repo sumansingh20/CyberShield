@@ -4,7 +4,6 @@ import User from "@/src/core/lib/models/User"
 import Activity from "@/src/core/lib/models/Activity"
 
 export const dynamic = "force-dynamic"
-
 // Simple in-memory cache for dashboard stats (5 minute cache)
 let statsCache: { data: any; timestamp: number } | null = null
 const CACHE_DURATION = 5 * 60 * 1000 // 5 minutes
