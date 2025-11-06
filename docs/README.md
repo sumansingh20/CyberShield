@@ -9,7 +9,6 @@ A comprehensive, professional-grade cybersecurity testing platform built for pen
 [![MongoDB](https://img.shields.io/badge/MongoDB-Atlas-green?style=for-the-badge&logo=mongodb)](https://www.mongodb.com/)
 [![Vercel](https://img.shields.io/badge/Vercel-Ready-black?style=for-the-badge&logo=vercel)](https://vercel.com/)
 [![License](https://img.shields.io/badge/License-MIT-yellow.svg?style=for-the-badge)](LICENSE)
-
 **[🚀 Live Demo](https://cybershield.vercel.app) • [📖 Quick Start](#-quick-start) • [🔧 Deployment](#-deployment)**
 
 </div>
