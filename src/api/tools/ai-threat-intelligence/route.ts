@@ -518,7 +518,6 @@ export async function POST(request: NextRequest) {
       },
       timestamp: new Date().toISOString()
     }
-
     return NextResponse.json(result)
 
   } catch (error) {
